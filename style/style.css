@@ -1,21 +1,24 @@
 /* ================= SYSTEM VARIABLES ================= */
 /* ================= SYSTEM PALETTE ================= */
 :root {
-  --system-bg: #ffffff;
-  --system-secondary: #f5f5f7;
-  --system-text: #1d1d1f;
-  --system-muted: #86868b;
-  --system-accent: #0071e3;
-  --system-border: rgba(0,0,0,0.08);
+    --system-bg: #ffffff;
+    --system-secondary: #f5f5f7;
+    --system-text: #1d1d1f;
+    --system-muted: #86868b;
+    --system-accent: #0071e3;
+    --system-border: rgba(0,0,0,0.08);
+    --glass-bg: rgba(255, 255, 255, 0.75);
 }
 
+/* DARK MODE */
 [data-theme="dark"] {
-  --system-bg: #000000;
-  --system-secondary: #1c1c1e;
-  --system-text: #f5f5f7;
-  --system-muted: #a1a1a6;
-  --system-accent: #0071e3;
-  --system-border: rgba(255,255,255,0.12);
+    --system-bg: #000000;
+    --system-secondary: #1c1c1e;
+    --system-text: #f5f5f7;
+    --system-muted: #a1a1a6;
+    --system-accent: #0a84ff; /* Slightly brighter blue for dark mode */
+    --system-border: rgba(255,255,255,0.12);
+    --glass-bg: rgba(0, 0, 0, 0.75);
 }
 
 
@@ -253,6 +256,127 @@ p {
     border-left: 4px solid var(--system-accent); /* A signature "Verse" accent */
     aspect-ratio: auto; /* Allow poems to be as tall as they need to be */
     min-height: 300px;
+}
+
+/* ================= REFINED NAVBAR ================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  /* Apple Glass Effect */
+  background: color-mix(in srgb, var(--system-bg) 75%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--system-border);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+/* Brand Logic */
+.nav-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.nav-brand strong {
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-brand .accent {
+  color: var(--system-accent);
+  font-weight: 300;
+}
+
+.nav-brand .tagline {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--system-muted);
+  margin-top: 4px;
+}
+
+/* Link Logic */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--system-text);
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: var(--system-accent);
+}
+
+/* Actions Logic */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#themeToggle {
+  background: none;
+  border: none;
+  color: var(--system-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.bag-btn {
+  background: var(--system-text);
+  color: var(--system-bg);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bag-btn:hover {
+  transform: scale(1.05);
+}
+
+#cartCount {
+  margin-left: 4px;
+  opacity: 0.8;
+}
+
+/* Responsive Hide */
+@media (max-width: 850px) {
+  .nav-links {
+    display: none;
+  }
+  .hamburger {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--system-text);
+  }
 }
 
 /* ================= RESPONSIVE ================= */

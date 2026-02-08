@@ -12,26 +12,28 @@
 <body>
 
   <!-- ================= NAVBAR (Sticky Plane) ================= -->
-  <header class="navbar">
-    <div class="nav-brand">
-      <strong>SPhiriTheArtist</strong>
-      <span class="tagline">Innovate. Design. Write.</span>
-    </div>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <strong>SPHIRI<span class="accent">THE</span>ARTIST</strong>
+            <span class="tagline">Innovate. Design. Write.</span>
+            </div>
 
-    <nav class="nav-links">
-      <a href="#tech">Tech</a>
-      <a href="#studio">3D Studio</a>
-      <a href="#skate">Skate Shop</a>
-      <a href="#creative">Creative</a>
-      <a href="#verse">The Verse</a>
-    </nav>
+            <nav class="nav-links">
+            <a href="#tech">Tech</a>
+            <a href="#studio">3D Studio</a>
+            <a href="#skate">Skate Shop</a>
+            <a href="#creative">Creative</a>
+            <a href="#verse">The Verse</a>
+            </nav>
 
-    <div class="nav-actions">
-      <button id="themeToggle">☼</button>
-      <button id="cartToggle">Cart</button>
-      <button class="hamburger" id="menuToggle">☰</button>
-    </div>
-  </header>
+            <div class="nav-actions">
+            <button id="themeToggle" title="Toggle Theme">☼</button>
+            <button id="cartToggle" class="bag-btn">Bag <span id="cartCount">0</span></button>
+            <button class="hamburger" id="menuToggle">☰</button>
+            </div>
+        </div>
+    </header>
 
   <!-- ================= MAIN CONTENT ================= -->
   <main>
@@ -70,16 +72,577 @@
       </div>
     </section>
 
-    <!-- CREATIVE WORKS -->
-    <section id="creative" class="section reveal">
-      <h2>Creative Works</h2>
-      <div class="grid">
-        <article class="card">
-          <img src="assets/images/illustrations/Colossal/photographer illustration-01.png" alt="">
-          <h3>Illustration</h3>
-        </article>
-      </div>
-    </section>
+   <!-- CREATIVE WORKS SECTION -->
+        <section id="creative">
+            <h2 class="section-title reveal">Creative Works</h2>
+            
+            <!-- ILLUSTRATIONS -->
+            <h3 class="subsection-title reveal">Illustrations</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/Sjava/SJAVA2023-01.jpg" alt="Sjava Portrait">
+                    </div>
+                    <div class="overlay">
+                        <span>Sjava Portrait Illustration</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/Colossal/photographer illustration-01.png" alt="Photographer Illustration">
+                    </div>
+                    <div class="overlay">
+                        <span>Photographer Character</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/SmokeyLaAngela/smokey.jpg" alt="Smokey La Angela">
+                    </div>
+                    <div class="overlay">
+                        <span>Smokey La Angela</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/Goat/8.jpg" alt="Goat Illustration">
+                    </div>
+                    <div class="overlay">
+                        <span>Goat Artwork</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/Space/01-01.jpg" alt="Space Theme">
+                    </div>
+                    <div class="overlay">
+                        <span>Space Exploration</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0007.jpg" alt="We Sorted 1">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0008.jpg" alt="We Sorted 2">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0009.jpg" alt="We Sorted 3">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #3</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0010.jpg" alt="We Sorted 4">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #4</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0011.jpg" alt="We Sorted 5">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #5</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/illustrations/WeSorted/IMG-20220526-WA0012.jpg" alt="We Sorted 6">
+                    </div>
+                    <div class="overlay">
+                        <span>We Sorted Series #6</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGO DESIGN & BRANDING -->
+            <h3 class="subsection-title reveal">Logo Design & Branding</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Colossal/LOGO-01.png" alt="Colossal Logo">
+                    </div>
+                    <div class="overlay">
+                        <span>Colossal Brand Identity</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Colossal/LOGO01-01.jpg" alt="Colossal Logo Variant">
+                    </div>
+                    <div class="overlay">
+                        <span>Colossal Logo (Alt)</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Colossal/colossal logo Grey BG-01.jpg" alt="Colossal Grey">
+                    </div>
+                    <div class="overlay">
+                        <span>Colossal Grey Version</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Colossal/colossal logo no illustrations-01.jpg" alt="Colossal Clean">
+                    </div>
+                    <div class="overlay">
+                        <span>Colossal Minimal</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Colossal/colossalvalentine-01.jpg" alt="Colossal Valentine">
+                    </div>
+                    <div class="overlay">
+                        <span>Colossal Valentine Edition</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Primary/Primary/1.png" alt="Organic Ringas Primary">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Primary</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Primary/Primary/2.png" alt="Organic Ringas Alt">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Variant</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Secondary/3.png" alt="Organic Ringas Secondary">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Secondary</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Secondary/4.png" alt="Organic Ringas Badge">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Badge</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Black & White/ORGANIC RINGAS/1.png" alt="Organic Ringas BW 1">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas B&W #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Black & White/ORGANIC RINGAS/2.png" alt="Organic Ringas BW 2">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas B&W #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/WordMark/Copy of Copy of ORGANIC RINGAS/1.png" alt="Organic Ringas Wordmark">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Wordmark</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/LetterMark/Copy of Copy of ORGANIC RINGAS (1)/1.png" alt="Organic Ringas Lettermark">
+                    </div>
+                    <div class="overlay">
+                        <span>Organic Ringas Lettermark</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Digital Impempe/01-01.jpg" alt="Digital Impempe">
+                    </div>
+                    <div class="overlay">
+                        <span>Digital Impempe Brand</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Digital Impempe/3-01.jpg" alt="Digital Impempe Alt">
+                    </div>
+                    <div class="overlay">
+                        <span>Digital Impempe Variant</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/QuickPick/Logo(s)/Icon.jpg" alt="QuickPick Icon">
+                    </div>
+                    <div class="overlay">
+                        <span>QuickPick Icon</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/QuickPick/Logo(s)/IconWithText.jpg" alt="QuickPick Full">
+                    </div>
+                    <div class="overlay">
+                        <span>QuickPick Logo Full</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Pretty Boys Club x Pretty Girls Club/01graffitti.jpg" alt="PBC x PGC Graffiti">
+                    </div>
+                    <div class="overlay">
+                        <span>Pretty Boys/Girls Club Graffiti</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Pretty Boys Club x Pretty Girls Club/template 1 chrome pbcxpgc.jpg" alt="PBC x PGC Chrome">
+                    </div>
+                    <div class="overlay">
+                        <span>PBC x PGC Chrome</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Veer/Logo/veerlogo-01.png" alt="Veer Logo">
+                    </div>
+                    <div class="overlay">
+                        <span>Veer Brand Identity</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Veer/Logo/veerlogowhite-01.png" alt="Veer White">
+                    </div>
+                    <div class="overlay">
+                        <span>Veer Logo (White)</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/TakeMeHome/TakeMeHomePHlike-removebg-preview.png" alt="TakeMeHome PH">
+                    </div>
+                    <div class="overlay">
+                        <span>TakeMeHome Logo</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/TakeMeHome/TakeMeHomeblack-removebg-preview.png" alt="TakeMeHome Black">
+                    </div>
+                    <div class="overlay">
+                        <span>TakeMeHome (Black)</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/logos/Sabio/IMG-20220526-WA0003.jpg" alt="Sabio Logo">
+                    </div>
+                    <div class="overlay">
+                        <span>Sabio Brand</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSTERS & PRINT DESIGN -->
+            <h3 class="subsection-title reveal">Posters & Print Design</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Nakanjani Theatre Production/Bina Print2.0-01.jpg" alt="Nakanjani Theatre">
+                    </div>
+                    <div class="overlay">
+                        <span>Nakanjani Theatre Production</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Career Guidance/insta.jpg" alt="Career Guidance">
+                    </div>
+                    <div class="overlay">
+                        <span>Career Guidance Campaign</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Career Guidance/print.jpg" alt="Career Guidance Print">
+                    </div>
+                    <div class="overlay">
+                        <span>Career Guidance Print</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Bursary Application/jpgforsharing-01.jpg" alt="Bursary Application">
+                    </div>
+                    <div class="overlay">
+                        <span>Bursary Application Poster</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Happy Women's Day/Happy Women's Day.jpg" alt="Women's Day">
+                    </div>
+                    <div class="overlay">
+                        <span>Happy Women's Day</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/RIP Poster Connie Chiume/Connie Chiume.jpg" alt="Connie Chiume Tribute">
+                    </div>
+                    <div class="overlay">
+                        <span>Connie Chiume Tribute</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/Albertina Sisulu logo.jpg" alt="Albertina Sisulu">
+                    </div>
+                    <div class="overlay">
+                        <span>Albertina Sisulu Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/Ela Gandhi logo.jpg" alt="Ela Gandhi">
+                    </div>
+                    <div class="overlay">
+                        <span>Ela Gandhi Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/Mamphela Ramphele logo.jpg" alt="Mamphela Ramphele">
+                    </div>
+                    <div class="overlay">
+                        <span>Mamphela Ramphele Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/Zulaikha Patel logo.jpg" alt="Zulaikha Patel">
+                    </div>
+                    <div class="overlay">
+                        <span>Zulaikha Patel Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/helen suzman logo.jpg" alt="Helen Suzman">
+                    </div>
+                    <div class="overlay">
+                        <span>Helen Suzman Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Limitless Education and Skills Project/Quotes/nadine-gordimer logo.jpg" alt="Nadine Gordimer">
+                    </div>
+                    <div class="overlay">
+                        <span>Nadine Gordimer Quote</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Sci-Bono/Clubhouse/Mind Your Language.jpg" alt="Mind Your Language">
+                    </div>
+                    <div class="overlay">
+                        <span>Sci-Bono: Mind Your Language</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/TopTier/2-01.jpg" alt="TopTier Poster 1">
+                    </div>
+                    <div class="overlay">
+                        <span>TopTier Campaign #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/TopTier/3-01.jpg" alt="TopTier Poster 2">
+                    </div>
+                    <div class="overlay">
+                        <span>TopTier Campaign #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Sir Fruit/Sir Fruit Price List/1.jpg" alt="Sir Fruit 1">
+                    </div>
+                    <div class="overlay">
+                        <span>Sir Fruit Price List #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Sir Fruit/Sir Fruit Price List/2.jpg" alt="Sir Fruit 2">
+                    </div>
+                    <div class="overlay">
+                        <span>Sir Fruit Price List #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Sir Fruit/Sir Fruit Price List/3.jpg" alt="Sir Fruit 3">
+                    </div>
+                    <div class="overlay">
+                        <span>Sir Fruit Price List #3</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/posters/Sir Fruit/Sir Fruit Price List/4.jpg" alt="Sir Fruit 4">
+                    </div>
+                    <div class="overlay">
+                        <span>Sir Fruit Price List #4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUSINESS CARDS & ALBUM ART -->
+            <h3 class="subsection-title reveal">Business Cards & Album Art</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/business cards/SphiriTheArtist/01-03.png" alt="SPhiri Business Card Front">
+                    </div>
+                    <div class="overlay">
+                        <span>SPhiri Business Card (Front)</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/business cards/SphiriTheArtist/02-03.png" alt="SPhiri Business Card Back">
+                    </div>
+                    <div class="overlay">
+                        <span>SPhiri Business Card (Back)</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/business cards/SphiriTheArtist/logo-03.jpg" alt="SPhiri Logo">
+                    </div>
+                    <div class="overlay">
+                        <span>SPhiri Personal Logo</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/Album Cover/Fire In The Booth/booth01-01.jpg" alt="Fire In The Booth">
+                    </div>
+                    <div class="overlay">
+                        <span>Fire In The Booth Cover Art</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHOTOGRAPHY -->
+            <h3 class="subsection-title reveal">Photography</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/photos/ClinClin/IMG_0013.jpg" alt="Portrait 1">
+                    </div>
+                    <div class="overlay">
+                        <span>ClinClin Portrait #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/photos/ClinClin/IMG_0014.jpg" alt="Portrait 2">
+                    </div>
+                    <div class="overlay">
+                        <span>ClinClin Portrait #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/photos/ClinClin/IMG_0016.jpg" alt="Portrait 3">
+                    </div>
+                    <div class="overlay">
+                        <span>ClinClin Portrait #3</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/photos/ClinClin/IMG_0016blackandwhite.jpg" alt="Portrait BW">
+                    </div>
+                    <div class="overlay">
+                        <span>ClinClin Portrait B&W</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/photos/ClinClin/IMG_0017.jpg" alt="Portrait 4">
+                    </div>
+                    <div class="overlay">
+                        <span>ClinClin Portrait #4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANNERS & MISC -->
+            <h3 class="subsection-title reveal">Banners & Campaign Design</h3>
+            <div class="media-grid">
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/Banners/TopTier/banner.jpg" alt="TopTier Banner">
+                    </div>
+                    <div class="overlay">
+                        <span>TopTier Web Banner</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/Banners/QuickPick/FB Cover/BackToSchool/01.jpg" alt="Back to School 1">
+                    </div>
+                    <div class="overlay">
+                        <span>QuickPick: Back to School #1</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/Banners/QuickPick/FB Cover/BackToSchool/Untitled design.jpg" alt="Back to School 2">
+                    </div>
+                    <div class="overlay">
+                        <span>QuickPick: Back to School #2</span>
+                    </div>
+                </div>
+                <div class="media-card reveal">
+                    <div class="media-image">
+                        <img src="assets/images/Cover Page/Sci-Bono/Drone Academy/01-01.jpg" alt="Drone Academy">
+                    </div>
+                    <div class="overlay">
+                        <span>Sci-Bono Drone Academy</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
     <!-- THE VERSE -->
     <section id="verse" class="section reveal">

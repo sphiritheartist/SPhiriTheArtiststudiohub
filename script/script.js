@@ -89,3 +89,24 @@ window.addEventListener("DOMContentLoaded", () => {
 document.getElementById("closeCart").onclick = closeAllOverlays;
 document.getElementById("closePoem").onclick = closeAllOverlays;
 overlay.onclick = closeAllOverlays;
+
+/* ================= THEME ENGINE ================= */
+const themeToggle = document.getElementById("themeToggle");
+
+// Function to set the theme
+const setTheme = (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme); // Saves their choice for next visit
+    themeToggle.textContent = theme === "dark" ? "☾" : "☼";
+};
+
+// Toggle click handler
+themeToggle.onclick = () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+};
+
+// Check for saved user preference on load
+const savedTheme = localStorage.getItem("theme") || "light";
+setTheme(savedTheme);
