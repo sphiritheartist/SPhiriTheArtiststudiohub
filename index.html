@@ -1,306 +1,127 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Studio Hub</title>
-    <meta name="description" content="A multidisciplinary studio by Simphiwe Phiri - Tech, 3D Printing, Skate Shop, Creative Works, and Poetry">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPhiriTheArtist Studio</title>
+
+  <!-- SF Pro fallback stack -->
+  <link rel="stylesheet" href="style/style.css" />
 </head>
+
 <body>
 
-    <nav class="navbar">
-        <div class="logo">SPhiriTheArtist</div>
-        <ul class="nav-links">
-            <li><a href="#tech">Tech</a></li>
-            <li><a href="#prints">3D Studio</a></li>
-            <li><a href="#skate">Skate Shop</a></li>
-            <li><a href="#creative">Creative Works</a></li>
-            <li><a href="#poetry">The Verse</a></li>
-            <li class="nav-icons">
-                <button id="theme-toggle" aria-label="Toggle Theme">🌓</button>
-                <a href="javascript:void(0)" id="cart-icon">🛒 Bag (<span id="cart-count">0</span>)</a>
-            </li>
-        </ul>
+  <!-- ================= NAVBAR (Sticky Plane) ================= -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <strong>SPhiriTheArtist</strong>
+      <span class="tagline">Innovate. Design. Write.</span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#tech">Tech</a>
+      <a href="#studio">3D Studio</a>
+      <a href="#skate">Skate Shop</a>
+      <a href="#creative">Creative</a>
+      <a href="#verse">The Verse</a>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1 class="reveal">Innovate. Design. Write.</h1>
-            <p class="reveal">A multidisciplinary studio by Simphiwe Phiri</p>
-        </div>
-    </header>
-
-    <main class="container">
-        <!-- TECH SECTION -->
-        <section id="tech">
-            <h2 class="section-title reveal">Tech & Hardware</h2>
-            <div class="product-grid">
-                <div class="card reveal">
-                    <div class="badge">New</div>
-                    <div class="placeholder-img">
-                        <span>MacBook Pro 16"</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>MacBook Pro 16"</h3>
-                        <p>Latest M3 Max. The creator standard.</p>
-                        <span class="price">$2,499</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-                <div class="card reveal">
-                    <div class="badge">Second-Hand</div>
-                    <div class="placeholder-img">
-                        <span>iPhone 14 Pro</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>iPhone 14 Pro</h3>
-                        <p>Certified pre-owned. 98% Battery.</p>
-                        <span class="price">$699</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3D STUDIO SECTION -->
-        <section id="prints">
-            <h2 class="section-title reveal">3D Studio</h2>
-            <div class="product-grid">
-                <div class="card custom-feature reveal">
-                    <div class="badge">Bespoke</div>
-                    <div class="placeholder-img">
-                        <span>Custom 3D Model</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>Request 3D Quote</h3>
-                        <p>Resin & PLA printing. Upload your STL files.</p>
-                        <button class="buy-btn secondary">Contact for Quote</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SKATE SHOP SECTION -->
-        <section id="skate">
-            <h2 class="section-title reveal">Skate Shop</h2>
-            <div class="product-grid">
-                <div class="card custom-feature reveal">
-                    <div class="badge">New / Bespoke</div>
-                    <div class="product-image">
-                        <img src="assets/images/logos/Colossal/LOGO-01.png" alt="Custom Artist Deck">
-                    </div>
-                    <div class="card-info">
-                        <h3>Custom Artist Decks</h3>
-                        <p>7-ply Maple. Original SPhiri Artwork.</p>
-                        <span class="price">$85</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-                <div class="card reveal">
-                    <div class="badge">Second-Hand</div>
-                    <div class="placeholder-img">
-                        <span>Used Deck</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>Refurbished Classic</h3>
-                        <p>Lightly used, freshly gripped.</p>
-                        <span class="price">$45</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-                <div class="card reveal">
-                    <div class="badge">Hardware</div>
-                    <div class="placeholder-img">
-                        <span>Bearings</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>ABEC 9 Bearings</h3>
-                        <p>High-speed precision bearings.</p>
-                        <span class="price">$25</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-                <div class="card reveal">
-                    <div class="badge">Hardware</div>
-                    <div class="placeholder-img">
-                        <span>Grip Tape</span>
-                    </div>
-                    <div class="card-info">
-                        <h3>Professional Grip</h3>
-                        <p>High-friction perforated tape.</p>
-                        <span class="price">$10</span>
-                        <button class="buy-btn">Add to Bag</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CREATIVE WORKS SECTION -->
-        <section id="creative">
-            <h2 class="section-title reveal">Creative Works</h2>
-            <div class="media-grid">
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/illustrations/Sjava/SJAVA2023-01.jpg" alt="Sjava Illustration">
-                    </div>
-                    <div class="overlay">
-                        <span>Sjava Illustration</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/logos/Organic Ringas/Logo Varieties/Primary/Primary/1.png" alt="Organic Ringas Logo">
-                    </div>
-                    <div class="overlay">
-                        <span>Branding Identity</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/posters/Nakanjani Theatre Production/Bina Print2.0-01.jpg" alt="Theatre Poster">
-                    </div>
-                    <div class="overlay">
-                        <span>Theatre Poster</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/business cards/SphiriTheArtist/01-03.png" alt="Business Card">
-                    </div>
-                    <div class="overlay">
-                        <span>Business Card Design</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/logos/Colossal/LOGO-01.png" alt="Colossal Logo">
-                    </div>
-                    <div class="overlay">
-                        <span>Colossal Brand</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/illustrations/Colossal/photographer illustration-01.png" alt="Photographer Illustration">
-                    </div>
-                    <div class="overlay">
-                        <span>Photographer Illustration</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/posters/Limitless Education and Skills Project/Career Guidance/insta.jpg" alt="Career Guidance">
-                    </div>
-                    <div class="overlay">
-                        <span>Career Guidance</span>
-                    </div>
-                </div>
-                <div class="media-card reveal">
-                    <div class="media-image">
-                        <img src="assets/images/logos/Digital Impempe/01-01.jpg" alt="Digital Impempe">
-                    </div>
-                    <div class="overlay">
-                        <span>Digital Impempe</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- POETRY SECTION -->
-        <section id="poetry">
-            <h2 class="section-title reveal">The Verse</h2>
-            <div class="product-grid">
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">✒️</div>
-                    <h3>The Incomplete Wish</h3>
-                    <p class="poem-body">You are still my person<br>Even if I'm not yours...</p>
-                    <button class="buy-btn secondary view-poem" data-full="You are still my person. Even if I'm not yours. You will be kept as my incomplete wish. Our story isn't finished.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">🧠</div>
-                    <h3>The Parasite</h3>
-                    <p class="poem-body">Doubt is not a seed<br>Do not plant it...</p>
-                    <button class="buy-btn secondary view-poem" data-full="Doubt is not a seed. Do not plant it. Lest on you it shall feed. It's restraints, you will receive.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">💊</div>
-                    <h3>Bitter Pills</h3>
-                    <p class="poem-body">They sell us sickness<br>Then sell the cures...</p>
-                    <button class="buy-btn secondary view-poem" data-full="They sell us sickness. Then sell the cures. What is this wickedness? What is this contour? Health that I reminisce?!">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">⚖️</div>
-                    <h3>The Simple System</h3>
-                    <p class="poem-body">Some say money is the matrix<br>Others say it's our axis...</p>
-                    <button class="buy-btn secondary view-poem" data-full="Some say money is the matrix. Others say it's our orbital axis. It's not a matrix, it's a simple system.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">🥀</div>
-                    <h3>I Cast The Die</h3>
-                    <p class="poem-body">In my eyes you are a treasure<br>I didn't mean to pry...</p>
-                    <button class="buy-btn secondary view-poem" data-full="In my eyes you are a treasure. One of boundless measure. I didn't mean to pry, yet I had cast the die.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">💎</div>
-                    <h3>Legacy</h3>
-                    <p class="poem-body">Maybe it's your eyes<br>Maybe it's my heart...</p>
-                    <button class="buy-btn secondary view-poem" data-full="Words, I can't say. Love, till the end of days. Sparks, that always start. Hips, carry a legacy.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">🥂</div>
-                    <h3>White Linen</h3>
-                    <p class="poem-body">I loved you<br>I truly did...</p>
-                    <button class="buy-btn secondary view-poem" data-full="I loved you. I truly did. We confided. We are drinking. White linen we sleep in.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">🤐</div>
-                    <h3>Self-Made Promises</h3>
-                    <p class="poem-body">I should have fought harder<br>Instead I just let go...</p>
-                    <button class="buy-btn secondary view-poem" data-full="I should have fought harder. Instead I just let go. What was I to do? I lost, self-made promises.">Read Full</button>
-                </article>
-                <article class="card poem-card reveal">
-                    <div class="poetry-icon">🔥</div>
-                    <h3>Moving On</h3>
-                    <p class="poem-body">I brought her home<br>she fell for my blood...</p>
-                    <button class="buy-btn secondary view-poem" data-full="Girl! You made me a Spud. You broke my heart in silence. I'm moving on now.">Read Full</button>
-                </article>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <img src="assets/images/business cards/SphiriTheArtist/logo-03.jpg" alt="SPhiriTheArtist Logo" class="footer-logo">
-        <p>&copy; 2026 SPhiriTheArtist</p>
-    </footer>
-
-    <!-- POEM MODAL -->
-    <div id="poem-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button id="close-poem" class="close-modal-btn" aria-label="Close">&times;</button>
-            <div id="full-poem-display"></div>
-        </div>
+    <div class="nav-actions">
+      <button id="themeToggle">☼</button>
+      <button id="cartToggle">Cart</button>
+      <button class="hamburger" id="menuToggle">☰</button>
     </div>
+  </header>
 
-    <!-- CART SIDEBAR -->
-    <div id="cart-sidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h2>Your Bag</h2>
-            <button id="close-cart" class="close-modal-btn" aria-label="Close">&times;</button>
-        </div>
-        <div id="cart-items"></div>
-        <div class="cart-footer">
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                <span style="font-weight:700; font-size:18px;">Total</span>
-                <span id="total-amount" style="font-weight:700; font-size:20px; color:var(--accent-blue);">$0.00</span>
-            </div>
-            <button class="buy-btn" style="width:100%">Checkout</button>
-        </div>
-    </div>
+  <!-- ================= MAIN CONTENT ================= -->
+  <main>
 
-    <!-- BACKGROUND DIMMER -->
-    <div id="bg-overlay" class="bg-dimmer"></div>
+    <!-- TECH & HARDWARE -->
+    <section id="tech" class="section reveal">
+      <h2>Tech & Hardware</h2>
+      <div class="grid">
+        <article class="card">
+          <img src="assets/images/logos/Veer/Logo/veerlogo-01.png" alt="">
+          <h3>Embedded Systems</h3>
+        </article>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- 3D STUDIO -->
+    <section id="studio" class="section reveal">
+      <h2>3D Studio</h2>
+      <div class="grid">
+        <article class="card">
+          <img src="assets/images/illustrations/Space/01-01.jpg" alt="">
+          <h3>Concept Geometry</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- SKATE SHOP -->
+    <section id="skate" class="section reveal">
+      <h2>Skate Shop</h2>
+      <div class="grid">
+        <article class="card product">
+          <img src="assets/images/posters/TopTier/2-01.jpg" alt="">
+          <h3>Deck Series I</h3>
+          <button data-product="Deck Series I" data-price="1200">Add to Cart</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- CREATIVE WORKS -->
+    <section id="creative" class="section reveal">
+      <h2>Creative Works</h2>
+      <div class="grid">
+        <article class="card">
+          <img src="assets/images/illustrations/Colossal/photographer illustration-01.png" alt="">
+          <h3>Illustration</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- THE VERSE -->
+    <section id="verse" class="section reveal">
+      <h2>The Verse</h2>
+      <div class="grid">
+        <article class="card poem">
+          <h3>Fire In The Booth</h3>
+          <button
+            class="open-poem"
+            data-title="Fire In The Booth"
+            data-poem="I spoke to the wires and they answered in flame.
+I coded my pain into rhythm and name.">
+            Read
+          </button>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© SPhiriTheArtist Studio</p>
+  </footer>
+
+  <!-- ================= ISOLATED OVERLAY PLANE ================= -->
+  <!-- Background Dimmer -->
+  <div id="overlay"></div>
+
+  <!-- Poem Modal -->
+  <div id="poemModal" class="modal">
+    <h3 id="poemTitle"></h3>
+    <p id="poemText"></p>
+    <button id="closePoem">Close</button>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <aside id="cartSidebar">
+    <h3>Your Cart</h3>
+    <ul id="cartItems"></ul>
+    <button id="closeCart">Close</button>
+  </aside>
+
+  <script src="script/script.js"></script>
 </body>
 </html>
