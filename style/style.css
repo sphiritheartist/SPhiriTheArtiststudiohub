@@ -207,6 +207,54 @@ body {
   letter-spacing: 1px;
 }
 
+/* ================= GRID REPAIR ================= */
+.section {
+    max-width: 1400px; /* Limits width so it doesn't stretch too far on big screens */
+    margin: 0 auto;
+    padding: 80px 5%;
+}
+
+.grid {
+    display: grid;
+    /* This creates a responsive grid that automatically adjusts the number of columns */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 32px; /* Professional spacing between cards */
+    align-items: start;
+}
+
+/* Make sure poems stand out from products */
+#verse .grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+h2 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.02em; /* Tight Apple-style headings */
+    margin-bottom: 40px;
+}
+
+p {
+    line-height: 1.5;
+    color: var(--system-muted);
+}
+
+.card {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+}
+
+.card.poem {
+    background: var(--system-secondary);
+    border-left: 4px solid var(--system-accent); /* A signature "Verse" accent */
+    aspect-ratio: auto; /* Allow poems to be as tall as they need to be */
+    min-height: 300px;
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .nav-links {
