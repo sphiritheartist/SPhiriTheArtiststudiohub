@@ -365,6 +365,75 @@ p {
   opacity: 0.8;
 }
 
+/* ================= CREATIVE WORKS GRID ================= */
+.media-grid {
+    display: grid;
+    /* This creates the 'Masonry-lite' look: 3 columns on desktop, 1 on mobile */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.media-card {
+    position: relative;
+    border-radius: 18px; /* High-end rounded corners */
+    overflow: hidden;
+    background: var(--system-secondary);
+    aspect-ratio: 1 / 1; /* Forces all cards to be perfect squares */
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.media-image {
+    width: 100%;
+    height: 100%;
+}
+
+.media-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This is the magic: it crops the image to fill the box without stretching */
+    transition: transform 0.6s ease;
+}
+
+/* ================= THE OVERLAY (Quick Look) ================= */
+.overlay {
+    position: absolute;
+    inset: 0; /* Covers the whole card */
+    background: rgba(0, 0, 0, 0.4); /* Darkens the image slightly */
+    display: flex;
+    align-items: flex-end; /* Puts text at the bottom */
+    padding: 20px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px); /* Modern frosted effect */
+}
+
+.overlay span {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateY(10px);
+    transition: transform 0.3s ease;
+}
+
+/* Hover Effects */
+.media-card:hover {
+    transform: scale(0.98); /* Slight press-in effect */
+}
+
+.media-card:hover .overlay {
+    opacity: 1;
+}
+
+.media-card:hover .overlay span {
+    transform: translateY(0);
+}
+
+.media-card:hover img {
+    transform: scale(1.1); /* Subtle zoom in on the image */
+}
+
 /* Responsive Hide */
 @media (max-width: 850px) {
   .nav-links {
