@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SPhiriTheArtist Studio Hub
 
 A complete, fully functional multidisciplinary portfolio and e-commerce website showcasing tech products, 3D printing services, skate shop items, creative works, and poetry.
@@ -227,3 +228,6 @@ Design inspired by Apple's minimalist aesthetic
 **Need help?** Check the code comments or reach out to your developer.
 **Found a bug?** Check the browser console for error messages.
 **Want to customize?** All code is commented and organized for easy editing!
+=======
+# SPhiriTheArtiststudiohub
+>>>>>>> f4145b709b75ee6db7513f49bdfc50e4784afd52
