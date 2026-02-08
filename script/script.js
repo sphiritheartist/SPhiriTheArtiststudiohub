@@ -110,3 +110,18 @@ themeToggle.onclick = () => {
 // Check for saved user preference on load
 const savedTheme = localStorage.getItem("theme") || "light";
 setTheme(savedTheme);
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCap = document.getElementById('lightbox-caption');
+
+document.querySelectorAll('.media-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const img = card.querySelector('img').src;
+        const caption = card.querySelector('.overlay span').textContent;
+        
+        lightboxImg.src = img;
+        lightboxCap.textContent = caption;
+        lightbox.classList.add('active');
+    });
+});

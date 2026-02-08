@@ -417,6 +417,68 @@ p {
     transition: transform 0.3s ease;
 }
 
+/* Fix for edges */
+.section, #creative {
+    padding: 80px 5%; /* 5% padding on left/right ensures it never touches edges */
+    max-width: 1400px;
+    margin: 0 auto;   /* Centers the entire block */
+}
+
+/* Ensure the grid itself has a container guard */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    cursor: zoom-out;
+}
+
+.lightbox.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.lightbox.active img {
+    transform: scale(1);
+}
+
+#lightbox-caption {
+    position: absolute;
+    bottom: 5%;
+    color: white;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* Hover Effects */
 .media-card:hover {
     transform: scale(0.98); /* Slight press-in effect */
