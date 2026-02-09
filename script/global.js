@@ -29,6 +29,25 @@ async function loadSharedComponents() {
         initGlobalEvents();
         syncUI();
 
+        // Lightbox Logic (Only runs if gallery exists)
+        const gallery = document.querySelector('.media-grid');
+        if (gallery) {
+            gallery.onclick = (e) => {
+                const card = e.target.closest('.media-card');
+                if (!card) return;
+                
+                const img = card.querySelector('img');
+                const lightbox = document.getElementById('lightbox');
+                const lbImg = document.getElementById('lightbox-img');
+                
+                lbImg.src = img.src;
+                document.getElementById('lightbox-caption').textContent = card.querySelector('.overlay span').textContent;
+                
+                lightbox.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            };
+}
+
     } catch (err) {
         console.error("System Error: Component injection failed.", err);
     }
@@ -76,6 +95,21 @@ function initGlobalEvents() {
 
     if (overlay) overlay.onclick = closeSidebar;
     if (closeBtn) closeBtn.onclick = closeSidebar;
+
+    // Scroll Reveal Observer
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) =>
+    {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el =>
+    observer.observe(el));
+
 }
 
 // Fire when the base HTML is ready

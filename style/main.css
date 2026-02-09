@@ -138,3 +138,138 @@ body {
 }
 
 
+/* Portal Grid */
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    padding-top: 50px;
+}
+
+.portal-card {
+    background: var(--system-secondary);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+    border: 1px solid var(--system-border);
+}
+
+.portal-card:hover {
+    transform: translateY(-10px);
+}
+
+.portal-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    background-color: #333; /* Placeholder color */
+}
+
+.portal-info {
+    padding: 30px;
+    text-align: center;
+}
+
+.btn-outline {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 25px;
+    border: 1px solid var(--system-accent);
+    color: var(--system-accent);
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background: var(--system-accent);
+    color: white;
+}
+
+/* Hero Split */
+.hero-split {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(circle at center, var(--system-secondary) 0%, var(--system-bg) 100%);
+}
+
+.hero-text h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+}
+
+/* Portal Cards */
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.portal-card {
+    background: var(--system-secondary);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--system-border);
+}
+
+.portal-card:hover {
+    transform: translateY(-8px);
+}
+
+.card-image {
+    height: 240px;
+    background-color: #222; /* Placeholder for your images */
+    background-size: cover;
+    background-position: center;
+}
+
+.card-content {
+    padding: 30px;
+}
+
+.link-arrow {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--system-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: gap 0.2s;
+}
+
+.link-arrow:hover {
+    text-decoration: underline;
+}
+
+/* Shop Teaser */
+.teaser-box {
+    background: var(--system-text);
+    color: var(--system-bg);
+    padding: 60px;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--system-text);
+    color: var(--system-bg);
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-outline {
+    border: 1px solid var(--system-bg);
+    color: var(--system-bg);
+    padding: 10px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    margin: 10px;
+    display: inline-block;
+}
