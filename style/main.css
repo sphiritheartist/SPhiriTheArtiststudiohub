@@ -38,19 +38,23 @@ body {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 1000;
+    width: 100%;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--system-border);
+    z-index: 1000;
 }
 
+/* THE CONTAINER - This manages the 3 zones */
 .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* This creates the gap between brand/links/actions */
     align-items: center;
-    padding: 15px 5%;
-    height: 44px; /* Apple-standard nav height */
+    padding: 0 24px;
+    height: 52px;
 }
 
 .nav-brand a {
@@ -62,16 +66,44 @@ body {
 
 .accent { color: var(--system-accent); }
 
+/* LINK STYLING */
+.nav-links {
+    display: flex;
+    gap: 15px; /* Adjust this to tighten or loosen the menu */
+}
+
 .nav-links a {
     text-decoration: none;
     color: var(--system-text);
-    margin-left: 20px;
-    font-size: 14px;
-    opacity: 0.8;
-    transition: opacity 0.2s;
+    font-size: 12.5px; /* Slightly smaller for professionalism */
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    opacity: 0.7;
+    transition: 0.2s ease;
 }
 
-.nav-links a:hover { opacity: 1; }
+.nav-links a:hover {
+    opacity: 1;
+    color: var(--system-accent);
+}
+
+/* ACTION BUTTONS */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bag-btn {
+    background: var(--system-text);
+    color: var(--system-bg);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
 /* ================= CART SIDEBAR ================= */
 #cartSidebar {
@@ -272,4 +304,10 @@ body {
     text-decoration: none;
     margin: 10px;
     display: inline-block;
+}
+
+@media (max-width: 1100px) {
+    .nav-links {
+        display: none;
+    }
 }
