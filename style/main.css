@@ -26,15 +26,17 @@ body {
     background: var(--system-bg);
     color: var(--system-text);
     transition: background 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
 }
 
 .section {
-    padding: 100px 5%;
+    padding: 80px 5%;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
-/* ================= NAV INJECTION UI ================= */
+/* ================= NAV UI ================= */
 .navbar {
     position: sticky;
     top: 0;
@@ -46,53 +48,22 @@ body {
     z-index: 1000;
 }
 
-/* THE CONTAINER - This manages the 3 zones */
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; /* This creates the gap between brand/links/actions */
+    justify-content: space-between;
     align-items: center;
     padding: 0 24px;
     height: 52px;
 }
 
-.nav-brand a {
-    text-decoration: none;
-    color: var(--system-text);
-    font-size: 1.2rem;
-    letter-spacing: -0.5px;
-}
-
+.nav-brand a { text-decoration: none; color: var(--system-text); font-size: 1.2rem; }
 .accent { color: var(--system-accent); }
-
-/* LINK STYLING */
-.nav-links {
-    display: flex;
-    gap: 15px; /* Adjust this to tighten or loosen the menu */
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--system-text);
-    font-size: 12.5px; /* Slightly smaller for professionalism */
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    opacity: 0.7;
-    transition: 0.2s ease;
-}
-
-.nav-links a:hover {
-    opacity: 1;
-    color: var(--system-accent);
-}
-
-/* ACTION BUTTONS */
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.nav-links { display: flex; gap: 15px; }
+.nav-links a { text-decoration: none; color: var(--system-text); font-size: 12.5px; font-weight: 500; opacity: 0.7; }
+.nav-links a:hover { opacity: 1; color: var(--system-accent); }
+.nav-actions { display: flex; align-items: center; gap: 10px; }
 
 .bag-btn {
     background: var(--system-text);
@@ -105,126 +76,15 @@ body {
     cursor: pointer;
 }
 
-/* ================= CART SIDEBAR ================= */
-#cartSidebar {
-    position: fixed;
-    top: 0;
-    right: -400px;
-    width: 350px;
-    height: 100%;
-    background: var(--system-bg);
-    z-index: 2001;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    padding: 40px;
-}
-
-#cartSidebar.open {
-    transform: translateX(-400px);
-}
-
-#overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px);
-    z-index: 2000;
-    display: none;
-}
-
-#overlay.active { display: block; }
-
-/* ================= FOOTER INJECTION UI ================= */
-.footer {
-    padding: 60px 5%;
-    background: var(--system-secondary);
-    margin-top: 100px;
-    border-top: 1px solid var(--system-border);
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-contact a {
-    display: block;
-    color: var(--system-accent);
-    text-decoration: none;
-    margin-bottom: 10px;
-}
-
-/* ================= ANIMATIONS ================= */
-.reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease-out;
-}
-
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-/* Portal Grid */
-.portal-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    padding-top: 50px;
-}
-
-.portal-card {
-    background: var(--system-secondary);
-    border-radius: 20px;
-    overflow: hidden;
-    transition: transform 0.4s ease;
-    border: 1px solid var(--system-border);
-}
-
-.portal-card:hover {
-    transform: translateY(-10px);
-}
-
-.portal-image {
-    height: 250px;
-    background-size: cover;
-    background-position: center;
-    background-color: #333; /* Placeholder color */
-}
-
-.portal-info {
-    padding: 30px;
-    text-align: center;
-}
-
-.btn-outline {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 25px;
-    border: 1px solid var(--system-accent);
-    color: var(--system-accent);
-    text-decoration: none;
-    border-radius: 50px;
-    transition: all 0.3s;
-}
-
-.btn-outline:hover {
-    background: var(--system-accent);
-    color: white;
-}
-
-/* Hero Split */
+/* ================= HOME PAGE HERO (FIXES CENTERING) ================= */
 .hero-split {
-    height: 80vh;
+    min-height: 80vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    align-items: center;    /* Centers horizontally */
+    justify-content: center; /* Centers vertically */
+    text-align: center;     /* Centers text lines */
+    padding: 0 10%;
     background: radial-gradient(circle at center, var(--system-secondary) 0%, var(--system-bg) 100%);
 }
 
@@ -232,82 +92,236 @@ body {
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 800;
     letter-spacing: -2px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-/* Portal Cards */
+.hero-text p {
+    font-size: 1.25rem;
+    color: var(--system-muted);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ================= PORTAL CARDS (FIXES VISIBILITY) ================= */
 .portal-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
+    padding: 40px 0;
 }
 
 .portal-card {
     background: var(--system-secondary);
     border-radius: 24px;
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid var(--system-border);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .portal-card:hover {
     transform: translateY(-8px);
+    border-color: var(--system-accent);
 }
 
 .card-image {
-    height: 240px;
-    background-color: #222; /* Placeholder for your images */
+    height: 250px;
+    background-color: #333;
     background-size: cover;
     background-position: center;
 }
 
-.card-content {
-    padding: 30px;
+.card-content { padding: 30px; text-align: center; }
+
+/* ================= CREATIVE / MEDIA GRIDS ================= */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
 }
 
-.link-arrow {
-    display: inline-block;
-    margin-top: 15px;
-    color: var(--system-accent);
-    text-decoration: none;
-    font-weight: 600;
-    transition: gap 0.2s;
+.media-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--system-secondary);
+    aspect-ratio: 1/1; /* Default square */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.link-arrow:hover {
-    text-decoration: underline;
+.media-image img { width: 100%; height: 100%; object-fit: cover; }
+
+/* FORMATS FOR NON-SQUARES */
+.media-card.banner-format { grid-column: 1 / -1; aspect-ratio: 4 / 1 !important; max-height: 180px; }
+.media-card.small-format { aspect-ratio: auto !important; max-height: 150px; width: fit-content; justify-self: center; }
+.media-card.small-format img { height: 150px; width: auto; }
+
+/* ================= ENGINEERING HERO ================= */
+.engineering-hero { text-align: center; padding-bottom: 40px; }
+.project-container { display: flex; justify-content: center; width: 100%; }
+.project-card {
+    width: 100%;
+    max-width: 750px;
+    background: var(--system-secondary);
+    border: 1px solid var(--system-border);
+    padding: 40px;
+    border-radius: 20px;
+}
+.tech-stack { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+.tag { background: var(--system-bg); padding: 4px 12px; border-radius: 15px; font-size: 11px; border: 1px solid var(--system-border); }
+
+/* ================= SIDEBAR & FOOTER ================= */
+#cartSidebar {
+    position: fixed !important;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    height: 100vh;
+    background: var(--system-bg);
+    z-index: 2001;
+    transition: transform 0.4s ease;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    padding: 40px;
 }
 
-/* Shop Teaser */
-.teaser-box {
-    background: var(--system-text);
-    color: var(--system-bg);
-    padding: 60px;
-    border-radius: 30px;
-    text-align: center;
+/* Specific Centering for the Home Hero Elements */
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Centers button and text horizontally */
+    gap: 20px;              /* Spacing between Title, Subtitle, and Button */
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--system-muted);
+    max-width: 600px;
+    margin: 0 auto;         /* Centers the text block */
+    line-height: 1.4;
+}
+
+.hero-cta {
+    margin-top: 10px;       /* Pushes the button down slightly */
 }
 
 .btn-primary {
     background: var(--system-text);
     color: var(--system-bg);
     padding: 12px 30px;
-    border-radius: 50px;
+    border-radius: 30px;
     text-decoration: none;
     font-weight: 600;
-}
-
-.btn-outline {
-    border: 1px solid var(--system-bg);
-    color: var(--system-bg);
-    padding: 10px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    margin: 10px;
+    transition: transform 0.2s ease;
     display: inline-block;
 }
 
-@media (max-width: 1100px) {
-    .nav-links {
-        display: none;
-    }
+.btn-primary:hover {
+    transform: scale(1.05);
 }
+
+/* ================= SHOP TEASER SECTION ================= */
+.shop-teaser {
+    text-align: center;
+    padding: 80px 5%;
+}
+
+.teaser-box {
+    background: var(--system-text); /* Dark background (Black in Light mode) */
+    color: var(--system-bg);     /* Light text (White in Light mode) */
+    padding: 80px 40px;
+    border-radius: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+[data-theme="dark"] .teaser-box {
+    background: var(--system-secondary); /* Slightly lighter black in dark mode */
+    border: 1px solid var(--system-border);
+}
+
+.teaser-box h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.teaser-box p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    max-width: 500px;
+}
+
+.teaser-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Specific button style for the Dark Teaser Box */
+.teaser-box .btn-outline {
+    border: 1px solid var(--system-bg);
+    color: var(--system-bg);
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.teaser-box .btn-outline:hover {
+    background: var(--system-bg);
+    color: var(--system-text);
+}
+
+/* Update the Teaser Box to handle Dark Mode specifically */
+.teaser-box {
+    background: var(--system-text); /* Black in light mode */
+    color: var(--system-bg);     /* White in light mode */
+    padding: 80px 40px;
+    border-radius: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid transparent; /* Placeholder for dark mode border */
+}
+
+/* DARK MODE ADJUSTMENT */
+[data-theme="dark"] .teaser-box {
+    background: #1c1c1e; /* Apple's 'Elevated' Grey */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle hair-line border */
+    color: #ffffff;
+}
+
+/* Ensure buttons stay visible in Dark Mode */
+[data-theme="dark"] .teaser-box .btn-outline {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .teaser-box .btn-outline:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+[data-theme="dark"] .accent {
+    color: var(--system-accent);
+    text-shadow: 0 0 15px rgba(10, 132, 255, 0.3); /* Gives the blue text a subtle glow */
+}
+
+#cartSidebar.open { transform: translateX(-400px); }
+
+.footer { padding: 60px 5%; background: var(--system-secondary); margin-top: 80px; }
+
+@media (max-width: 1100px) { .nav-links { display: none; } }
