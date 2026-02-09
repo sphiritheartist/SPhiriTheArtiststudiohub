@@ -1,0 +1,140 @@
+/* ================= SYSTEM PALETTE ================= */
+:root {
+    --system-bg: #ffffff;
+    --system-secondary: #f5f5f7;
+    --system-text: #1d1d1f;
+    --system-muted: #86868b;
+    --system-accent: #0071e3;
+    --system-border: rgba(0,0,0,0.08);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="dark"] {
+    --system-bg: #000000;
+    --system-secondary: #1c1c1e;
+    --system-text: #f5f5f7;
+    --system-muted: #a1a1a6;
+    --system-accent: #0a84ff;
+    --system-border: rgba(255,255,255,0.12);
+    --glass-bg: rgba(0, 0, 0, 0.75);
+}
+
+/* ================= BASE STYLES ================= */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    background: var(--system-bg);
+    color: var(--system-text);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.section {
+    padding: 100px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ================= NAV INJECTION UI ================= */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--system-border);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    height: 44px; /* Apple-standard nav height */
+}
+
+.nav-brand a {
+    text-decoration: none;
+    color: var(--system-text);
+    font-size: 1.2rem;
+    letter-spacing: -0.5px;
+}
+
+.accent { color: var(--system-accent); }
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--system-text);
+    margin-left: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.nav-links a:hover { opacity: 1; }
+
+/* ================= CART SIDEBAR ================= */
+#cartSidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    height: 100%;
+    background: var(--system-bg);
+    z-index: 2001;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    padding: 40px;
+}
+
+#cartSidebar.open {
+    transform: translateX(-400px);
+}
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+}
+
+#overlay.active { display: block; }
+
+/* ================= FOOTER INJECTION UI ================= */
+.footer {
+    padding: 60px 5%;
+    background: var(--system-secondary);
+    margin-top: 100px;
+    border-top: 1px solid var(--system-border);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-contact a {
+    display: block;
+    color: var(--system-accent);
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+/* ================= ANIMATIONS ================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
