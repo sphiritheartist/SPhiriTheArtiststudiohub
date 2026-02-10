@@ -10,10 +10,50 @@
 
     <div id="nav-placeholder"></div>
 
-    <main id="main-content" class="reveal">
+    <main id="main-content">
         <section class="section">
-            <h1>Skeleton Active</h1>
-            <p>Ready for content development.</p>
+            <header class="shop-header reveal">
+                <h1 class="section-title">Apparel Lab</h1>
+                <p class="subtitle">Architected uniforms for the modern innovator.</p>
+                
+                <div class="shop-controls">
+                    <div class="search-wrapper">
+                        <input type="text" id="productSearch" placeholder="Search collection...">
+                    </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="tees">Tees</button>
+                        <button class="filter-btn" data-filter="hoodies">Hoodies</button>
+                        <button class="filter-btn" data-filter="headwear">Headwear</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="product-grid" id="apparelGrid">
+                <div class="product-card reveal" data-category="tees">
+                    <div class="product-image">
+                        <img src="assets/images/apparel/tee-01.jpg" alt="Heavyweight Tee">
+                        <button class="quick-add">Add to Bag +</button>
+                    </div>
+                    <div class="product-info">
+                        <span class="category-tag">Heavyweight</span>
+                        <h3>"Artist" Essential Tee</h3>
+                        <p class="price">R 450.00</p>
+                    </div>
+                </div>
+
+                <div class="product-card reveal" data-category="hoodies">
+                    <div class="product-image">
+                        <img src="assets/images/apparel/hoodie-01.jpg" alt="Studio Hoodie">
+                        <button class="quick-add">Add to Bag +</button>
+                    </div>
+                    <div class="product-info">
+                        <span class="category-tag">Premium</span>
+                        <h3>Studio Logic Hoodie</h3>
+                        <p class="price">R 850.00</p>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -35,5 +75,6 @@
     </div>
 
     <script src="script/global.js"></script>
+    <script src="script/shop.js"></script>
 </body>
 </html>

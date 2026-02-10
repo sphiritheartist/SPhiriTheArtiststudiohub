@@ -513,3 +513,192 @@ body {
     opacity: 0.8;
     margin: 0;
 }
+
+/* ================= APPAREL SHOP UI ================= */
+
+.shop-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.shop-controls {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-wrapper input {
+    width: 300px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--system-border);
+    background: var(--system-secondary);
+    color: var(--system-text);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-wrapper input:focus {
+    border-color: var(--system-accent);
+    width: 350px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--system-border);
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: var(--system-text);
+    color: var(--system-bg);
+}
+
+/* PRODUCT GRID */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.product-card {
+    transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.product-image {
+    position: relative;
+    background: var(--system-secondary);
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.quick-add {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 80%;
+}
+
+.product-card:hover .quick-add {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.product-info {
+    padding: 20px 0;
+}
+
+.category-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--system-accent);
+    font-weight: 700;
+}
+
+.product-info h3 {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+.product-info .price {
+    color: var(--system-muted);
+}
+
+.filter-btn.active {
+    background: var(--system-text);
+    color: var(--system-bg);
+    border-color: var(--system-text);
+    transform: scale(1.05);
+}
+
+.product-card[style*="display: none"] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ================= APPLE-STYLE REVEAL ================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================= APPAREL SHOP UI FIXES ================= */
+
+/* Ensure the Search Input is visible and readable */
+.search-wrapper input {
+    width: 300px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--system-border);
+    background: var(--system-secondary); /* This becomes dark grey in dark mode */
+    color: var(--system-text);           /* This becomes white in dark mode */
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Ensure Product Titles and Prices flip colors */
+.product-info h3 {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: var(--system-text); /* Forces the flip to white in dark mode */
+}
+
+.product-info .price {
+    color: var(--system-muted); /* Stays a readable light grey */
+}
+
+/* Filter buttons need a border that shows in Dark Mode */
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--system-border);
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--system-text); /* Added this to fix button text */
+    transition: all 0.3s ease;
+}
+
+/* Fix for the Quick Add button contrast */
+.quick-add {
+    background: var(--system-text); /* Black in light, White in dark */
+    color: var(--system-bg);        /* White in light, Black in dark */
+    /* ... rest of your existing quick-add code ... */
+}
