@@ -385,3 +385,131 @@ body {
         transform: translateX(-100%);
     }
 }
+
+/* Portal Button Styling - Matching 'The Collection' */
+.btn-portal {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 24px;
+    border: 1px solid var(--system-text); /* Black border in Light Mode */
+    color: var(--system-text);
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-portal:hover {
+    background: var(--system-text);
+    color: var(--system-bg);
+    transform: translateY(-2px);
+}
+
+/* Dark Mode adjustment for Portal Buttons */
+[data-theme="dark"] .btn-portal {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .btn-portal:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Verse Preview Card Styling */
+.card-snippet {
+    height: 250px;
+    background: var(--system-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid var(--system-border);
+}
+
+.card-snippet p {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--system-text);
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* Hover effect for the text card */
+.portal-card:hover .card-snippet p {
+    opacity: 1;
+    transform: scale(1.02);
+    transition: all 0.4s ease;
+}
+
+/* ================= UNIFIED PORTAL BUTTONS ================= */
+/* This targets all link classes used in your index.html portals */
+.btn-portal, 
+.btn-outline, 
+.link-portal {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 24px;
+    border: 1px solid var(--system-text); /* Black border in Light Mode */
+    color: var(--system-text);
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: transparent;
+}
+
+/* Hover State */
+.btn-portal:hover, 
+.btn-outline:hover, 
+.link-portal:hover {
+    background: var(--system-text);
+    color: var(--system-bg);
+    transform: translateY(-2px);
+}
+
+/* DARK MODE - White Borders */
+[data-theme="dark"] .btn-portal,
+[data-theme="dark"] .btn-outline,
+[data-theme="dark"] .link-portal {
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .btn-portal:hover,
+[data-theme="dark"] .btn-outline:hover,
+[data-theme="dark"] .link-portal:hover {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Verse Preview Card Styling */
+.card-snippet {
+    height: 250px;
+    background: var(--system-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid var(--system-border);
+}
+
+.card-snippet p {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--system-text);
+    opacity: 0.8;
+    margin: 0;
+}
