@@ -26,211 +26,92 @@ body {
     background: var(--system-bg);
     color: var(--system-text);
     transition: background 0.3s ease, color 0.3s ease;
-    overflow-x: hidden; /* Prevents mobile horizontal scroll */
+    overflow-x: hidden;
     position: relative;
 }
 
-.section {
-    padding: 80px 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+.section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; position: relative; }
 
 /* ================= NAV UI ================= */
 .navbar {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--system-border);
-    z-index: 1000;
+    position: sticky; top: 0; width: 100%;
+    background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--system-border); z-index: 1000;
 }
-
 .nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-    height: 52px;
+    max-width: 1400px; margin: 0 auto; display: flex;
+    justify-content: space-between; align-items: center; padding: 0 24px; height: 52px;
 }
-
 .nav-brand a { text-decoration: none; color: var(--system-text); font-size: 1.2rem; font-weight: 700; }
-.accent { color: var(--system-accent); }
 .nav-links { display: flex; gap: 20px; }
-.nav-links a { text-decoration: none; color: var(--system-text); font-size: 13px; font-weight: 500; opacity: 0.7; transition: 0.3s; }
+.nav-links a { text-decoration: none; color: var(--system-text); font-size: 13px; font-weight: 500; opacity: 0.7; }
 .nav-links a:hover { opacity: 1; color: var(--system-accent); }
+.bag-btn { background: var(--system-text); color: var(--system-bg); border: none; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-.bag-btn {
-    background: var(--system-text);
-    color: var(--system-bg);
-    border: none;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+/* ================= HOME HERO & PORTALS ================= */
+.hero-split {
+    min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 10%;
+    background: radial-gradient(circle at center, var(--system-secondary) 0%, var(--system-bg) 100%);
 }
+.hero-text h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; }
+.subtitle { font-size: 1.5rem; color: var(--system-muted); max-width: 600px; margin: 0 auto; line-height: 1.4; }
 
-/* ================= THE BAG (MOBILE OPTIMIZED) ================= */
+.portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 40px 0; }
+.portal-card {
+    background: var(--system-secondary); border-radius: 24px; overflow: hidden;
+    border: 1px solid var(--system-border); transition: 0.3s; display: flex; flex-direction: column;
+}
+.portal-card:hover { transform: translateY(-8px); border-color: var(--system-accent); }
+.card-image { height: 250px; background-size: cover; background-position: center; background-color: #333; }
+.card-content { padding: 30px; text-align: center; }
+
+/* ================= CREATIVE GALLERY (MASONRY) ================= */
+.media-grid { column-count: 3; column-gap: 20px; width: 100%; }
+.media-card { break-inside: avoid; margin-bottom: 20px; border-radius: 16px; overflow: hidden; background: var(--system-secondary); }
+.media-image img { width: 100%; height: auto; display: block; transition: 0.5s; }
+.media-card:hover img { transform: scale(1.05); }
+
+/* ================= ENGINEERING & TECH ================= */
+.project-card {
+    width: 100%; max-width: 750px; background: var(--system-secondary);
+    padding: 40px; border-radius: 20px; border: 1px solid var(--system-border); margin: 0 auto;
+}
+.tech-stack { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+.tag { background: var(--system-bg); padding: 4px 12px; border-radius: 15px; font-size: 11px; border: 1px solid var(--system-border); }
+
+/* ================= THE BAG (MOBILE FIX) ================= */
 #cartSidebar {
-    position: fixed !important;
-    top: 0;
-    right: 0; 
-    width: 400px;
-    max-width: 85vw; /* Never wider than phone screen */
-    height: 100vh;
-    background: var(--system-bg);
-    z-index: 2001;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    padding: 40px 30px;
-    /* Hardware acceleration for smooth mobile movement */
-    transform: translateX(105%); 
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: fixed !important; top: 0; right: 0; width: 400px; max-width: 85vw; height: 100vh;
+    background: var(--system-bg); z-index: 2001; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    padding: 40px 30px; transform: translateX(105%); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+#cartSidebar.open { transform: translateX(0); }
+#overlay.active { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 2000; }
 
-#cartSidebar.open {
-    transform: translateX(0); /* Slides into view only when called */
-}
-
-#overlay.active {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(4px);
-    z-index: 2000;
-}
-
-/* ================= RESTORED CREATIVE GALLERY (MASONRY) ================= */
-.media-grid {
-    column-count: 3;
-    column-gap: 20px;
-    width: 100%;
-}
-
-.media-card {
-    break-inside: avoid;
-    margin-bottom: 20px;
-    position: relative;
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--system-secondary);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.media-card:hover {
-    transform: translateY(-5px);
-}
-
-.media-image img { 
-    width: 100%; 
-    height: auto; /* Natural height restoration */
-    display: block;
-}
-
-/* ================= APPAREL LAB & SHOP UI ================= */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.product-card {
-    background: transparent;
-    transition: 0.3s;
-}
-
-.product-image {
-    position: relative;
-    background: var(--system-secondary);
-    border-radius: 24px;
-    overflow: hidden;
-    aspect-ratio: 4/5;
-}
-
+/* ================= SHOP UI ================= */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+.product-image { position: relative; background: var(--system-secondary); border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; }
 .quick-add {
-    position: absolute;
-    bottom: 20px;
-    left: 10%;
-    width: 80%;
-    background: var(--system-text);
-    color: var(--system-bg);
-    border: none;
-    padding: 12px;
-    border-radius: 30px;
-    font-weight: 600;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: 0.3s ease;
-    cursor: pointer;
+    position: absolute; bottom: 20px; left: 10%; width: 80%;
+    background: var(--system-text); color: var(--system-bg); border: none; padding: 12px;
+    border-radius: 30px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: 0.3s;
 }
+.product-card:hover .quick-add { opacity: 1; transform: translateY(0); }
+.product-info h3 { color: var(--system-text); margin: 15px 0 5px; }
 
-.product-card:hover .quick-add {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.product-info h3 { color: var(--system-text); margin: 15px 0 5px; font-size: 1.1rem; }
-.price { color: var(--system-muted); font-weight: 500; }
-
-/* ================= SHARED COMPONENTS ================= */
-.btn-portal {
-    display: inline-block;
-    padding: 12px 28px;
-    border: 1.5px solid var(--system-text);
-    color: var(--system-text);
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    background: transparent;
-    text-align: center;
-}
-
-.btn-portal:hover {
-    background: var(--system-text);
-    color: var(--system-bg);
-}
-
-.reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* ================= REVEAL ANIMATION ================= */
+.reveal { opacity: 0; transform: translateY(20px); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.active { opacity: 1; transform: translateY(0); }
 
 /* ================= MOBILE RESPONSIVENESS ================= */
 @media (max-width: 1024px) {
     .media-grid { column-count: 2; }
 }
-
 @media (max-width: 768px) {
     .section { padding: 40px 20px; }
-    .nav-links { display: none; } /* Burger menu needed later */
-    
-    .media-grid { column-count: 1; } /* Clean single column for mobile art */
-    
-    #cartSidebar {
-        width: 100%;
-        max-width: 100%;
-        padding: 30px 20px;
-    }
-
+    .nav-links { display: none; }
+    .media-grid { column-count: 1; }
+    #cartSidebar { width: 100%; max-width: 100%; }
     .hero-text h1 { font-size: 3rem; }
-    
-    .search-wrapper input { width: 100%; }
-    .search-wrapper input:focus { width: 100%; }
 }
