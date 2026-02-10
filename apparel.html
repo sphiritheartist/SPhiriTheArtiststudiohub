@@ -25,6 +25,7 @@
                         <button class="filter-btn" data-filter="tees">Tees</button>
                         <button class="filter-btn" data-filter="hoodies">Hoodies</button>
                         <button class="filter-btn" data-filter="headwear">Headwear</button>
+                        <button class="filter-btn" data-filter="accessories">Accessories</button>
                     </div>
                 </div>
             </header>
@@ -53,6 +54,18 @@
                         <p class="price">R 850.00</p>
                     </div>
                 </div>
+
+                <div class="product-card reveal" data-category="accessories">
+                <div class="product-image">
+                    <img src="assets/images/apparel/ring-01.jpg" alt="Signature Ring">
+                    <button class="quick-add">Add to Bag +</button>
+                </div>
+                <div class="product-info">
+                    <span class="category-tag">Crafted</span>
+                    <h3>Architect's Signet Ring</h3>
+                    <p class="price">R 1,200.00</p>
+                </div>
+                </div>
             </div>
         </section>
     </main>
@@ -65,8 +78,18 @@
         <button id="closeCart" class="close-btn">&times;</button>
         <h3>Your Bag</h3>
         <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
+    
+            <div class="cart-summary">
+                <div id="cartTotal" class="cart-total"></div>
+                <button id="checkoutTrigger" class="btn-portal" style="width: 100%;">Proceed to Checkout</button>
+            </div>
+
+            <div id="checkoutForm" style="display: none; margin-top: 20px;">
+                <h4>Shipping Details</h4>
+                <input type="email" placeholder="Email" class="shop-input">
+                <input type="text" placeholder="Full Address" class="shop-input">
+                <button class="btn-primary" style="width: 100%; margin-top: 15px;">Pay via PayStack/EFT</button>
+            </div>
     </aside>
 
     <div id="lightbox" class="lightbox">

@@ -26,14 +26,14 @@ body {
     background: var(--system-bg);
     color: var(--system-text);
     transition: background 0.3s ease, color 0.3s ease;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevents mobile horizontal scroll */
+    position: relative;
 }
 
 .section {
     padding: 80px 5%;
     max-width: 1200px;
     margin: 0 auto;
-    position: relative;
 }
 
 /* ================= NAV UI ================= */
@@ -58,600 +58,153 @@ body {
     height: 52px;
 }
 
-.nav-brand a { text-decoration: none; color: var(--system-text); font-size: 1.2rem; }
+.nav-brand a { text-decoration: none; color: var(--system-text); font-size: 1.2rem; font-weight: 700; }
 .accent { color: var(--system-accent); }
-.nav-links { display: flex; gap: 15px; }
-.nav-links a { text-decoration: none; color: var(--system-text); font-size: 12.5px; font-weight: 500; opacity: 0.7; }
+.nav-links { display: flex; gap: 20px; }
+.nav-links a { text-decoration: none; color: var(--system-text); font-size: 13px; font-weight: 500; opacity: 0.7; transition: 0.3s; }
 .nav-links a:hover { opacity: 1; color: var(--system-accent); }
-.nav-actions { display: flex; align-items: center; gap: 10px; }
 
 .bag-btn {
     background: var(--system-text);
     color: var(--system-bg);
     border: none;
-    padding: 5px 15px;
+    padding: 6px 16px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
 }
 
-/* ================= HOME PAGE HERO (FIXES CENTERING) ================= */
-.hero-split {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;    /* Centers horizontally */
-    justify-content: center; /* Centers vertically */
-    text-align: center;     /* Centers text lines */
-    padding: 0 10%;
-    background: radial-gradient(circle at center, var(--system-secondary) 0%, var(--system-bg) 100%);
-}
-
-.hero-text h1 {
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 800;
-    letter-spacing: -2px;
-    margin-bottom: 20px;
-}
-
-.hero-text p {
-    font-size: 1.25rem;
-    color: var(--system-muted);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* ================= PORTAL CARDS (FIXES VISIBILITY) ================= */
-.portal-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    padding: 40px 0;
-}
-
-.portal-card {
-    background: var(--system-secondary);
-    border-radius: 24px;
-    overflow: hidden;
-    border: 1px solid var(--system-border);
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.portal-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--system-accent);
-}
-
-.card-image {
-    height: 250px;
-    background-color: #333;
-    background-size: cover;
-    background-position: center;
-}
-
-.card-content { padding: 30px; text-align: center; }
-
-/* ================= CREATIVE / MEDIA GRIDS ================= */
-.media-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    justify-content: center;
-    align-items: start;
-}
-
-.media-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--system-secondary);
-    aspect-ratio: 1/1; /* Default square */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.media-image img { width: 100%; height: 100%; object-fit: cover; }
-
-/* FORMATS FOR NON-SQUARES */
-.media-card.banner-format { grid-column: 1 / -1; aspect-ratio: 4 / 1 !important; max-height: 180px; }
-.media-card.small-format { aspect-ratio: auto !important; max-height: 150px; width: fit-content; justify-self: center; }
-.media-card.small-format img { height: 150px; width: auto; }
-
-/* ================= ENGINEERING HERO ================= */
-.engineering-hero { text-align: center; padding-bottom: 40px; }
-.project-container { display: flex; justify-content: center; width: 100%; }
-.project-card {
-    width: 100%;
-    max-width: 750px;
-    background: var(--system-secondary);
-    border: 1px solid var(--system-border);
-    padding: 40px;
-    border-radius: 20px;
-}
-.tech-stack { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-.tag { background: var(--system-bg); padding: 4px 12px; border-radius: 15px; font-size: 11px; border: 1px solid var(--system-border); }
-
-/* ================= SIDEBAR & FOOTER ================= */
+/* ================= THE BAG (MOBILE OPTIMIZED) ================= */
 #cartSidebar {
     position: fixed !important;
     top: 0;
-    right: -400px;
-    width: 350px;
+    right: 0; 
+    width: 400px;
+    max-width: 85vw; /* Never wider than phone screen */
     height: 100vh;
     background: var(--system-bg);
     z-index: 2001;
-    transition: transform 0.4s ease;
     box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    padding: 40px;
+    padding: 40px 30px;
+    /* Hardware acceleration for smooth mobile movement */
+    transform: translateX(105%); 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Specific Centering for the Home Hero Elements */
-.hero-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;    /* Centers button and text horizontally */
-    gap: 20px;              /* Spacing between Title, Subtitle, and Button */
+#cartSidebar.open {
+    transform: translateX(0); /* Slides into view only when called */
 }
 
-.subtitle {
-    font-size: 1.5rem;
-    color: var(--system-muted);
-    max-width: 600px;
-    margin: 0 auto;         /* Centers the text block */
-    line-height: 1.4;
+#overlay.active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
 }
 
-.hero-cta {
-    margin-top: 10px;       /* Pushes the button down slightly */
+/* ================= RESTORED CREATIVE GALLERY (MASONRY) ================= */
+.media-grid {
+    column-count: 3;
+    column-gap: 20px;
+    width: 100%;
 }
 
-.btn-primary {
-    background: var(--system-text);
-    color: var(--system-bg);
-    padding: 12px 30px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.2s ease;
-    display: inline-block;
-}
-
-.btn-primary:hover {
-    transform: scale(1.05);
-}
-
-/* ================= SHOP TEASER SECTION ================= */
-.shop-teaser {
-    text-align: center;
-    padding: 80px 5%;
-}
-
-.teaser-box {
-    background: var(--system-text); /* Dark background (Black in Light mode) */
-    color: var(--system-bg);     /* Light text (White in Light mode) */
-    padding: 80px 40px;
-    border-radius: 32px;
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-[data-theme="dark"] .teaser-box {
-    background: var(--system-secondary); /* Slightly lighter black in dark mode */
-    border: 1px solid var(--system-border);
-}
-
-.teaser-box h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.teaser-box p {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    max-width: 500px;
-}
-
-.teaser-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-/* Specific button style for the Dark Teaser Box */
-.teaser-box .btn-outline {
-    border: 1px solid var(--system-bg);
-    color: var(--system-bg);
-    padding: 12px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.teaser-box .btn-outline:hover {
-    background: var(--system-bg);
-    color: var(--system-text);
-}
-
-/* Update the Teaser Box to handle Dark Mode specifically */
-.teaser-box {
-    background: var(--system-text); /* Black in light mode */
-    color: var(--system-bg);     /* White in light mode */
-    padding: 80px 40px;
-    border-radius: 32px;
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    border: 1px solid transparent; /* Placeholder for dark mode border */
-}
-
-/* DARK MODE ADJUSTMENT */
-[data-theme="dark"] .teaser-box {
-    background: #1c1c1e; /* Apple's 'Elevated' Grey */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle hair-line border */
-    color: #ffffff;
-}
-
-/* Ensure buttons stay visible in Dark Mode */
-[data-theme="dark"] .teaser-box .btn-outline {
-    border-color: #ffffff;
-    color: #ffffff;
-}
-
-[data-theme="dark"] .teaser-box .btn-outline:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-[data-theme="dark"] .accent {
-    color: var(--system-accent);
-    text-shadow: 0 0 15px rgba(10, 132, 255, 0.3); /* Gives the blue text a subtle glow */
-}
-
-#cartSidebar.open { transform: translateX(-400px); }
-
-.footer { padding: 60px 5%; background: var(--system-secondary); margin-top: 80px; }
-
-/* ================= RESPONSIVE DESIGN ================= */
-
-/* TABLETS (Under 1024px) */
-@media (max-width: 1024px) {
-    .section { padding: 60px 5%; }
-    .hero-text h1 { font-size: 3.5rem; }
-    .media-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-}
-
-/* MOBILE PHONES (Under 768px) */
-@media (max-width: 768px) {
-    /* Tighten spacing */
-    .section { padding: 40px 20px; }
-    
-    /* Scale down Typography */
-    .hero-text h1 { 
-        font-size: 2.8rem; 
-        letter-spacing: -1px; 
-    }
-    .subtitle { font-size: 1.1rem; }
-    .section-title { font-size: 1.8rem; }
-
-    /* Fix the Grids - 1 column for small phones, 2 for larger ones */
-    .media-grid, .portal-grid {
-        grid-template-columns: 1fr; /* Stack everything vertically */
-        gap: 15px;
-    }
-
-    /* Force Banners to be visible but small */
-    .media-card.banner-format {
-        aspect-ratio: 2 / 1 !important; /* Makes banners taller on mobile so they aren't slivers */
-        max-height: none;
-    }
-
-    /* Engineering Card */
-    .project-card {
-        padding: 25px;
-    }
-
-    /* Teaser Box */
-    .teaser-box {
-        padding: 40px 20px;
-        border-radius: 20px;
-    }
-    .teaser-box h2 { font-size: 1.8rem; }
-    .teaser-links { flex-direction: column; width: 100%; }
-    .teaser-links .btn-outline { width: 100%; text-align: center; }
-
-    /* Navigation - Simplify for Mobile */
-    .nav-links { display: none; } /* We will eventually add a burger menu here */
-    .nav-container { padding: 0 15px; }
-    
-    /* Cart Sidebar width on mobile */
-    #cartSidebar {
-        width: 100%;
-        right: -100%;
-    }
-    #cartSidebar.open {
-        transform: translateX(-100%);
-    }
-}
-
-/* Portal Button Styling - Matching 'The Collection' */
-.btn-portal {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 24px;
-    border: 1px solid var(--system-text); /* Black border in Light Mode */
-    color: var(--system-text);
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn-portal:hover {
-    background: var(--system-text);
-    color: var(--system-bg);
-    transform: translateY(-2px);
-}
-
-/* Dark Mode adjustment for Portal Buttons */
-[data-theme="dark"] .btn-portal {
-    border-color: #ffffff;
-    color: #ffffff;
-}
-
-[data-theme="dark"] .btn-portal:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-/* Verse Preview Card Styling */
-.card-snippet {
-    height: 250px;
+.media-card {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
     background: var(--system-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    text-align: center;
-    border-bottom: 1px solid var(--system-border);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card-snippet p {
-    font-family: "Georgia", serif;
-    font-style: italic;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: var(--system-text);
-    opacity: 0.8;
-    margin: 0;
+.media-card:hover {
+    transform: translateY(-5px);
 }
 
-/* Hover effect for the text card */
-.portal-card:hover .card-snippet p {
-    opacity: 1;
-    transform: scale(1.02);
-    transition: all 0.4s ease;
+.media-image img { 
+    width: 100%; 
+    height: auto; /* Natural height restoration */
+    display: block;
 }
 
-/* ================= UNIFIED PORTAL BUTTONS ================= */
-/* This targets all link classes used in your index.html portals */
-.btn-portal, 
-.btn-outline, 
-.link-portal {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 24px;
-    border: 1px solid var(--system-text); /* Black border in Light Mode */
-    color: var(--system-text);
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background: transparent;
-}
-
-/* Hover State */
-.btn-portal:hover, 
-.btn-outline:hover, 
-.link-portal:hover {
-    background: var(--system-text);
-    color: var(--system-bg);
-    transform: translateY(-2px);
-}
-
-/* DARK MODE - White Borders */
-[data-theme="dark"] .btn-portal,
-[data-theme="dark"] .btn-outline,
-[data-theme="dark"] .link-portal {
-    border-color: #ffffff !important;
-    color: #ffffff !important;
-}
-
-[data-theme="dark"] .btn-portal:hover,
-[data-theme="dark"] .btn-outline:hover,
-[data-theme="dark"] .link-portal:hover {
-    background: #ffffff !important;
-    color: #000000 !important;
-}
-
-/* Verse Preview Card Styling */
-.card-snippet {
-    height: 250px;
-    background: var(--system-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    text-align: center;
-    border-bottom: 1px solid var(--system-border);
-}
-
-.card-snippet p {
-    font-family: "Georgia", serif;
-    font-style: italic;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: var(--system-text);
-    opacity: 0.8;
-    margin: 0;
-}
-
-/* ================= APPAREL SHOP UI ================= */
-
-.shop-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.shop-controls {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.search-wrapper input {
-    width: 300px;
-    padding: 12px 20px;
-    border-radius: 30px;
-    border: 1px solid var(--system-border);
-    background: var(--system-secondary);
-    color: var(--system-text);
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.search-wrapper input:focus {
-    border-color: var(--system-accent);
-    width: 350px;
-}
-
-.filter-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.filter-btn {
-    background: transparent;
-    border: 1px solid var(--system-border);
-    padding: 8px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.3s ease;
-}
-
-.filter-btn.active, .filter-btn:hover {
-    background: var(--system-text);
-    color: var(--system-bg);
-}
-
-/* PRODUCT GRID */
+/* ================= APPAREL LAB & SHOP UI ================= */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
 }
 
 .product-card {
-    transition: transform 0.4s ease, opacity 0.3s ease;
+    background: transparent;
+    transition: 0.3s;
 }
 
 .product-image {
     position: relative;
     background: var(--system-secondary);
-    border-radius: 20px;
+    border-radius: 24px;
     overflow: hidden;
     aspect-ratio: 4/5;
-}
-
-.product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .quick-add {
     position: absolute;
     bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 20px);
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    left: 10%;
+    width: 80%;
+    background: var(--system-text);
+    color: var(--system-bg);
     border: none;
-    padding: 12px 24px;
+    padding: 12px;
     border-radius: 30px;
     font-weight: 600;
     opacity: 0;
-    transition: all 0.3s ease;
+    transform: translateY(10px);
+    transition: 0.3s ease;
     cursor: pointer;
-    width: 80%;
 }
 
 .product-card:hover .quick-add {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
 }
 
-.product-info {
-    padding: 20px 0;
-}
+.product-info h3 { color: var(--system-text); margin: 15px 0 5px; font-size: 1.1rem; }
+.price { color: var(--system-muted); font-weight: 500; }
 
-.category-tag {
-    font-size: 11px;
+/* ================= SHARED COMPONENTS ================= */
+.btn-portal {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1.5px solid var(--system-text);
+    color: var(--system-text);
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--system-accent);
-    font-weight: 700;
+    transition: 0.3s;
+    background: transparent;
+    text-align: center;
 }
 
-.product-info h3 {
-    margin: 5px 0;
-    font-size: 1.1rem;
-}
-
-.product-info .price {
-    color: var(--system-muted);
-}
-
-.filter-btn.active {
+.btn-portal:hover {
     background: var(--system-text);
     color: var(--system-bg);
-    border-color: var(--system-text);
-    transform: scale(1.05);
 }
 
-.product-card[style*="display: none"] {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* ================= APPLE-STYLE REVEAL ================= */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(20px);
+    transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal.active {
@@ -659,46 +212,25 @@ body {
     transform: translateY(0);
 }
 
-/* ================= APPAREL SHOP UI FIXES ================= */
-
-/* Ensure the Search Input is visible and readable */
-.search-wrapper input {
-    width: 300px;
-    padding: 12px 20px;
-    border-radius: 30px;
-    border: 1px solid var(--system-border);
-    background: var(--system-secondary); /* This becomes dark grey in dark mode */
-    color: var(--system-text);           /* This becomes white in dark mode */
-    outline: none;
-    transition: all 0.3s ease;
+/* ================= MOBILE RESPONSIVENESS ================= */
+@media (max-width: 1024px) {
+    .media-grid { column-count: 2; }
 }
 
-/* Ensure Product Titles and Prices flip colors */
-.product-info h3 {
-    margin: 5px 0;
-    font-size: 1.1rem;
-    color: var(--system-text); /* Forces the flip to white in dark mode */
-}
+@media (max-width: 768px) {
+    .section { padding: 40px 20px; }
+    .nav-links { display: none; } /* Burger menu needed later */
+    
+    .media-grid { column-count: 1; } /* Clean single column for mobile art */
+    
+    #cartSidebar {
+        width: 100%;
+        max-width: 100%;
+        padding: 30px 20px;
+    }
 
-.product-info .price {
-    color: var(--system-muted); /* Stays a readable light grey */
-}
-
-/* Filter buttons need a border that shows in Dark Mode */
-.filter-btn {
-    background: transparent;
-    border: 1px solid var(--system-border);
-    padding: 8px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--system-text); /* Added this to fix button text */
-    transition: all 0.3s ease;
-}
-
-/* Fix for the Quick Add button contrast */
-.quick-add {
-    background: var(--system-text); /* Black in light, White in dark */
-    color: var(--system-bg);        /* White in light, Black in dark */
-    /* ... rest of your existing quick-add code ... */
+    .hero-text h1 { font-size: 3rem; }
+    
+    .search-wrapper input { width: 100%; }
+    .search-wrapper input:focus { width: 100%; }
 }
