@@ -185,3 +185,23 @@ footer { position: relative; z-index: 1000; }
     opacity: 1;
     transform: translateY(0);
 }
+
+/* FORCE TEST: If this doesn't show a red block on mobile, the CSS isn't loading at all */
+@media (max-width: 992px) {
+    .hamburger {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: rgba(255, 0, 0, 0.1); /* Temporary red tint to see the hit-box */
+    }
+    
+    .nav-links {
+        /* Ensure the links don't push the bar open on accident */
+        display: none; 
+    }
+
+    .nav-toggle:checked ~ .nav-links {
+        display: flex !important;
+        right: 0 !important;
+    }
+}
