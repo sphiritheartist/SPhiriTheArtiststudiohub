@@ -3,6 +3,14 @@
         <div class="nav-brand">
             <a href="index.html">SPHIRI<span class="accent">THE</span>ARTIST</a>
         </div>
+
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
         <div class="nav-links">
             <a href="creative.html">Creative</a>
             <a href="studio.3d.html">3D Studio</a>
@@ -10,9 +18,14 @@
             <a href="skate.html">Skate</a>
             <a href="verse.html">Verse</a>
             <a href="apparel.html">Apparel</a>
+            
+            <div class="mobile-menu-actions">
+                <button class="theme-toggle" onclick="window.toggleTheme()">🌓 Theme</button>
+            </div>
         </div>
+
         <div class="nav-actions">
-            <button class="theme-toggle" onclick="window.toggleTheme()" style="background:none; border:none; cursor:pointer; font-size:18px;">🌓</button>
+            <button class="theme-toggle desktop-only" onclick="window.toggleTheme()" style="background:none; border:none; cursor:pointer; font-size:18px;">🌓</button>
             <button class="bag-btn">Bag (0)</button>
         </div>
     </div>
