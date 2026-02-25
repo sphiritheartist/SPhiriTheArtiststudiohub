@@ -1,39 +1,82 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
+    <title>SPhiriTheArtist | Tech Hub</title>
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/tech.css">
 </head>
 <body>
-
     <div id="nav-placeholder"></div>
 
-    <main id="main-content" class="reveal">
-        <section class="section">
-            <h1>Skeleton Active</h1>
-            <p>Ready for content development.</p>
+    <main class="studio-page-wrapper">
+        
+        <header class="studio-hero reveal">
+            <span class="hero-tag">SPhiri Technical Hub</span>
+            <h1>GEAR UP FOR<br>THE FUTURE.</h1>
+            <p>New & Pre-owned hardware. Expert repairs. Flexible payments.</p>
+        </header>
+
+        <section class="studio-card reveal">
+            <div class="tech-header-row">
+                <h2 class="section-heading">Featured Gear</h2>
+                <div class="plan-badge">50/50 Payments Available</div>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="status-tag">New</span>
+                    <div class="tech-img-box">
+                        <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=1000" alt="PS5">
+                    </div>
+                    <h3>PS5 Digital Edition</h3>
+                    <p class="tech-price">R 11,999 <span>or 2x R 5,999</span></p>
+                    <button class="btn-outline small">Add to Bag</button>
+                </div>
+
+                <div class="tech-item">
+                    <span class="status-tag preowned">Used</span>
+                    <div class="tech-img-box">
+                        <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=1000" alt="iPhone">
+                    </div>
+                    <h3>iPhone 13 Pro</h3>
+                    <p class="tech-price">R 11,500 <span>or 2x R 5,750</span></p>
+                    <button class="btn-outline small">Add to Bag</button>
+                </div>
+            </div>
         </section>
+
+        <section class="studio-card reveal secondary-bg">
+            <div class="service-flex">
+                <div class="service-text">
+                    <span class="hero-tag">Certified Lab</span>
+                    <h2 class="section-heading">Professional Repairs</h2>
+                    <p>We provide expert screen replacements, battery swaps, and liquid damage recovery for all mobile devices and gaming consoles.</p>
+                    <button class="btn-outline">Book a Repair</button>
+                </div>
+                <div class="service-list">
+                    <div class="list-item">✓ iPhone & Android</div>
+                    <div class="list-item">✓ PlayStation & Xbox</div>
+                    <div class="list-item">✓ Data Recovery</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="studio-card reveal dark-accent">
+            <div class="upgrade-container">
+                <h2 class="section-heading">Don't Buy New. Upgrade.</h2>
+                <p>Boost your speed with high-performance SSDs and RAM expansions installed by pros.</p>
+                <div class="btn-group-centered">
+                    <button class="btn-outline">Compatibility Check</button>
+                    <button class="btn-outline">View Price List</button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="footer-placeholder"></div>
-
-    <div id="overlay"></div>
-    
-    <aside id="cartSidebar">
-        <button id="closeCart" class="close-btn">&times;</button>
-        <h3>Your Bag</h3>
-        <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
-    </aside>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
-    </div>
-
     <script src="script/global.js"></script>
 </body>
 </html>

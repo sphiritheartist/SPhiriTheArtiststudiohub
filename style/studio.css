@@ -1,0 +1,254 @@
+/* ================= 3D STUDIO DASHBOARD ================= */
+
+.studio-page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 40px;
+}
+
+.studio-hero {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.studio-hero h1 {
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: -4px;
+    line-height: 0.85;
+    margin-bottom: 20px;
+}
+
+/* PORTAL CHOICES */
+.source-portals {
+    background: var(--system-secondary);
+    border-radius: 32px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.external-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* THE CONFIGURATOR CARD */
+.studio-card {
+    background: var(--system-bg);
+    border: 1px solid var(--system-border);
+    border-radius: 40px;
+    padding: 60px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+}
+
+.section-heading {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--system-muted);
+    margin-bottom: 12px;
+}
+
+.studio-form select, 
+.studio-form input {
+    width: 100%;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1.5px solid var(--system-border);
+    background: var(--system-secondary);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--system-text);
+    outline: none;
+    transition: 0.3s;
+}
+
+.studio-form select:focus, 
+.studio-form input:focus {
+    border-color: var(--system-accent);
+    background: var(--system-bg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* CALCULATOR DISPLAY */
+.calculator-display {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 1px solid var(--system-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cost-breakdown span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--system-muted);
+}
+
+#totalDisplay {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--system-text);
+    margin: 5px 0 0 0;
+}
+
+/* ================= SPACE BEFORE COLLECTION ================= */
+#collection {
+    padding-top: 120px;
+    margin-top: 40px;
+}
+
+.subsection-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+/* STUDIO GRID */
+.studio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.studio-item {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 400px;
+    background: var(--system-secondary);
+}
+
+.studio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.8s ease;
+}
+
+.item-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    padding: 30px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    opacity: 0;
+    transition: 0.4s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.studio-item:hover img { transform: scale(1.1); }
+.studio-item:hover .item-overlay { opacity: 1; }
+
+/* ================= 3D STUDIO REFINEMENTS ================= */
+
+/* Drag & Drop Area */
+.upload-area {
+    border: 2px dashed var(--system-border);
+    border-radius: 20px;
+    padding: 60px 40px;
+    text-align: center;
+    background: var(--system-secondary);
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 30px;
+}
+
+.upload-area:hover, .upload-area.highlight {
+    border-color: var(--system-accent);
+    background: rgba(0, 113, 227, 0.05);
+}
+
+.upload-icon { 
+    font-size: 32px; 
+    display: block; 
+    margin-bottom: 15px; 
+    opacity: 0.5; 
+}
+
+/* Modal Pop-up */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    z-index: 4000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active { display: flex; }
+
+.modal-content {
+    background: var(--system-bg);
+    width: 95%;
+    max-width: 600px;
+    border-radius: 32px;
+    padding: 50px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+.close-modal {
+    position: absolute;
+    top: 25px; right: 25px;
+    background: none; border: none;
+    font-size: 28px; cursor: pointer;
+    color: var(--system-text);
+    line-height: 1;
+}
+
+/* Global Button Enforcement */
+.btn-primary, .btn-portal, button:not(.theme-toggle):not(.close-modal):not(.remove-item) {
+    background: transparent !important;
+    border: 1.5px solid var(--system-text) !important;
+    color: var(--system-text) !important;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-outline:hover, button:hover:not(.theme-toggle):not(.close-modal):not(.remove-item) {
+    background: var(--system-text) !important;
+    color: var(--system-bg) !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+    .form-row { grid-template-columns: 1fr; }
+    .calculator-display { flex-direction: column; gap: 30px; text-align: center; }
+    .studio-card { padding: 40px 25px; }
+    .studio-page-wrapper { padding: 80px 20px; }
+    #collection { padding-top: 80px; }
+}

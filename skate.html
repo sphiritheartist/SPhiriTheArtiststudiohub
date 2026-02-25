@@ -1,39 +1,134 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
-    <link rel="stylesheet" href="style/main.css">
+    <title>WESORTED | Unified Skate Hub</title>
+    <link rel="stylesheet" href="style/skate.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="theme-dark">
 
-    <div id="nav-placeholder"></div>
+    <nav class="studio-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">WE<span>SORTED</span></a>
+            <div class="nav-links">
+                <a href="tech.html" class="theme-link">Tech</a>
+                <a href="skate.html" class="theme-link active">Skate</a>
+                <a href="studio.html" class="theme-link">Studio</a>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn">◐</button>
+                <div class="cart-pill">
+                    <span class="cart-label">Bag</span>
+                    <span id="global-cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <main id="main-content" class="reveal">
-        <section class="section">
-            <h1>Skeleton Active</h1>
-            <p>Ready for content development.</p>
+    <header class="skate-hero-bg">
+        <div class="hero-overlay">
+            <div class="studio-hero">
+                <span class="hero-tag">SPhiri x Wesorted</span>
+                <h1>STREET SESSIONS</h1>
+                <p class="hero-desc">Premium hardware and street culture for the modern creative.</p>
+                <div class="hero-btns">
+                    <a href="#pro-shop" class="btn-outline">Shop Hardware</a>
+                    <a href="#community" class="btn-outline">Join Community</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="studio-page-wrapper">
+        <section id="pro-shop" class="studio-card">
+            <h2 class="section-heading">Pro Shop</h2>
+            <div class="skate-grid">
+                <div class="skate-item">
+                    <span class="skate-tag">New</span>
+                    <div class="skate-img-container"><img src="https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=1000" alt="Deck"></div>
+                    <div class="skate-info">
+                        <h3>WESORTED Signature Deck</h3>
+                        <p class="skate-price">R 1,200</p>
+                        <button class="add-to-cart-btn btn-outline small" data-name="Signature Deck">Add to Bag</button>
+                    </div>
+                </div>
+                <div class="skate-item">
+                    <span class="skate-tag complete">Complete</span>
+                    <div class="skate-img-container"><img src="https://images.unsplash.com/photo-1520156584141-247ff189b751?q=80&w=1000" alt="Complete"></div>
+                    <div class="skate-info">
+                        <h3>Wesorted Beginner Set</h3>
+                        <p class="skate-price">R 2,450</p>
+                        <button class="add-to-cart-btn btn-outline small" data-name="Complete Set">Add to Bag</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="community-section">
+            <div class="section-header-block">
+                <h2 class="section-heading">Community & Events</h2>
+                <p class="section-sub">Join the conversation at Unit 4B.</p>
+            </div>
+
+            <div class="community-grid">
+                <div class="event-featured-card">
+                    <div class="event-badge">Next Session</div>
+                    <div class="event-details">
+                        <div class="event-date-box">
+                            <span class="big-day">24</span>
+                            <span class="short-month">OCT</span>
+                        </div>
+                        <div class="event-info-box">
+                            <h3>Studio Night Sessions</h3>
+                            <p>📍 Unit 4B, Joburg • 19:00</p>
+                            <span class="live-indicator">● 42 Attending</span>
+                        </div>
+                    </div>
+                    <div class="event-footer-btns">
+                        <button class="btn-outline rsvp-btn">RSVP Now</button>
+                    </div>
+                </div>
+
+                <div class="community-chat-card">
+                    <div class="chat-header">
+                        <h4>Community Thread</h4>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="user-comment-input" placeholder="Share a spot or session...">
+                        <button id="submit-post-btn" class="chat-send-btn">→</button>
+                    </div>
+                    <div id="comment-list-container" class="custom-scrollbar">
+                        </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <footer class="studio-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column brand-col">
+                    <a href="#" class="nav-logo">WE<span>SORTED</span></a>
+                    <p>Elevating street culture through tech and boards.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Shop</h4>
+                    <a href="#" class="theme-link">Hardware</a>
+                    <a href="#" class="theme-link">Apparel</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Partner</h4>
+                    <img src="assets/images/wesorted-logo.png" alt="WESORTED Logo" class="footer-partner-img">
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 WESORTED. Managed by SPhiri Studio.</p>
+            </div>
+        </div>
+    </footer>
 
-    <div id="overlay"></div>
-    
-    <aside id="cartSidebar">
-        <button id="closeCart" class="close-btn">&times;</button>
-        <h3>Your Bag</h3>
-        <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
-    </aside>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
-    </div>
-
-    <script src="script/global.js"></script>
+    <script src="script/skate.js"></script>
 </body>
 </html>

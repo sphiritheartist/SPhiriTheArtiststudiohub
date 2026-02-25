@@ -1,0 +1,127 @@
+/* ================= TECH HUB - STUDIO STYLE ================= */
+
+/* 1. LAYOUT & CENTERING */
+.studio-page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto; /* Forces everything to the center */
+    padding: 100px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px; /* Large gaps between cards */
+}
+
+.studio-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* 2. CARD HEADER LOGIC */
+.tech-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.plan-badge {
+    background: var(--system-secondary);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* 3. PRODUCT GRID & IMAGE CONTROL */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.tech-item {
+    background: var(--system-secondary);
+    padding: 40px;
+    border-radius: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content inside item */
+    position: relative;
+}
+
+/* Fix for oversized images */
+.tech-img-box {
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.tech-img-box img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain; /* Keeps image proportions perfect */
+}
+
+.tech-price {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 25px;
+}
+
+.tech-price span {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--system-muted);
+}
+
+/* 4. REPAIR SECTION (SERVICE FLEX) */
+.secondary-bg { background: var(--system-secondary) !important; border: none !important; }
+
+.service-flex {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.list-item {
+    padding: 20px;
+    border-bottom: 1.5px solid var(--system-border);
+    font-weight: 700;
+}
+
+/* 5. UPGRADE SECTION (DARK ACCENT) */
+.dark-accent {
+    background: var(--system-text) !important;
+    color: var(--system-bg) !important;
+    text-align: center;
+}
+
+.btn-group-centered {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.dark-accent .btn-outline {
+    border-color: var(--system-bg) !important;
+    color: var(--system-bg) !important;
+}
+
+.dark-accent .btn-outline:hover {
+    background: var(--system-bg) !important;
+    color: var(--system-text) !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 850px) {
+    .service-flex { grid-template-columns: 1fr; }
+    .tech-header-row { flex-direction: column; gap: 20px; }
+    .studio-page-wrapper { padding: 80px 20px; }
+}

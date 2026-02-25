@@ -1,108 +1,84 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/index.css">
+    <title>SPhiriTheArtist | DESIGN. BUILD. REPEAT.</title>
 </head>
 <body>
 
     <div id="nav-placeholder"></div>
 
-    <main id="main-content">
-    <section class="hero-split reveal">
-        <div class="hero-text">
-            <h1>SPHIRI<span class="accent">THE</span>ARTIST</h1>
-            <p class="subtitle">Architecting the intersection of Art & Tech.</p>
-            <div class="hero-cta">
-                <a href="#featured" class="btn-primary">Explore Work</a>
-            </div>
+    <main>
+        <section class="hero-wrapper">
+            <span class="hero-tagline">Architecting Art & Tech</span>
+            <h1>DESIGN. BUILD.<br>REPEAT.</h1>
+        </section>
+
+        <div class="portal-grid">
+            
+            <a href="studio.3d.html" class="portal-card reveal">
+                <div class="card-image studio-bg"></div>
+                <div class="portal-content">
+                    <h2>3D Studio</h2>
+                    <span>Fabrication Lab →</span>
+                </div>
+            </a>
+
+            <a href="creative.html" class="portal-card reveal">
+                <div class="card-image creative-bg"></div>
+                <div class="portal-content">
+                    <h2>Creative</h2>
+                    <span>Visual Works →</span>
+                </div>
+            </a>
+
+            <a href="verse.html" class="portal-card reveal">
+                <div class="card-image verse-bg"></div>
+                <div class="portal-content">
+                    <h2>Verse</h2>
+                    <span>Poetic Architecture →</span>
+                </div>
+            </a>
+
+            <a href="tech.html" class="portal-card reveal">
+                <div class="card-image tech-bg"></div>
+                <div class="portal-content">
+                    <h2>Tech</h2>
+                    <span>Systems & Code →</span>
+                </div>
+            </a>
+
+            <a href="skate.html" class="portal-card reveal">
+                <div class="card-image skate-bg"></div>
+                <div class="portal-content">
+                    <h2>Skate Shop</h2>
+                    <span>Street Hardware →</span>
+                </div>
+            </a>
+
+            <a href="apparel.html" class="portal-card reveal">
+                <div class="card-image apparel-bg"></div>
+                <div class="portal-content">
+                    <h2>Apparel</h2>
+                    <span>Studio Wear →</span>
+                </div>
+            </a>
+
+            <a href="accessories.html" class="portal-card reveal accessories-card">
+                <div class="card-image accessories-bg"></div>
+                <div class="portal-content">
+                    <h2>Accessories</h2>
+                    <span>Curated Tools →</span>
+                </div>
+            </a>
+
         </div>
-    </section>
-
-    <section id="featured" class="portal-grid section">
-
-        <div class="portal-card reveal">
-            <div class="card-image creative-preview" style="background-image: url('assets/images/illustrations/Sjava/SJAVA2023-01.jpg');"></div>
-            <div class="card-content">
-                <h3>Creative Portfolio</h3>
-                <p>Visual storytelling through digital art and photography.</p>
-                <a href="creative.html" class="btn-outline">View Gallery →</a>
-            </div>
-        </div>
-        
-        <div class="portal-card reveal">
-            <div class="card-image" style="background-image: url('assets/images/3d/01.jpeg');"></div>
-            <div class="card-content">
-                <h3>3D Studio</h3>
-                <p>Custom 3D prints and architectural models on demand.</p>
-                <a href="studio.html" class="btn-portal">Enter Studio →</a>
-            </div>
-        </div>
-
-        <div class="portal-card reveal">
-            <div class="card-image" style="background-image: url('assets/images/hardware/01.webp');"></div>
-            <div class="card-content">
-                <h3>Tech & Hardware</h3>
-                <p>Premium phones, laptops, and more. Trade-ins welcome.</p>
-                <a href="tech.html" class="btn-portal">Browse Tech →</a>
-            </div>
-        </div>
-
-        <div class="portal-card reveal">
-            <div class="card-image" style="background-image: url('assets/images/illustrations/WeSorted/IMG-20220526-WA0007.jpg');"></div>
-            <div class="card-content">
-                <h3>Skate Shop</h3>
-                <p>Decks, grip tape, bearings and more. Built for the streets.</p>
-                <a href="skate.html" class="btn-portal">Enter Shop →</a>
-            </div>
-        </div>
-
-        <div class="portal-card reveal">
-            <div class="card-snippet">
-                <p>"Ink flows where the heartbeat slows, <br> architecture of a soul exposed."</p>
-            </div>
-            <div class="card-content">
-                <h3>Verse</h3>
-                <p>A collection of rhythmic thoughts and poetic architecture.</p>
-                <a href="verse.html" class="link-portal">Read Collection →</a>
-            </div>
-        </div>
-
-    </section>
-
-    <section class="shop-teaser section reveal">
-        <div class="teaser-box">
-            <h2>The Collection</h2>
-            <p>Apparel and accessories designed for the modern innovator.</p>
-            <div class="teaser-links">
-                <a href="apparel.html" class="btn-outline">Shop Apparel</a>
-                <a href="accessories.html" class="btn-outline">Shop Accessories</a>
-            </div>
-        </div>
-    </section>
-</main>
-
-
-
+    </main>
 
     <div id="footer-placeholder"></div>
-
-    <div id="overlay"></div>
-    
-    <aside id="cartSidebar">
-        <button id="closeCart" class="close-btn">&times;</button>
-        <h3>Your Bag</h3>
-        <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
-    </aside>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
-    </div>
 
     <script src="script/global.js"></script>
 </body>

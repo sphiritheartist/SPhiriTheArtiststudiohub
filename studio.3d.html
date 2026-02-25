@@ -1,39 +1,110 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
+    <title>SPhiriTheArtist | 3D Studio</title>
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/studio.css">
 </head>
 <body>
 
     <div id="nav-placeholder"></div>
 
-    <main id="main-content" class="reveal">
-        <section class="section">
-            <h1>Skeleton Active</h1>
-            <p>Ready for content development.</p>
+    <main class="studio-page-wrapper">
+        <section class="studio-hero">
+            <span class="hero-tagline">PLA Specialists | Ender 6 • Replicator+</span>
+            <h1>3D FABRICATION LAB</h1>
+            <p class="subtitle">Precision printing and custom modeling services.</p>
+        </section>
+
+        <section class="source-portals reveal">
+            <h3>External Repositories</h3>
+            <div class="external-btns">
+                <a href="https://www.thingiverse.com" target="_blank" class="btn-outline">Thingiverse</a>
+                <a href="https://www.printables.com" target="_blank" class="btn-outline">Printables</a>
+            </div>
+        </section>
+
+        <section id="configurator" class="studio-card reveal">
+            <h2 class="section-heading">Project Configurator</h2>
+            
+            <form class="studio-form" id="calcForm">
+                <div class="form-group">
+                    <label>Inquiry Type</label>
+                    <select id="projectType" onchange="handleProjectTypeChange()">
+                        <option value="upload">Upload My Own File (.STL, .OBJ, .BLEND)</option>
+                        <option value="link">External Link (Thingiverse / URL)</option>
+                        <option value="custom">Request Custom Design / Modeling</option>
+                    </select>
+                </div>
+
+                <div id="drop-zone" class="upload-area">
+                    <input type="file" id="fileInput" hidden accept=".stl,.obj,.blend">
+                    <div class="upload-content">
+                        <span class="upload-icon">⏻</span>
+                        <p id="upload-text">Drag and drop your 3D file here or <strong>click to browse</strong></p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Material (PLA Only)</label>
+                        <select id="material" disabled>
+                            <option value="1.0">Standard PLA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Print Quality</label>
+                        <select id="quality" onchange="updateCalculator()">
+                            <option value="0.8">Draft (0.28mm)</option>
+                            <option value="1.0">Standard (0.20mm)</option>
+                            <option value="1.6">Fine (0.12mm)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="calculator-display">
+                    <div class="cost-breakdown">
+                        <span>Starting Estimate:</span>
+                        <h2 id="totalDisplay">R 150.00</h2>
+                    </div>
+                    <button type="button" class="btn-outline" onclick="addToBag()">Add to Bag</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="collection" class="section reveal">
+            <h2 class="subsection-title">Our Collection</h2>
+            <div class="studio-grid">
+                <div class="studio-item">
+                    <img src="assets/images/studio/project1.jpg" alt="Geometric Planter">
+                    <div class="item-overlay">
+                        <span>Geometric Planter</span>
+                        <button class="btn-outline small" onclick="openProjectDetails('planter')">View Details</button>
+                    </div>
+                </div>
+                <div class="studio-item">
+                    <img src="assets/images/studio/project2.jpg" alt="Industrial Gear">
+                    <div class="item-overlay">
+                        <span>Mechanical Assembly</span>
+                        <button class="btn-outline small" onclick="openProjectDetails('gear')">View Details</button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
-
-    <div id="overlay"></div>
-    
-    <aside id="cartSidebar">
-        <button id="closeCart" class="close-btn">&times;</button>
-        <h3>Your Bag</h3>
-        <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
-    </aside>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
+    <div id="studioModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modalBody">
+                </div>
+        </div>
     </div>
 
+    <div id="footer-placeholder"></div>
     <script src="script/global.js"></script>
+    <script src="script/studio.js"></script>
 </body>
 </html>
