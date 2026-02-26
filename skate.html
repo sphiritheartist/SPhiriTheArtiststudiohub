@@ -13,22 +13,25 @@
         <div class="nav-container">
             <a href="#" class="nav-logo">WESORTED<span>.</span></a>
             
-            <input type="checkbox" id="nav-toggle" class="nav-toggle">
-        
-            <label for="nav-toggle" class="hamburger">
+            <button class="hamburger" id="menuBtn">
                 <span></span>
-            </label>
+            </button>
 
-            <div class="nav-links">
-                <a href="#" class="theme-link active">Studio</a>
-                <a href="#" class="theme-link">Shop</a>
-                <a href="#" class="theme-link">Events</a>
-                <a href="#" class="theme-link">Community</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#events" class="theme-link">Events</a>
+                <a href="#pro-shop" class="theme-link">Shop</a>
+                <a href="#community" class="theme-link">Community</a>
+                <a href="index.html" class="theme-link">Sphiri</a>
             </div>
 
             <div class="nav-actions">
-                <button class="theme-toggle-btn">🌓</button>
-                <div class="cart-pill">CART [0]</div>
+                <button class="theme-toggle-btn" id="themeToggle">🌓</button>
+                <div class="bag-icon-wrapper">
+                    <svg class="bag-icon" viewBox="0 0 24 24">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span class="bag-count">0</span>
+                </div>
             </div>
         </div>
     </nav>
@@ -38,170 +41,16 @@
             <div class="studio-hero">
                 <span class="hero-tag">SPhiri x Wesorted</span>
                 <h1>STREET SESSIONS</h1>
-                <p class="hero-desc">Premium hardware and street culture for the modern creative.</p>
                 <div class="hero-btns">
                     <a href="#pro-shop" class="btn-outline">Shop Hardware</a>
-                    <a href="#community" class="btn-outline">Join Community</a>
+                    <a href="#events" class="btn-outline">View Events</a>
                 </div>
             </div>
         </div>
     </header>
 
     <main class="studio-page-wrapper">
-        <section id="pro-shop" class="skate-grid">
-           <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeGoodstock8.125DeckNeonGreen.jpg" alt="Globe Neon"></div>
-                <div class="skate-info">
-                    <h3>Globe Goodstock 8.125" (Neon)</h3>
-                    <p class="skate-price">R 1,199</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Neon Deck">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/PrimitiveDirtyPDeck.jpg" alt="Primitive Deck"></div>
-                <div class="skate-info">
-                    <h3>Primitive Dirty P 8.25"</h3>
-                    <p class="skate-price">R 1,450</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Primitive Deck">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementSection8.0Deck.jpg" alt="Element Deck"></div>
-                <div class="skate-info">
-                    <h3>Element Section 8.0" Classic</h3>
-                    <p class="skate-price">R 1,299</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Element Deck">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeG1StackComplete.jpg" alt="Globe Complete"></div>
-                <div class="skate-info">
-                    <h3>Globe G1 Stack Complete</h3>
-                    <p class="skate-price">R 2,499</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Complete">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementHatchedComplete.jpg" alt="Element Complete"></div>
-                <div class="skate-info">
-                    <h3>Element Hatched 8.0" Complete</h3>
-                    <p class="skate-price">R 2,200</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Element Complete">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/AlmostLogoComplete.jpg" alt="Almost Complete"></div>
-                <div class="skate-info">
-                    <h3>Almost Logo Fade 7.75"</h3>
-                    <p class="skate-price">R 2,150</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Almost Complete">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://images.tshirthell.com/shoes/nikesb_dunk_low_black.jpg" alt="Nike SB"></div>
-                <div class="skate-info">
-                    <h3>Nike SB Dunk Low Pro</h3>
-                    <p class="skate-price">R 2,299</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Dunk">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800" alt="SB Janoski"></div>
-                <div class="skate-info">
-                    <h3>Nike SB Stefan Janoski OG</h3>
-                    <p class="skate-price">R 1,899</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Janoski">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/EtniesJoslinVulcWhiteNavy.jpg" alt="Etnies"></div>
-                <div class="skate-info">
-                    <h3>Etnies Joslin (Studio Navy)</h3>
-                    <p class="skate-price">R 1,750</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Etnies Joslin">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.vans.co.za/media/catalog/product/v/a/vans-classic-patch-trucker-black.jpg" alt="Vans Cap"></div>
-                <div class="skate-info">
-                    <h3>Vans Classic Patch Trucker</h3>
-                    <p class="skate-price">R 499</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Vans Trucker Cap">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.vans.co.za/media/catalog/product/v/a/vans-drop-v-snapback-black.jpg" alt="Vans Snapback"></div>
-                <div class="skate-info">
-                    <h3>Vans Drop V Snapback</h3>
-                    <p class="skate-price">R 549</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Vans Snapback Cap">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.vans.co.za/media/catalog/product/v/a/vans-court-side-hat.jpg" alt="Vans Court"></div>
-                <div class="skate-info">
-                    <h3>Vans Court Side Dad Hat</h3>
-                    <p class="skate-price">R 450</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Vans Dad Hat">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/MobGripTape.jpg" alt="Mob Grip"></div>
-                <div class="skate-info">
-                    <h3>Mob Classic Perforated Grip</h3>
-                    <p class="skate-price">R 180</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Mob Grip">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/JessupGripTape.jpg" alt="Jessup Grip"></div>
-                <div class="skate-info">
-                    <h3>Jessup Ultra Grip Tape</h3>
-                    <p class="skate-price">R 160</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Jessup Grip">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/ShakeJuntGrip.jpg" alt="Shake Junt"></div>
-                <div class="skate-info">
-                    <h3>Shake Junt Clear/Spray Grip</h3>
-                    <p class="skate-price">R 220</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Shake Junt Grip">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/BonesRedsBearings.jpg" alt="Bones Reds"></div>
-                <div class="skate-info">
-                    <h3>Bones Reds Precision Bearings</h3>
-                    <p class="skate-price">R 450</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Bones Reds">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-item">
-                <div class="skate-img-container"><img src="https://skateshack.co.za/wp-content/uploads/2022/01/IMG_7009-scaled.jpg" alt="WeSorted Hardware"></div>
-                <div class="skate-info">
-                    <h3>WeSorted Studio Hardware (1")</h3>
-                    <p class="skate-price">R 100</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Studio Hardware">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/IndependentTrucks.jpg" alt="Indy Trucks"></div>
-                <div class="skate-info">
-                    <h3>Independent Stage 11 Hollows</h3>
-                    <p class="skate-price">R 1,150</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Independent Trucks">Add to Bag</button>
-                </div>
-            </div>
-
-        </section>
-
+        
         <section id="events" class="event-studio-wrapper">
             <div class="event-glass-card">
                 <div class="event-info-pane">
@@ -216,19 +65,11 @@
                         <button class="btn-outline">RSVP for Entry</button>
                     </div>
                 </div>
-
                 <div class="event-map-pane">
                     <div class="map-placeholder">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.123!2d28.058!3d-26.204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzE0LjQiUyAyOMKwMDMnMjguOCJF!5e0!3m2!1sen!2sza!4v1700000000000" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.123!2d28.058!3d-26.204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzE0LjQiUyAyOMKwMDMnMjguOCJF!5e0!3m2!1sen!2sza!4v1600000000000" allowfullscreen="" loading="lazy"></iframe>
                     </div>
-                    
                     <div class="map-overlay">
-                        <div class="location-pin"></div>
                         <div class="location-meta">
                             <strong>WESORTED STUDIO</strong>
                             <span>Unit 4B, Maboneng District</span>
@@ -238,23 +79,143 @@
             </div>
         </section>
 
+        <section class="shop-utilities">
+            <div class="util-container">
+                <div class="search-bar">
+                    <input type="text" id="productSearch" placeholder="Search hardware, apparel, tools...">
+                </div>
+                <div class="filter-pills">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="decks">Decks</button>
+                    <button class="filter-btn" data-category="trucks">Trucks</button> 
+                    <button class="filter-btn" data-category="apparel">Apparel</button> 
+                    <button class="filter-btn" data-category="footwear">Footwear</button>
+                    <button class="filter-btn" data-category="accessories">Grip & Tools</button> </div>
+            </div>
+        </section>
+
+        <section id="pro-shop" class="skate-grid">
+            <div class="skate-item" data-category="decks">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeGoodstock8.125DeckNeonGreen.jpg" alt="Globe Neon"></div>
+                <div class="skate-info">
+                    <h3>Globe Goodstock 8.125" (Neon)</h3>
+                    <p class="skate-price">R 1,199</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Neon Deck" data-price="1199">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="decks">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/PrimitiveDirtyPDeck.jpg" alt="Primitive Deck"></div>
+                <div class="skate-info">
+                    <h3>Primitive Dirty P 8.25"</h3>
+                    <p class="skate-price">R 1,450</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Primitive Deck" data-price="1450">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="decks">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementSection8.0Deck.jpg" alt="Element Deck"></div>
+                <div class="skate-info">
+                    <h3>Element Section 8.0" Classic</h3>
+                    <p class="skate-price">R 1,299</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Element Deck" data-price="1299">Add to Bag</button>
+                </div>
+            </div>
+
+            <div class="skate-item" data-category="completes">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeG1StackComplete.jpg" alt="Globe Complete"></div>
+                <div class="skate-info">
+                    <h3>Globe G1 Stack Complete</h3>
+                    <p class="skate-price">R 2,499</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Complete" data-price="2499">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="completes">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementHatchedComplete.jpg" alt="Element Complete"></div>
+                <div class="skate-info">
+                    <h3>Element Hatched 8.0" Complete</h3>
+                    <p class="skate-price">R 2,200</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Element Complete" data-price="2200">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="completes">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/AlmostLogoComplete.jpg" alt="Almost Complete"></div>
+                <div class="skate-info">
+                    <h3>Almost Logo Fade 7.75"</h3>
+                    <p class="skate-price">R 2,150</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Almost Complete" data-price="2150">Add to Bag</button>
+                </div>
+            </div>
+
+            <div class="skate-item" data-category="footwear">
+                <div class="skate-img-container"><img src="https://images.tshirthell.com/shoes/nikesb_dunk_low_black.jpg" alt="Nike SB"></div>
+                <div class="skate-info">
+                    <h3>Nike SB Dunk Low Pro</h3>
+                    <p class="skate-price">R 2,299</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Dunk" data-price="2299">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="footwear">
+                <div class="skate-img-container"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800" alt="SB Janoski"></div>
+                <div class="skate-info">
+                    <h3>Nike SB Stefan Janoski OG</h3>
+                    <p class="skate-price">R 1,899</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Janoski" data-price="1899">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="footwear">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/EtniesJoslinVulcWhiteNavy.jpg" alt="Etnies"></div>
+                <div class="skate-info">
+                    <h3>Etnies Joslin (Studio Navy)</h3>
+                    <p class="skate-price">R 1,750</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Etnies Joslin" data-price="1750">Add to Bag</button>
+                </div>
+            </div>
+
+            <div class="skate-item" data-category="accessories">
+                <div class="skate-img-container"><img src="https://www.vans.co.za/media/catalog/product/v/a/vans-classic-patch-trucker-black.jpg" alt="Vans Cap"></div>
+                <div class="skate-info">
+                    <h3>Vans Classic Patch Trucker</h3>
+                    <p class="skate-price">R 499</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Vans Trucker Cap" data-price="499">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="accessories">
+                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/BonesRedsBearings.jpg" alt="Bones Reds"></div>
+                <div class="skate-info">
+                    <h3>Bones Reds Bearings</h3>
+                    <p class="skate-price">R 450</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Bones Reds" data-price="450">Add to Bag</button>
+                </div>
+            </div>
+            <div class="skate-item" data-category="accessories">
+                <div class="skate-img-container"><img src="https://skateshack.co.za/wp-content/uploads/2022/01/IMG_7009-scaled.jpg" alt="Hardware"></div>
+                <div class="skate-info">
+                    <h3>WeSorted Studio Hardware</h3>
+                    <p class="skate-price">R 100</p>
+                    <button class="btn-outline small add-to-cart-btn" data-name="Studio Hardware" data-price="100">Add to Bag</button>
+                </div>
+            </div>
+        </section>
+
         <section id="community" class="community-thread">
             <div class="thread-header">
                 <h2>Community Feed</h2>
-                <div class="chat-input-row">
-                    <input type="text" id="user-comment-input" placeholder="Drop a thought...">
-                    <button class="btn-outline small" id="submit-post-btn">Post</button>
-                </div>
-            </div>
-            <div id="comment-list-container">
-                <div class="thread-post">
-                    <div class="post-sidebar"><div class="user-avatar">SP</div></div>
-                    <div class="post-body">
-                        <div class="post-meta"><strong>@SPhiri</strong> <span>Admin</span></div>
-                        <p>Studio gear restocked. Check the Pro Shop.</p>
+                <div class="chat-composer">
+                    <textarea id="user-comment-input" placeholder="What's happening in the streets?"></textarea>
+                    <div class="composer-actions">
+                        <div class="media-uploads">
+                            <label class="media-btn">📷<input type="file" id="image-input" accept="image/*" hidden></label>
+                            <label class="media-btn">🎥<input type="file" id="video-input" accept="video/*" hidden></label>
+                            <button class="media-btn" id="vn-record-btn">🎤</button>
+                            <span id="recording-status" style="color: #ff4b4b; font-size: 10px; display: none; font-weight: 800;">REC...</span>
+                        </div>
+                        <button class="btn-outline small" id="submit-post-btn">Post Thread</button>
                     </div>
+                    <div id="media-preview-container"></div>
                 </div>
             </div>
+
+            <div id="comment-list-container">
+                </div>
         </section>
     </main>
 
@@ -262,29 +223,50 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-column brand-col">
-                    <a href="index.html" class="nav-logo">WE<span>SORTED</span></a>
-                    <p>Elevating street culture through tech and boards.</p>
+                    <a href="#" class="nav-logo">WE<span>SORTED</span></a>
+                    <p>Elevating street culture through tech and hardware.</p>
                 </div>
+                
                 <div class="footer-column">
-                    <h4>Studio</h4>
+                    <h4>Navigation</h4>
                     <div class="footer-btn-stack">
-                        <a href="tech.html" class="btn-outline small">Tech</a>
-                        <a href="skate.html" class="btn-outline small active">Skate</a>
+                        <a href="#events" class="btn-outline small">Events</a>
+                        <a href="#pro-shop" class="btn-outline small">Shop</a>
+                        <a href="#community" class="btn-outline small">Community</a>
                     </div>
                 </div>
+
                 <div class="footer-column">
                     <h4>Connect</h4>
                     <div class="footer-btn-stack">
-                        <a href="studio.3d.html" class="btn-outline small">Studio</a>
-                        <p class="location-text">Unit 4B, Joburg</p>
+                        <a href="index.html" class="btn-outline small">Sphiri Main</a>
+                        <p class="location-text">Unit 4B, Maboneng District</p>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 WESORTED. Managed by SPhiri Studio.</p>
+                <p>© 2026 WESORTED. Managed by SPhiri Studio.</p>
             </div>
         </div>
     </footer>
+
+    <div class="cart-active-overlay" id="cart-blur"></div>
+
+    <div id="cart-overlay" style="position:fixed; top:0; right:-400px; width:100%; max-width:400px; height:100vh; background:var(--system-card); z-index:3000; transition:0.4s ease; border-left:1px solid var(--system-border); padding:40px; display:flex; flex-direction:column;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h2 style="font-weight:900; margin:0;">YOUR BAG</h2>
+            <button id="close-cart" style="background:none; border:none; color:var(--system-text); cursor:pointer; font-size:24px;">×</button>
+        </div>
+        <div id="cart-items-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:20px;">
+            </div>
+        <div style="padding-top:20px; border-top:1px solid var(--system-border);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:800;">
+                <span>TOTAL</span>
+                <span id="cart-total">R 0</span>
+            </div>
+            <button class="btn-outline" style="width:100%; background:var(--we-green); color:#000; border:none;">Checkout</button>
+        </div>
+    </div>
 
     <script src="script/skate.js"></script>
 </body>
