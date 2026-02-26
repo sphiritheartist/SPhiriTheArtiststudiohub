@@ -1,70 +1,60 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('productSearch');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const products = document.querySelectorAll('.product-card');
 
-    // ================= SEARCH & FILTER LOGIC =================
+    // ================= SEARCH & FILTER =================
     function filterProducts() {
-        const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
         const activeBtn = document.querySelector('.filter-btn.active');
         const activeFilter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
 
-        products.forEach(product => {
-            const title = product.querySelector('h3').innerText.toLowerCase();
+        products.forEach(function(product) {
+            const titleEl = product.querySelector('h3');
+            const title = titleEl ? titleEl.innerText.toLowerCase() : '';
             const category = product.getAttribute('data-category');
 
             const matchesSearch = title.includes(searchTerm);
             const matchesFilter = (activeFilter === 'all' || category === activeFilter);
 
-            if (matchesSearch && matchesFilter) {
-                product.style.display = 'block';
-                product.style.opacity = '1';
-            } else {
-                product.style.display = 'none';
-                product.style.opacity = '0';
-            }
+            product.style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
         });
     }
 
-    // Listener for Search
-    if (searchInput) {
-        searchInput.addEventListener('input', filterProducts);
-    }
+    if (searchInput) searchInput.addEventListener('input', filterProducts);
 
-    // Listener for Filter Buttons
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
             filterProducts();
         });
     });
 
-    // ================= ADD TO BAG LOGIC =================
-    const addButtons = document.querySelectorAll('.quick-add');
-    
-    addButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const card = e.target.closest('.product-card');
-            const name = card.querySelector('h3').innerText;
-            const price = card.querySelector('.price').innerText;
+    // ================= ADD TO BAG =================
+    document.querySelectorAll('.quick-add').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const card = btn.closest('.product-card');
+            const nameEl = card.querySelector('h3');
+            const priceEl = card.querySelector('.price');
+            if (!nameEl || !priceEl) return;
 
-            const newItem = { name, price };
+            const item = { name: nameEl.innerText, price: priceEl.innerText };
+            window.cart.push(item);
 
-            // Push to the global cart and update UI
-            if (window.cart && window.updateCartUI) {
-                window.cart.push(newItem);
-                window.updateCartUI();
-                
-                // Open Sidebar for feedback
-                document.getElementById('cartSidebar').classList.add('open');
-                document.getElementById('overlay').classList.add('active');
-                
-                // Button feedback
-                const originalText = btn.innerText;
-                btn.innerText = "Added!";
-                setTimeout(() => { btn.innerText = originalText; }, 1000);
-            }
+            // Use the shared cart renderer from global.js
+            if (typeof window.updateCartUI === 'function') window.updateCartUI();
+
+            // Open sidebar
+            const cartSidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('overlay');
+            if (cartSidebar) cartSidebar.classList.add('open');
+            if (overlay) overlay.classList.add('active');
+
+            const orig = btn.innerText;
+            btn.innerText = 'Added!';
+            setTimeout(function() { btn.innerText = orig; }, 1000);
         });
     });
 });

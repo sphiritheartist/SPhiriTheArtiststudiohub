@@ -3,36 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
+    <title>SPhiriTheArtist | Verse — Poems</title>
     <link rel="stylesheet" href="style/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+/* ============================================================
+   VERSE — Book of Poems
+   ============================================================ */
+body { background: var(--bg); }
+
+.verse-cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+}
+.verse-cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(0,113,227,0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.book-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(4rem, 14vw, 9rem);
+    font-weight: 700;
+    letter-spacing: -4px;
+    line-height: 0.85;
+    margin-bottom: 28px;
+    color: var(--text);
+}
+.book-title em {
+    font-style: italic;
+    color: var(--accent);
+}
+.book-author {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+.book-meta {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+}
+.meta-item {
+    text-align: center;
+}
+.meta-item span {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+.meta-item strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+}
+.cover-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 60px;
+}
+.scroll-hint {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: var(--muted);
+    animation: scrollPulse 2s infinite;
+}
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+    50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* Book body */
+.book-body {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 40px 120px;
+}
+
+/* Chapter Heading */
+.chapter-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: var(--muted);
+    text-align: center;
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+}
+.chapter-heading:first-child { border-top: none; padding-top: 40px; }
+
+/* Single poem entry — like a book page */
+.verse-entry {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+}
+.verse-entry:last-child { border-bottom: none; }
+
+.verse-number {
+    position: absolute;
+    top: 68px;
+    left: -60px;
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+}
+
+.verse-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 32px;
+    color: var(--text);
+    line-height: 1.1;
+}
+
+.verse-body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.9;
+    color: var(--text);
+}
+.verse-body p {
+    margin-bottom: 0;
+}
+/* Stanza break — empty p between stanzas */
+.verse-body .stanza-break {
+    height: 1.4em;
+    display: block;
+}
+
+.verse-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 32px;
+    padding-top: 20px;
+}
+.verse-share-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.verse-share-btn:hover { color: var(--accent); }
+.page-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .book-body { padding: 0 24px 80px; }
+    .verse-number { display: none; }
+    .verse-cover { padding: 60px 24px; }
+    .book-meta { gap: 24px; }
+}
+    </style>
 </head>
 <body>
-
     <div id="nav-placeholder"></div>
 
-    <main id="main-content" class="reveal">
-        <section class="section verse-grid">
+    <main>
+        <!-- Cover Page -->
+        <section class="verse-cover">
+            <h1 class="book-title reveal"><em>Verse</em></h1>
+            <p class="book-author reveal">SPhiriTheArtist</p>
+            <div class="book-meta reveal">
+                <div class="meta-item"><span>Poems</span><strong>12</strong></div>
+                <div class="meta-item"><span>Year</span><strong>2026</strong></div>
+                <div class="meta-item"><span>Edition</span><strong>I</strong></div>
+            </div>
+            <div class="cover-divider"></div>
+            <div class="scroll-hint reveal">Open the book</div>
+        </section>
+
+        <!-- Poems -->
+        <div class="book-body">
+
+            <div class="chapter-heading">Part I — Self</div>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">i</span>
                 <h2 class="verse-title">Seven Sins</h2>
                 <div class="verse-body">
                     <p>I am the embodiment</p>
                     <p>Of the seven deadly sins</p>
                     <p>Not consumed by greed</p>
                     <p>Nor gluttony trust me</p>
+                    <span class="stanza-break"></span>
                     <p>If I could I would let you in</p>
                     <p>But my pride and wrath</p>
                     <p>Are held back by my sloth</p>
                     <p>So I deny you the truth</p>
+                    <span class="stanza-break"></span>
                     <p>And meddle with those</p>
                     <p>With a similar lust</p>
                     <p>Its a blood rush</p>
                     <p>And I envy the past</p>
                     <p>That I want to forever last</p>
                 </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Seven Sins')">↑ Share</button>
+                    <span class="page-num">1</span>
+                </div>
             </article>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">ii</span>
+                <h2 class="verse-title">The Parasite</h2>
+                <div class="verse-body">
+                    <p>Doubt is not a seed</p>
+                    <p>Do not plant it</p>
+                    <p>Lest on you it shall feed</p>
+                    <p>It's restraints, you will receive</p>
+                    <span class="stanza-break"></span>
+                    <p>A different you, you will perceive</p>
+                    <p>You will think negatively</p>
+                    <p>Fear and doubt in proximity</p>
+                    <p>Weighing you down</p>
+                    <p>Making you frown</p>
+                    <span class="stanza-break"></span>
+                    <p>Doubt is a parasite</p>
+                    <p>Devouring you; in and out</p>
+                    <p>How do you fight?</p>
+                    <p>Using a simple affirmation</p>
+                    <p>Try it, for confirmation</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('The Parasite')">↑ Share</button>
+                    <span class="page-num">2</span>
+                </div>
+            </article>
+
+            <article class="verse-entry reveal">
+                <span class="verse-number">iii</span>
+                <h2 class="verse-title">The System</h2>
+                <div class="verse-body">
+                    <p>Some say money is the matrix</p>
+                    <p>Others say it's our orbital axis</p>
+                    <p>Here is what the truth is</p>
+                    <p>It's not a matrix</p>
+                    <span class="stanza-break"></span>
+                    <p>It's a simple system</p>
+                    <p>One we are born in</p>
+                    <p>One keeping us in slavery</p>
+                    <p>It fuels politics, believe me</p>
+                    <p>Feeds the fed, starves the starving</p>
+                    <span class="stanza-break"></span>
+                    <p>Some say money's a tool</p>
+                    <p>I say it's our biggest boon</p>
+                    <p>You can fight it believe me</p>
+                    <p>Let's start by not voting</p>
+                    <p>Start a conversation, Democracy</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('The System')">↑ Share</button>
+                    <span class="page-num">3</span>
+                </div>
+            </article>
+
+            <div class="chapter-heading">Part II — Love</div>
+
+            <article class="verse-entry reveal">
+                <span class="verse-number">iv</span>
                 <h2 class="verse-title">The Labyrinth</h2>
                 <div class="verse-body">
                     <p>Being loved is the easiest part</p>
@@ -40,250 +322,270 @@
                     <p>Love is nothing but a labyrinth</p>
                     <p>Full of twists and turns</p>
                     <p>Filling the mind with doubt and concern</p>
+                    <span class="stanza-break"></span>
                     <p>Be it as it may</p>
                     <p>In my body my lover is forever enclosed</p>
                     <p>Creating an eternal bond</p>
                     <p>That of swans at a heavenly pond</p>
-                    <p>Love is a fool’s pool</p>
+                    <span class="stanza-break"></span>
+                    <p>Love is a fool's pool</p>
                     <p>Both friendly and nasty</p>
-                    <p>I don’t care about features</p>
+                    <p>I don't care about features</p>
                     <p>Be it angelic wings or devilish horns</p>
                     <p>In my eyes you are the best whore</p>
-                    <p>Willy Wonkas favourite chore</p>
+                    <p>Willy Wonka's favourite chore</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('The Labyrinth')">↑ Share</button>
+                    <span class="page-num">4</span>
                 </div>
             </article>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">v</span>
                 <h2 class="verse-title">Our Lore</h2>
                 <div class="verse-body">
                     <p>To love or to be loved?</p>
-                    <p>Tuna fish or traut?</p>
+                    <p>Tuna fish or trout?</p>
                     <p>Through thick and thin</p>
                     <p>It will always sprout</p>
+                    <span class="stanza-break"></span>
                     <p>With no manuscript</p>
                     <p>We fly and fall</p>
                     <p>We give it our all</p>
                     <p>Under the moonlight</p>
                     <p>We bask in awe</p>
+                    <span class="stanza-break"></span>
                     <p>Fantasising; Creating our lore</p>
                     <p>Not bound by titles</p>
                     <p>But by something more</p>
                     <p>Whether together or apart</p>
                     <p>We still grow strong</p>
                 </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Our Lore')">↑ Share</button>
+                    <span class="page-num">5</span>
+                </div>
             </article>
-        
+
             <article class="verse-entry reveal">
+                <span class="verse-number">vi</span>
                 <h2 class="verse-title">Incomplete Wish</h2>
                 <div class="verse-body">
                     <p>You are still my person</p>
-                    <p>Even if I’m not yours</p>
+                    <p>Even if I'm not yours</p>
                     <p>You will be kept</p>
                     <p>As my incomplete wish</p>
-                    <p>Our story isn’t finished</p>
-                    <p>The chapters we’ve written together</p>
+                    <span class="stanza-break"></span>
+                    <p>Our story isn't finished</p>
+                    <p>The chapters we've written together</p>
                     <p>Will forever echo in my heart</p>
                     <p>Every memory we created</p>
                     <p>Every laugh we shared</p>
                     <p>And every tear we shed</p>
                     <p>Wove a tapestry of love</p>
                     <p>Time cannot erase</p>
-                    <p>I cherish the bond we have</p>
+                    <span class="stanza-break"></span>
                     <p>Sometimes, love, means letting go</p>
                     <p>To allow us both to grow</p>
                     <p>You remain a beacon of light</p>
-                    <p>In my life</p>
-                    <p>Striving for happiness and fulfillment</p>
-                    <p>Something we both deserve</p>
-                    <p>Our paths led in different direction</p>
-                    <p>You are profoundly missed</p>
-                    <p>As you may have observed</p>
+                    <span class="stanza-break"></span>
                     <p>Hope our incomplete wish finds fulfillment</p>
                     <p>Whether together or apart</p>
                     <p>You are deeply loved</p>
-                    <p>There is joy and peace in our paths</p>
-                    <p>Realisation of dreams and fantasies </p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Incomplete Wish')">↑ Share</button>
+                    <span class="page-num">6</span>
                 </div>
             </article>
 
             <article class="verse-entry reveal">
-                <h2 class="verse-title">The Parasite</h2>
-                <div class="verse-body">
-                    <p>Doubt is not a seed</p>
-                    <p>Do not plant it</p>
-                    <p>Lest on you it shall feed</p>
-                    <p>It’s restraints, you will receive</p>
-                    <p>A different you, you will perceive</p>
-                    <p>You will think negatively</p>
-                    <p>Fear and doubt in proximity</p>
-                    <p>Weighing you down</p>
-                    <p>Making you frown</p>
-                    <p>Doubt is a parasite</p>
-                    <p>Devouring you; in and out </p>
-                    <p>How do you fight?</p>
-                    <p>Using a simple affirmation</p>
-                    <p>Try it, for confirmation</p>
-                </div>
-            </article>
-
-            <article class="verse-entry reveal">
-                <h2 class="verse-title">Bitter Pills</h2>
-                <div class="verse-body">
-                    <p>They sell us sickness</p>
-                    <p>Then sell the cures</p>
-                    <p>What is this wickedness?</p>
-                    <p>What is this contour?</p>
-                    <p>Lost in one’s presence</p>
-                    <p>What are memories?</p>
-                    <p>Health that I reminisce?!</p>
-                    <p>Reliant on bitter pills</p>
-                    <p>I swallow!</p>
-                    <p>What follows?</p>
-                    <p>An abyss… </p>
-                    <p>Help, please!</p>
-                    <p>I miss… </p>
-                </div>
-            </article>
-
-            <article class="verse-entry reveal">
-                <h2 class="verse-title">The System</h2>
-                <div class="verse-body">
-                    <p>Some say money is the matrix</p>
-                    <p>Others say it’s our orbital axis </p>
-                    <p>Here is what the truth is</p>
-                    <p>It’s not a matrix</p>
-                    <p>It’s a simple system</p>
-                    <p>One we are born in</p>
-                    <p>One keeping us in slavery</p>
-                    <p>It fuels politics, believe me</p>
-                    <p>Feeds the fed, starves the starving</p>
-                    <p>Some say money’s a tool</p>
-                    <p>I say it’s our biggest boon</p>
-                    <p>You can fight it believe me</p>
-                    <p>Let’s start by not voting</p>
-                    <p>Start a conversation, Democracy</p>
-                </div>
-            </article>
-
-            <article class="verse-entry reveal">
+                <span class="verse-number">vii</span>
                 <h2 class="verse-title">The Secret</h2>
                 <div class="verse-body">
                     <p>In my eyes you are a treasure</p>
                     <p>One of boundless measure</p>
                     <p>You make this one shy</p>
-                    <p>I didn’t mean to pry</p>
+                    <p>I didn't mean to pry</p>
                     <p>Yet I had cast the die</p>
+                    <span class="stanza-break"></span>
                     <p>The secret was yours to share</p>
-                    <p>About it, I don’t care</p>
-                    <p>For you, I’d die</p>
-                    <p>My hair a shade of blonde</p>
-                    <p>There’s no loving from beyond</p>
+                    <p>About it, I don't care</p>
+                    <p>For you, I'd die</p>
+                    <span class="stanza-break"></span>
                     <p>I should have begged</p>
-                    <p>“I’m nothing without you."</p>
-                    <p>But I didn’t</p>
+                    <p>"I'm nothing without you."</p>
+                    <p>But I didn't</p>
                     <p>And I regret it</p>
                 </div>
-            </article>
-
-            <article class="verse-entry reveal">
-                <h2 class="verse-title">Legacy</h2>
-                <div class="verse-body">
-                    <p>In my eyes you are a treasure</p>
-                    <p>One of boundless measure</p>
-                    <p>You make this one shy</p>
-                    <p>I don’t know why</p>
-                    <p>Maybe it’s your eyes</p>
-                    <p>Maybe it’s my heart</p>
-                    <p>Words, I can’t say</p>
-                    <p>Love, till the end of days</p>
-                    <p>Sparks, that always start</p>
-                    <p>Laughs, echo through time</p>
-                    <p>Hands, that inspire pride</p>
-                    <p>Lips, tell no lies</p>
-                    <p>Hips, carry a legacy</p>
-                    <p>And, sound judgement, you’ll see</p>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('The Secret')">↑ Share</button>
+                    <span class="page-num">7</span>
                 </div>
             </article>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">viii</span>
                 <h2 class="verse-title">Secluded</h2>
                 <div class="verse-body">
                     <p>I loved you</p>
                     <p>I truly did</p>
                     <p>Sometimes I do</p>
-                    <p>Yet I don’t</p>
-                    <p>I’m not confused</p>
+                    <p>Yet I don't</p>
+                    <span class="stanza-break"></span>
+                    <p>I'm not confused</p>
                     <p>Just deluded</p>
                     <p>We had concluded</p>
                     <p>We always relapsed</p>
                     <p>When secluded</p>
+                    <span class="stanza-break"></span>
                     <p>We confided</p>
                     <p>We are drinking</p>
-                    <p>All’s forgiven</p>
+                    <p>All's forgiven</p>
                     <p>White linen</p>
                     <p>We sleep in</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Secluded')">↑ Share</button>
+                    <span class="page-num">8</span>
                 </div>
             </article>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">ix</span>
                 <h2 class="verse-title">Ignorance</h2>
                 <div class="verse-body">
                     <p>I should have fought harder</p>
                     <p>Instead I just let go</p>
                     <p>What was I to do?</p>
                     <p>I really loved you</p>
+                    <span class="stanza-break"></span>
                     <p>Should have begged and screamed</p>
-                    <p>“I love you!”</p>
-                    <p>Things would be ‘ok’ </p>
+                    <p>"I love you!"</p>
+                    <p>Things would be 'ok'</p>
                     <p>I assumed</p>
+                    <span class="stanza-break"></span>
                     <p>Ignorance truly is bliss</p>
                     <p>I lost, self-made promises</p>
                     <p>I thought in silence</p>
-                    <p>Thought we’d pass it</p>
+                    <p>Thought we'd pass it</p>
                     <p>The days buried</p>
                     <p>Love we buried</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Ignorance')">↑ Share</button>
+                    <span class="page-num">9</span>
                 </div>
             </article>
 
             <article class="verse-entry reveal">
+                <span class="verse-number">x</span>
                 <h2 class="verse-title">Moving On</h2>
                 <div class="verse-body">
                     <p>I brought her home, she fell for my blood</p>
-                    <p>I’m not enough, no dough, no wealth to show</p>
+                    <p>I'm not enough, no dough, no wealth to show</p>
                     <p>Girl! You made me a Spud</p>
                     <p>There I stood, a fool, you chose to throw</p>
-                    <p>I know you’re hot and cold, it’s always so</p>
-                    <p>To him you’re bold, I get push and pull</p>
+                    <span class="stanza-break"></span>
+                    <p>I know you're hot and cold, it's always so</p>
+                    <p>To him you're bold, I get push and pull</p>
                     <p>You broke my heart in silence, left it low</p>
                     <p>I believed you were spoken, I was a fool</p>
-                    <p>If not for a notification on his phone</p>
-                    <p>I’d think we’re cool, oblivious to your game</p>
-                    <p>You probably don’t care. He will give you some</p>
-                    <p>I’m done playing, I won’t fan your flame</p>
-                    <p>Don’t come back, we made no vow</p>
-                    <p>I’m broken, I’m bruised, I’m moving on now</p>
+                    <span class="stanza-break"></span>
+                    <p>I'm done playing, I won't fan your flame</p>
+                    <p>Don't come back, we made no vow</p>
+                    <p>I'm broken, I'm bruised, I'm moving on now</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Moving On')">↑ Share</button>
+                    <span class="page-num">10</span>
                 </div>
             </article>
 
-        </section>
-    </main>
-    <div id="footer-placeholder"></div>
+            <div class="chapter-heading">Part III — Shadows</div>
 
+            <article class="verse-entry reveal">
+                <span class="verse-number">xi</span>
+                <h2 class="verse-title">Bitter Pills</h2>
+                <div class="verse-body">
+                    <p>They sell us sickness</p>
+                    <p>Then sell the cures</p>
+                    <p>What is this wickedness?</p>
+                    <p>What is this contour?</p>
+                    <span class="stanza-break"></span>
+                    <p>Lost in one's presence</p>
+                    <p>What are memories?</p>
+                    <p>Health that I reminisce?!</p>
+                    <span class="stanza-break"></span>
+                    <p>Reliant on bitter pills</p>
+                    <p>I swallow!</p>
+                    <p>What follows?</p>
+                    <p>An abyss…</p>
+                    <p>Help, please!</p>
+                    <p>I miss…</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Bitter Pills')">↑ Share</button>
+                    <span class="page-num">11</span>
+                </div>
+            </article>
+
+            <article class="verse-entry reveal">
+                <span class="verse-number">xii</span>
+                <h2 class="verse-title">Legacy</h2>
+                <div class="verse-body">
+                    <p>In my eyes you are a treasure</p>
+                    <p>One of boundless measure</p>
+                    <p>You make this one shy</p>
+                    <p>I don't know why</p>
+                    <span class="stanza-break"></span>
+                    <p>Maybe it's your eyes</p>
+                    <p>Maybe it's my heart</p>
+                    <p>Words, I can't say</p>
+                    <p>Love, till the end of days</p>
+                    <span class="stanza-break"></span>
+                    <p>Sparks, that always start</p>
+                    <p>Laughs, echo through time</p>
+                    <p>Hands, that inspire pride</p>
+                    <p>Lips, tell no lies</p>
+                    <p>Hips, carry a legacy</p>
+                    <p>And, sound judgement, you'll see</p>
+                </div>
+                <div class="verse-footer">
+                    <button class="verse-share-btn" onclick="sharePoem('Legacy')">↑ Share</button>
+                    <span class="page-num">12</span>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
     <div id="overlay"></div>
-    
     <aside id="cartSidebar">
-        <button id="closeCart" class="close-btn">&times;</button>
-        <h3>Your Bag</h3>
+        <div class="cart-header">
+            <h3>Your Bag</h3>
+            <button id="closeCart" class="close-btn">×</button>
+        </div>
         <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
+        <div class="cart-footer">
+            <div id="cartTotal" class="cart-total"></div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
     </aside>
 
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
-    </div>
-
     <script src="script/global.js"></script>
+    <script>
+    function sharePoem(title) {
+        if (navigator.share) {
+            navigator.share({ title: title + ' — SPhiriTheArtist', url: window.location.href });
+        } else {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('Link copied to clipboard!'))
+                .catch(() => {});
+        }
+    }
+    </script>
 </body>
 </html>

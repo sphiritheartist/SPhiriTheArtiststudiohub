@@ -3,30 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPhiriTheArtist | Official Studio</title>
+    <title>SPhiriTheArtist | Accessories</title>
     <link rel="stylesheet" href="style/main.css">
+    <style>
+        .accessories-hero {
+            padding: 120px 40px 60px;
+            text-align: center;
+        }
+        .accessories-hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 0.9;
+            margin-bottom: 20px;
+        }
+        .accessories-hero p {
+            font-size: 16px;
+            color: var(--system-muted);
+            max-width: 500px;
+            margin: 0 auto 50px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 0 40px 60px;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1.5px solid var(--system-border);
+            color: var(--system-text);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--system-text);
+            color: var(--system-bg);
+            border-color: var(--system-text);
+        }
+
+        /* Product Grid */
+        .acc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 40px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .acc-card {
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--system-secondary);
+            border: 1px solid var(--system-border);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+            cursor: pointer;
+        }
+        .acc-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .acc-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            background: var(--system-border);
+            transition: transform 0.6s ease;
+        }
+        .acc-card:hover .acc-img { transform: scale(1.05); }
+
+        .acc-info {
+            padding: 22px;
+        }
+        .acc-tag {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--system-accent);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .acc-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+        .acc-info .acc-price {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--system-text);
+            margin-bottom: 16px;
+        }
+        .acc-add {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1.5px solid var(--system-text);
+            color: var(--system-text);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .acc-add:hover {
+            background: var(--system-text);
+            color: var(--system-bg);
+        }
+
+        /* Empty state */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--system-muted);
+            display: none;
+        }
+        .empty-state h3 { font-size: 20px; margin-bottom: 8px; }
+
+        @media (max-width: 600px) {
+            .accessories-hero { padding: 100px 20px 40px; }
+            .acc-grid { padding: 0 20px 60px; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .filter-bar { padding: 0 20px 40px; }
+        }
+    </style>
 </head>
 <body>
 
     <div id="nav-placeholder"></div>
 
-    <main id="main-content" class="reveal">
-        <section class="section">
-            <h1>Skeleton Active</h1>
-            <p>Ready for content development.</p>
-        </section>
+    <main id="main-content">
+        <header class="accessories-hero">
+            <span class="hero-tagline">Curated Tools</span>
+            <h1 class="reveal">STUDIO<br>ACCESSORIES</h1>
+            <p class="reveal">Precision instruments and curated objects for the architect's workspace.</p>
+        </header>
+
+        <div class="filter-bar reveal">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="stationery">Stationery</button>
+            <button class="filter-btn" data-filter="tech">Tech</button>
+            <button class="filter-btn" data-filter="wearables">Wearables</button>
+            <button class="filter-btn" data-filter="studio">Studio</button>
+        </div>
+
+        <div class="acc-grid" id="accGrid">
+
+            <div class="acc-card reveal" data-category="stationery">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1602532305019-3dbbd482dae7?q=80&w=600" alt="Architect Sketchbook">
+                <div class="acc-info">
+                    <span class="acc-tag">Stationery</span>
+                    <h3>Architect's Sketchbook A5</h3>
+                    <p class="acc-price">R 280.00</p>
+                    <button class="acc-add" data-name="Architect's Sketchbook A5" data-price="280">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="stationery">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?q=80&w=600" alt="Fine Liner Set">
+                <div class="acc-info">
+                    <span class="acc-tag">Stationery</span>
+                    <h3>Studio Fine Liner Set (12pc)</h3>
+                    <p class="acc-price">R 350.00</p>
+                    <button class="acc-add" data-name="Studio Fine Liner Set" data-price="350">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="tech">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1583394293214-0227a5ac7022?q=80&w=600" alt="USB Hub">
+                <div class="acc-info">
+                    <span class="acc-tag">Tech</span>
+                    <h3>7-Port USB-C Hub Pro</h3>
+                    <p class="acc-price">R 650.00</p>
+                    <button class="acc-add" data-name="7-Port USB-C Hub Pro" data-price="650">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="tech">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1625948515291-0b5e5fa9c2af?q=80&w=600" alt="Cable Organiser">
+                <div class="acc-info">
+                    <span class="acc-tag">Tech</span>
+                    <h3>Magnetic Cable Organiser</h3>
+                    <p class="acc-price">R 180.00</p>
+                    <button class="acc-add" data-name="Magnetic Cable Organiser" data-price="180">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="wearables">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=600" alt="Signet Ring">
+                <div class="acc-info">
+                    <span class="acc-tag">Wearables</span>
+                    <h3>Architect's Signet Ring</h3>
+                    <p class="acc-price">R 1,200.00</p>
+                    <button class="acc-add" data-name="Architect's Signet Ring" data-price="1200">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="wearables">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1591370874773-6702e8f12fd8?q=80&w=600" alt="Minimal Watch">
+                <div class="acc-info">
+                    <span class="acc-tag">Wearables</span>
+                    <h3>Studio Minimal Watch</h3>
+                    <p class="acc-price">R 2,400.00</p>
+                    <button class="acc-add" data-name="Studio Minimal Watch" data-price="2400">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="studio">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=600" alt="Desk Mat">
+                <div class="acc-info">
+                    <span class="acc-tag">Studio</span>
+                    <h3>XL Studio Desk Mat</h3>
+                    <p class="acc-price">R 420.00</p>
+                    <button class="acc-add" data-name="XL Studio Desk Mat" data-price="420">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="studio">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=600" alt="Monitor Stand">
+                <div class="acc-info">
+                    <span class="acc-tag">Studio</span>
+                    <h3>Bamboo Monitor Riser</h3>
+                    <p class="acc-price">R 550.00</p>
+                    <button class="acc-add" data-name="Bamboo Monitor Riser" data-price="550">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="acc-card reveal" data-category="stationery">
+                <img class="acc-img" src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=600" alt="Wax Seal Kit">
+                <div class="acc-info">
+                    <span class="acc-tag">Stationery</span>
+                    <h3>Wax Seal Kit — SPhiri Stamp</h3>
+                    <p class="acc-price">R 320.00</p>
+                    <button class="acc-add" data-name="Wax Seal Kit" data-price="320">Add to Bag +</button>
+                </div>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <h3>No items found</h3>
+                <p>Try a different filter.</p>
+            </div>
+        </div>
     </main>
 
     <div id="footer-placeholder"></div>
-
     <div id="overlay"></div>
-    
+
     <aside id="cartSidebar">
         <button id="closeCart" class="close-btn">&times;</button>
         <h3>Your Bag</h3>
         <ul id="cartItems"></ul>
-        <div id="cartTotal" class="cart-total"></div>
-        <button class="checkout-btn">Checkout</button>
+        <div class="cart-summary">
+            <div id="cartTotal" class="cart-total"></div>
+            <button id="checkoutTrigger" class="checkout-btn">Proceed to Checkout</button>
+        </div>
+        <div id="checkoutForm" style="display:none; margin-top:20px;">
+            <h4 style="margin-bottom:12px; font-size:15px;">Shipping Details</h4>
+            <input type="email" placeholder="Email address" class="shop-input">
+            <input type="text" placeholder="Full delivery address" class="shop-input" style="margin-top:10px;">
+            <button class="checkout-btn" style="margin-top:15px; background:var(--system-accent) !important; border-color:var(--system-accent) !important; color:#fff !important;">Pay via PayStack / EFT</button>
+        </div>
     </aside>
 
     <div id="lightbox" class="lightbox">
@@ -35,5 +287,52 @@
     </div>
 
     <script src="script/global.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter
+        var filterBtns = document.querySelectorAll('.filter-btn');
+        var cards = document.querySelectorAll('.acc-card');
+        var emptyState = document.getElementById('emptyState');
+
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var cat = btn.dataset.filter;
+                var visible = 0;
+                cards.forEach(function(card) {
+                    var show = (cat === 'all' || card.dataset.category === cat);
+                    card.style.display = show ? '' : 'none';
+                    if (show) visible++;
+                });
+                emptyState.style.display = visible === 0 ? 'block' : 'none';
+            });
+        });
+
+        // Add to bag
+        document.querySelectorAll('.acc-add').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var name  = btn.dataset.name;
+                var price = parseFloat(btn.dataset.price);
+                window.addToBag({ name: name, price: 'R ' + price.toFixed(2) });
+                var orig = btn.innerText;
+                btn.innerText = 'Added ✓';
+                setTimeout(function() { btn.innerText = orig; }, 1200);
+            });
+        });
+
+        // Checkout toggle
+        var checkoutTrigger = document.getElementById('checkoutTrigger');
+        var checkoutForm    = document.getElementById('checkoutForm');
+        if (checkoutTrigger && checkoutForm) {
+            checkoutTrigger.addEventListener('click', function() {
+                var isOpen = checkoutForm.style.display !== 'none';
+                checkoutForm.style.display = isOpen ? 'none' : 'block';
+                checkoutTrigger.innerText = isOpen ? 'Proceed to Checkout' : 'Back to Bag';
+            });
+        }
+    });
+    </script>
 </body>
 </html>

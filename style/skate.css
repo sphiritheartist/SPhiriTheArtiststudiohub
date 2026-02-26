@@ -1,4 +1,4 @@
-    :root {
+:root {
         --we-green: #76cf05;
         --we-blue: #0b53b7;
         --system-bg: #0a0a0a;
@@ -122,10 +122,9 @@
     .theme-link.active { color: var(--we-green) !important; }
 
 .nav-actions {
-    flex: 1; /* Matches the logo's width to keep links centered */
+    flex: 1;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
     gap: 20px;
     z-index: 10;
 }
@@ -164,11 +163,9 @@
         border: 2px solid var(--system-bg);
     }
 
-    /* GHOST BUTTON FIX */
-    .nav-toggle, .hamburger {
+    /* Hamburger hidden on desktop, shown in media query */
+    .hamburger {
         display: none;
-        opacity: 0;
-        pointer-events: none;
     }
 
     /* --- HERO --- */
@@ -201,7 +198,8 @@
 
     /* --- MOBILE RESPONSIVE --- */
     @media (max-width: 868px) {
-        .hamburger { display: block; opacity: 1; pointer-events: auto; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: var(--system-text); border-radius: 2px; transition: 0.3s; }
         .nav-links {
             position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
             background: var(--system-bg); flex-direction: column; justify-content: center;
@@ -585,7 +583,7 @@
     #cart-overlay {
         position: fixed;
         top: 0;
-        right: -400px;
+        right: -420px;
         width: 100%;
         max-width: 400px;
         height: 100vh;
@@ -594,15 +592,25 @@
         padding: 40px;
         display: flex;
         flex-direction: column;
-        /* Move to back when hidden */
-        z-index: -1; 
-        opacity: 0;
-        transition: right 0.4s ease, opacity 0.3s ease, z-index 0s 0.4s;
+        z-index: 3000;
+        transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: -10px 0 40px rgba(0,0,0,0.3);
     }
 
     #cart-overlay.active {
         right: 0;
-        opacity: 1;
-        z-index: 3000; /* Move to front */
-        transition: right 0.4s ease, opacity 0.3s ease, z-index 0s 0s;
+    }
+    @media (max-width: 868px) {
+        .skate-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; padding: 40px 16px; }
+        .skate-item { border-radius: 20px; }
+        .skate-img-container { aspect-ratio: 1/1; }
+        .skate-info { padding: 16px; }
+        .skate-info h3 { font-size: 14px; }
+        .skate-price { font-size: 13px; }
+        .event-studio-wrapper { padding: 60px 16px; }
+        .event-info-pane { padding: 40px 24px; }
+        .community-thread { padding: 0 16px; }
+        .nav-container { padding: 0 16px; }
+        .shop-utilities { padding: 30px 16px 0; }
+        #cart-overlay { max-width: 100vw; }
     }

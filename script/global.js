@@ -1,174 +1,238 @@
-// ================= GLOBAL STATE =================
-window.cart = [];
+/* =============================================================
+   SPHIRITHEARTIST — global.js
+   Handles: theme, nav load, cart engine, lightbox, reveal
+   ============================================================= */
 
-// ================= THEME LOGIC =================
+window.cart = window.cart || [];
+
+// ---------- THEME ----------
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const t = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t);
 }
-
 window.toggleTheme = function() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
 };
 
-// ================= COMPONENT LOADER =================
+// ---------- COMPONENT LOADER ----------
 async function loadComponents() {
-    // 1. Load Navigation
-    const navSpace = document.getElementById('nav-placeholder');
-    if (navSpace) {
+    // Nav
+    const navEl = document.getElementById('nav-placeholder');
+    if (navEl) {
         try {
-            const response = await fetch('nav.html');
-            const data = await response.text();
-            navSpace.innerHTML = data;
-            
-            // CRITICAL: Initialize listener ONLY after the nav HTML is on the page
-            initBagListener(); 
-        } catch (err) {
-            console.error("Nav load failed:", err);
-        }
+            const html = await fetch('nav.html').then(r => r.text());
+            navEl.innerHTML = html;
+            initNav();
+            initBagBtn();
+            highlightActiveLink();
+        } catch(e) { console.warn('nav load failed', e); }
     }
-
-    // 2. Load Footer
-    const footerSpace = document.getElementById('footer-placeholder');
-    if (footerSpace) {
+    // Footer
+    const footEl = document.getElementById('footer-placeholder');
+    if (footEl) {
         try {
-            const response = await fetch('footer.html');
-            const data = await response.text();
-            footerSpace.innerHTML = data;
-        } catch (err) {
-            console.error("Footer load failed:", err);
-        }
+            const html = await fetch('footer.html').then(r => r.text());
+            footEl.innerHTML = html;
+        } catch(e) { console.warn('footer load failed', e); }
     }
 }
 
-// ================= SHOPPING BAG LOGIC =================
-function initBagListener() {
-    const bagBtn = document.querySelector('.bag-btn');
-    const cartSidebar = document.getElementById('cartSidebar');
+// ---------- NAV: HAMBURGER + BACKDROP ----------
+function initNav() {
+    const btn      = document.getElementById('hamburgerBtn');
+    const links    = document.getElementById('navLinks');
+    const backdrop = document.getElementById('navBackdrop');
+    if (!btn || !links) return;
+
+    function openMenu() {
+        links.classList.add('open');
+        backdrop.classList.add('visible');
+        btn.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        links.classList.remove('open');
+        backdrop.classList.remove('visible');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', () => {
+        btn.classList.contains('open') ? closeMenu() : openMenu();
+    });
+    backdrop.addEventListener('click', closeMenu);
+
+    // Close on link click (mobile)
+    links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', closeMenu);
+    });
+}
+
+// ---------- HIGHLIGHT ACTIVE NAV LINK ----------
+function highlightActiveLink() {
+    const page = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href === page) a.classList.add('active');
+    });
+}
+
+// ---------- NAV BAG BUTTON ----------
+function initBagBtn() {
+    const btn = document.getElementById('navBagBtn');
+    if (btn) {
+        btn.addEventListener('click', openCart);
+    }
+}
+
+// ---------- CART OPEN / CLOSE ----------
+function openCart() {
+    const sidebar = document.getElementById('cartSidebar');
     const overlay = document.getElementById('overlay');
-    const closeBtn = document.getElementById('closeCart');
-
-    if (bagBtn && cartSidebar) {
-        bagBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            cartSidebar.classList.add('open');
-            overlay.classList.add('active');
-            renderCart();
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            cartSidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        });
-    }
-
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            cartSidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        });
-    }
-}
-
-// ================= 3D STUDIO CALCULATOR (PLA ONLY) =================
-window.updateCalculator = function() {
-    const qualitySelect = document.getElementById('quality');
-    const totalDisplay = document.getElementById('totalDisplay');
-
-    if (qualitySelect && totalDisplay) {
-        const baseFee = 150; // Starting price for Ender 6 / Replicator+
-        const qualityMultiplier = parseFloat(qualitySelect.value);
-        
-        // Note: PLA material multiplier is fixed at 1.0 for this version
-        const total = baseFee * qualityMultiplier;
-        totalDisplay.innerText = `R ${total.toFixed(2)}`;
-    }
-};
-
-// ================= CART ENGINE =================
-window.addToBag = function(item = null) {
-    // If no item passed, it's a 3D Print request from the configurator
-    if (!item) {
-        const type = document.getElementById('projectType').value;
-        const total = document.getElementById('totalDisplay').innerText;
-        item = {
-            id: '3d-' + Date.now(),
-            name: `3D Print: ${type}`,
-            price: total,
-            img: 'assets/images/studio/3d-placeholder.jpg'
-        };
-    }
-
-    window.cart.push(item);
-    updateBagCount();
     renderCart();
-    
-    // Auto-open bag to show success
-    const cartSidebar = document.getElementById('cartSidebar');
+    if (sidebar) sidebar.classList.add('open');
+    if (overlay) overlay.classList.add('active');
+}
+function closeCartUI() {
+    const sidebar = document.getElementById('cartSidebar');
     const overlay = document.getElementById('overlay');
-    if (cartSidebar && overlay) {
-        cartSidebar.classList.add('open');
-        overlay.classList.add('active');
-    }
-};
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
+}
 
+// ---------- CART ENGINE ----------
 function updateBagCount() {
-    const bagBtn = document.querySelector('.bag-btn');
-    if (bagBtn) {
-        bagBtn.innerText = `Bag (${window.cart.length})`;
+    const count = window.cart.length;
+    // Shared nav count badge
+    const badge = document.getElementById('navBagCount');
+    if (badge) {
+        badge.textContent = count;
+        badge.classList.toggle('visible', count > 0);
     }
+    // Legacy text button (some pages)
+    const legacyBtn = document.querySelector('.bag-btn');
+    if (legacyBtn) legacyBtn.innerText = `Bag (${count})`;
 }
 
 function renderCart() {
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    if (!cartItems) return;
+    const list  = document.getElementById('cartItems');
+    const total = document.getElementById('cartTotal');
+    if (!list) return;
 
-    cartItems.innerHTML = window.cart.map((item, index) => `
-        <li class="cart-item">
-            <div class="cart-item-info">
-                <h4>${item.name}</h4>
-                <span>${item.price}</span>
-            </div>
-            <button onclick="removeFromCart(${index})" class="remove-item">&times;</button>
-        </li>
-    `).join('');
+    if (window.cart.length === 0) {
+        list.innerHTML = '<li style="color:var(--muted);font-size:13px;text-align:center;padding:40px 0;">Your bag is empty.</li>';
+    } else {
+        list.innerHTML = window.cart.map((item, i) => `
+            <li class="cart-item">
+                <div class="cart-item-info">
+                    <h4>${item.name}</h4>
+                    <span>${item.price}</span>
+                </div>
+                <button class="remove-item" onclick="window.removeFromCart(${i})">×</button>
+            </li>`).join('');
+    }
 
-    // Sum logic (stripping "R " and parsing)
     const sum = window.cart.reduce((acc, item) => {
-        const value = parseFloat(item.price.replace('R ', '').replace(',', ''));
-        return acc + value;
+        const v = parseFloat(String(item.price).replace(/[^\d.]/g, ''));
+        return acc + (isNaN(v) ? 0 : v);
     }, 0);
-
-    if (cartTotal) cartTotal.innerText = `Total: R ${sum.toFixed(2)}`;
+    if (total) total.innerText = `Total: R ${sum.toFixed(2)}`;
 }
 
-window.removeFromCart = function(index) {
-    window.cart.splice(index, 1);
+window.addToBag = function(item) {
+    if (!item) {
+        // 3D studio configurator fallback
+        const typeEl  = document.getElementById('projectType');
+        const totalEl = document.getElementById('totalDisplay');
+        if (!typeEl || !totalEl) return;
+        item = { name: `3D Print (${typeEl.options[typeEl.selectedIndex].text})`, price: totalEl.innerText };
+    }
+    if (typeof item.price === 'number') item.price = `R ${item.price.toFixed(2)}`;
+    window.cart.push(item);
+    updateBagCount();
+    renderCart();
+    openCart();
+};
+
+window.removeFromCart = function(i) {
+    window.cart.splice(i, 1);
     updateBagCount();
     renderCart();
 };
 
-// ================= INITIALIZATION =================
+// Alias for shop.js
+window.updateCartUI = function() { updateBagCount(); renderCart(); };
+
+// ---------- 3D CALCULATOR ----------
+window.updateCalculator = function() {
+    const q = document.getElementById('quality');
+    const d = document.getElementById('totalDisplay');
+    if (q && d) d.innerText = `R ${(150 * parseFloat(q.value)).toFixed(2)}`;
+};
+
+// ---------- LIGHTBOX ----------
+function initLightbox() {
+    const box = document.getElementById('lightbox');
+    if (!box) return;
+    const img = document.getElementById('lightbox-img');
+    const cap = document.getElementById('lightbox-caption');
+
+    document.querySelectorAll('.media-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            const i = card.querySelector('img');
+            const c = card.querySelector('.overlay span');
+            if (!i) return;
+            img.src = i.src;
+            img.alt = i.alt;
+            if (cap && c) cap.innerText = c.innerText;
+            box.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    box.addEventListener('click', () => {
+        box.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+}
+
+// ---------- CART SIDEBAR CLOSE WIRING ----------
+function initCartSidebar() {
+    const closeBtn = document.getElementById('closeCart');
+    const overlay  = document.getElementById('overlay');
+    if (closeBtn) closeBtn.addEventListener('click', closeCartUI);
+    if (overlay)  overlay.addEventListener('click', closeCartUI);
+
+    // Checkout expand
+    const trigger = document.getElementById('checkoutTrigger');
+    const form    = document.getElementById('checkoutForm');
+    if (trigger && form) {
+        trigger.addEventListener('click', () => {
+            const open = form.style.display !== 'none';
+            form.style.display = open ? 'none' : 'block';
+            trigger.innerText = open ? 'Proceed to Checkout' : '← Back';
+        });
+    }
+}
+
+// ---------- REVEAL OBSERVER ----------
+function initReveal() {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+// ---------- BOOT ----------
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     loadComponents();
-    
-    // Initialize 3D calculator if on studio page
-    if (document.getElementById('calcForm')) {
-        updateCalculator();
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('active');
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    initCartSidebar();
+    initReveal();
+    initLightbox();
+    if (document.getElementById('calcForm')) window.updateCalculator();
 });

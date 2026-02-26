@@ -1,80 +1,94 @@
-/* ================= 1. SYSTEM PALETTE & RESET ================= */
+/* ============================================================
+   SPHIRITHEARTIST — MAIN STYLESHEET
+   Apple-inspired design system. Clean. Precise. Intentional.
+   ============================================================ */
+
+/* ---------- 1. TOKENS ---------- */
 :root {
-    --system-bg: #ffffff;
-    --system-secondary: #f5f5f7;
-    --system-text: #1d1d1f;
-    --system-muted: #86868b;
-    --system-accent: #0071e3; 
-    --system-border: rgba(0,0,0,0.08);
-    --glass-bg: rgba(255, 255, 255, 0.75);
+    --bg:        #ffffff;
+    --bg2:       #f5f5f7;
+    --text:      #1d1d1f;
+    --muted:     #86868b;
+    --accent:    #0071e3;
+    --border:    rgba(0,0,0,0.08);
+    --glass:     rgba(255,255,255,0.82);
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+    --nav-h:     64px;
 }
 
 [data-theme="dark"] {
-    --system-bg: #000000;
-    --system-secondary: #1c1c1e;
-    --system-text: #f5f5f7;
-    --system-muted: #a1a1a6;
-    --system-accent: #0a84ff; 
-    --system-border: rgba(255,255,255,0.12);
-    --glass-bg: rgba(0, 0, 0, 0.8);
+    --bg:     #000000;
+    --bg2:    #1c1c1e;
+    --text:   #f5f5f7;
+    --muted:  #a1a1a6;
+    --accent: #0a84ff;
+    --border: rgba(255,255,255,0.1);
+    --glass:  rgba(0,0,0,0.82);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ---------- 2. RESET ---------- */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-    background: var(--system-bg);
-    color: var(--system-text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
     line-height: 1.5;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
-/* ================= 2. THE BRANDED NAVIGATION ================= */
+img { max-width:100%; display:block; }
+a   { color: inherit; }
+
+/* ---------- 3. NAVIGATION ---------- */
 .navbar {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: 72px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--system-border);
-    z-index: 2000;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: var(--glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 3000;
 }
 
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
     height: 100%;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: relative;
 }
 
+/* Brand */
 .nav-brand a {
-    font-size: 20px !important;
-    font-weight: 900 !important;
-    letter-spacing: -1.2px !important;
-    text-transform: uppercase !important;
-    color: var(--system-text) !important;
-    text-decoration: none !important;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text);
+    white-space: nowrap;
 }
+.nav-brand .accent { color: var(--accent); }
 
-.nav-brand .accent {
-    color: var(--system-accent) !important;
-    margin: 0 1px;
-}
-
+/* Centre links (desktop) */
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 28px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
 }
 
 .nav-links a {
@@ -82,126 +96,414 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: var(--system-text);
-    opacity: 0.6;
+    color: var(--text);
     text-decoration: none;
-    transition: 0.3s;
+    opacity: 0.55;
+    transition: opacity 0.2s, color 0.2s;
+}
+.nav-links a:hover { opacity: 1; color: var(--accent); }
+.nav-links a.active { opacity: 1; color: var(--accent); }
+
+/* Right actions */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.nav-links a:hover { opacity: 1; color: var(--system-accent); }
+/* Theme toggle icon button */
+.theme-toggle-nav {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+.theme-toggle-nav:hover { opacity: 1; }
 
-.nav-actions { display: flex; align-items: center; gap: 20px; }
+/* Bag icon button — matches skate.html style */
+.nav-bag-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
 
-/* ================= 3. MOBILE HAMBURGER LOGIC ================= */
-.nav-toggle { display: none; }
-.hamburger { display: none; cursor: pointer; flex-direction: column; gap: 4px; z-index: 2001; }
-.hamburger span { width: 22px; height: 2px; background: var(--system-text); transition: 0.3s; }
-.mobile-menu-actions { display: none; }
+.nav-bag-icon {
+    width: 20px;
+    height: 20px;
+}
 
-@media (max-width: 992px) {
-    .hamburger { display: flex; }
-    .desktop-only { display: none; }
+.nav-bag-count {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 900;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    padding: 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg);
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.nav-bag-count.visible { opacity: 1; }
 
+/* Hamburger (hidden on desktop) */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+    z-index: 3100;
+}
+.hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+    transform-origin: center;
+}
+
+/* Open state → X */
+.hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile backdrop */
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 2900;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.nav-backdrop.visible { opacity: 1; }
+
+/* ---------- 4. RESPONSIVE NAV ---------- */
+@media (max-width: 900px) {
+    .nav-container { padding: 0 20px; }
+
+    .hamburger-btn { display: flex; }
+
+    /* Hide centre links by default on mobile; slide in from right */
     .nav-links {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 100%;
+        width: min(320px, 80vw);
         height: 100vh;
-        background: var(--system-bg);
+        background: var(--bg);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 30px;
+        gap: 32px;
         transform: none;
-        left: auto;
+        left: unset;
+        z-index: 3050;
+        border-left: 1px solid var(--border);
+        transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: -20px 0 60px rgba(0,0,0,0.12);
     }
 
-    .nav-links a { font-size: 24px; opacity: 1; }
-    .mobile-menu-actions { display: block; margin-top: 20px; border-top: 1px solid var(--system-border); padding-top: 20px; }
-    .nav-toggle:checked ~ .nav-links { right: 0; }
+    .nav-links.open { right: 0; }
+    .nav-links a { font-size: 18px; letter-spacing: 1px; opacity: 0.7; }
+    .nav-links a:hover { opacity: 1; }
 
-    /* Hamburger to X Animation */
-    .nav-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .nav-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
-    .nav-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-backdrop { display: block; }
 }
 
-/* ================= 4. BUTTON SYSTEM ================= */
-.bag-btn {
-    background: var(--system-text);
-    color: var(--system-bg);
-    border: none;
-    padding: 10px 24px;
-    border-radius: 24px;
-    font-size: 11px;
+/* ---------- 5. BODY OFFSET ---------- */
+/* Pages that load the shared nav need top padding */
+body { padding-top: var(--nav-h); }
+
+/* Skate page uses its own fixed nav so no offset */
+body.no-nav-offset { padding-top: 0; }
+
+/* ---------- 6. CART SIDEBAR ---------- */
+#cartSidebar {
+    position: fixed;
+    top: 0;
+    right: -440px;
+    width: 400px;
+    max-width: 100vw;
+    height: 100vh;
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    z-index: 4000;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -10px 0 50px rgba(0,0,0,0.12);
+}
+#cartSidebar.open { right: 0; }
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+}
+.cart-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.close-btn {
+    background: var(--bg2) !important;
+    border: none !important;
+    color: var(--text) !important;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    padding: 0 !important;
+}
+.close-btn:hover { background: var(--border) !important; }
+
+#cartItems {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+.cart-item-info h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+.cart-item-info span {
+    font-size: 12px;
+    color: var(--muted);
+}
+.remove-item {
+    background: none !important;
+    border: none !important;
+    color: var(--muted) !important;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 !important;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+.remove-item:hover { color: var(--text) !important; }
+
+.cart-footer {
+    padding: 20px 28px 28px;
+    border-top: 1px solid var(--border);
+}
+#cartTotal {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+.checkout-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--text) !important;
+    color: var(--bg) !important;
+    border: none !important;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
     font-weight: 800;
     cursor: pointer;
     text-transform: uppercase;
-    transition: 0.3s;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+}
+.checkout-btn:hover { opacity: 0.85; }
+
+.cart-summary { margin-top: 10px; }
+
+#checkoutForm {
+    margin-top: 16px;
+}
+#checkoutForm h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-.bag-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+/* ---------- 7. OVERLAY ---------- */
+#overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+    z-index: 3500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s;
 }
+#overlay.active { opacity: 1; pointer-events: all; }
 
-.btn-outline {
-    display: inline-block;
-    background: transparent !important;
-    color: var(--system-text) !important;
-    border: 1.5px solid var(--system-text) !important;
-    padding: 12px 24px;
+/* ---------- 8. LIGHTBOX ---------- */
+.lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.94);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    cursor: zoom-out;
+    backdrop-filter: blur(12px);
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+    max-width: 90vw;
+    max-height: 82vh;
+    object-fit: contain;
     border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+#lightbox-caption {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* ---------- 9. BUTTON SYSTEM ---------- */
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    padding: 11px 22px;
+    border-radius: 980px;   /* pill — Apple style */
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
+    white-space: nowrap;
+}
+.btn-outline:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 980px;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-align: center;
+    transition: opacity 0.2s, transform 0.2s;
 }
+.btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
 
-.btn-outline:hover {
-    background: var(--system-text) !important;
-    color: var(--system-bg) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+/* ---------- 10. FORM INPUTS ---------- */
+.shop-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--bg2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
 }
+.shop-input:focus { border-color: var(--accent); }
 
-/* ================= 5. UTILITIES ================= */
-#cartSidebar { z-index: 5000 !important; }
-#overlay { z-index: 4500 !important; }
-footer { position: relative; z-index: 1000; }
-
+/* ---------- 11. REVEAL ANIMATION ---------- */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(24px);
+    transition: opacity 0.9s cubic-bezier(0.2,0.8,0.2,1),
+                transform 0.9s cubic-bezier(0.2,0.8,0.2,1);
+}
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ---------- 12. SECTION UTILITIES ---------- */
+.section {
+    padding: 80px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.hero-tagline {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 16px;
+}
+footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    position: relative;
+    z-index: 100;
 }
 
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* FORCE TEST: If this doesn't show a red block on mobile, the CSS isn't loading at all */
-@media (max-width: 992px) {
-    .hamburger {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        background: rgba(255, 0, 0, 0.1); /* Temporary red tint to see the hit-box */
-    }
-    
-    .nav-links {
-        /* Ensure the links don't push the bar open on accident */
-        display: none; 
-    }
-
-    .nav-toggle:checked ~ .nav-links {
-        display: flex !important;
-        right: 0 !important;
-    }
+/* ---------- 13. MOBILE UTILITIES ---------- */
+@media (max-width: 600px) {
+    .section { padding: 60px 20px; }
+    #cartSidebar { width: 100vw; }
 }
