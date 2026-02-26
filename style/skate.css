@@ -270,3 +270,69 @@ body {
 .studio-footer { background: var(--system-card); padding: 80px 40px 40px; border-top: 1px solid var(--system-border); margin-top: 100px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
 .footer-btn-stack .btn-outline { margin-bottom: 5px; }
+/* --- MOBILE HAMBURGER SYSTEM --- */
+.nav-toggle { display: none; }
+
+.hamburger {
+    display: none; /* Hidden on desktop */
+    cursor: pointer;
+    padding: 10px;
+    z-index: 3000;
+}
+
+.hamburger span, .hamburger span::before, .hamburger span::after {
+    display: block;
+    background: var(--system-text);
+    height: 2px;
+    width: 24px;
+    position: relative;
+    transition: 0.3s;
+}
+
+.hamburger span::before { content: ''; position: absolute; top: -8px; }
+.hamburger span::after { content: ''; position: absolute; bottom: -8px; }
+
+/* --- RESPONSIVE OVERRIDES --- */
+@media (max-width: 868px) {
+    .hamburger { display: block; }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Hidden by default */
+        width: 80%;
+        height: 100vh;
+        background: var(--system-card);
+        backdrop-filter: blur(30px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s cubic-bezier(0.2, 1, 0.2, 1);
+        z-index: 2500;
+        border-left: 1px solid var(--system-border);
+    }
+
+    .nav-toggle:checked ~ .nav-links { right: 0; }
+
+    /* Hamburger to 'X' animation */
+    .nav-toggle:checked ~ .hamburger span { background: transparent; }
+    .nav-toggle:checked ~ .hamburger span::before { transform: rotate(45deg); top: 0; }
+    .nav-toggle:checked ~ .hamburger span::after { transform: rotate(-45deg); bottom: 0; }
+
+    /* --- MAP MOBILE FIX --- */
+    .event-glass-card {
+        grid-template-columns: 1fr; /* Stack panes on mobile */
+    }
+
+    .event-map-pane {
+        min-height: 350px; /* Forces height on mobile */
+        height: 350px;
+        width: 100%;
+        position: relative;
+    }
+
+    .map-placeholder, .map-placeholder iframe {
+        height: 100% !important;
+        min-height: 100%;
+    }
+}
