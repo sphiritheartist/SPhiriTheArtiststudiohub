@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Dashboard — SPhiriTheArtist</title>
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div id="dashShell" style="display:none">
+    <div class="ds-layout">
+        <aside class="ds-sidebar">
+            <div class="ds-user-block" id="dsUserBlock"></div>
+            <nav id="dsNav"></nav>
+            <button class="ds-signout" id="dsSignOut">Sign Out</button>
+        </aside>
+        <main class="ds-main">
+            <div id="dsContent"></div>
+        </main>
+    </div>
+</div>
+
+<div id="dashGate" style="display:none">
+    <div class="gate-inner">
+        <p class="gate-eyebrow">Studio Access</p>
+        <h1 class="gate-title">Sign in to<br>your Studio</h1>
+        <p class="gate-sub">Your orders, products, and studio tools — all in one place.</p>
+        <button class="gate-btn" id="gateSignIn">Sign In / Create Account</button>
+    </div>
+</div>
+
+<!-- Product Modal -->
+<div class="ds-modal-backdrop" id="productModalBackdrop">
+    <div class="ds-modal">
+        <div class="ds-modal-header">
+            <h3 id="productModalTitle">Add Product</h3>
+            <button class="ds-modal-close" id="productModalClose">✕</button>
+        </div>
+        <div class="ds-modal-body">
+            <input type="hidden" id="pmProductId" />
+            <div class="ds-form-grid">
+                <div class="ds-field"><label>Product ID <span class="req">*</span></label><input class="ds-input" id="pmId" placeholder="e.g. SKT-003" /></div>
+                <div class="ds-field"><label>Name <span class="req">*</span></label><input class="ds-input" id="pmName" placeholder="Product name" /></div>
+                <div class="ds-field"><label>Price (R) <span class="req">*</span></label><input class="ds-input" id="pmPrice" type="number" placeholder="0" /></div>
+                <div class="ds-field"><label>Category</label><select class="ds-input" id="pmCategory"><option value="skate">Skate</option><option value="apparel">Apparel</option><option value="accessories">Accessories</option><option value="tech">Tech</option><option value="3d">3D Studio</option></select></div>
+                <div class="ds-field"><label>Stock</label><input class="ds-input" id="pmStock" type="number" placeholder="0" /></div>
+                <div class="ds-field"><label>Partner / Owner</label><select class="ds-input" id="pmPartner"></select></div>
+                <div class="ds-field ds-field-full"><label>Image URL</label><input class="ds-input" id="pmImg" placeholder="https://..." /></div>
+                <div class="ds-field ds-field-full"><label>Description</label><textarea class="ds-input ds-textarea" id="pmDesc" placeholder="Short description…"></textarea></div>
+            </div>
+        </div>
+        <div class="ds-modal-footer">
+            <button class="ds-btn ds-btn-ghost" id="productModalCancel">Cancel</button>
+            <button class="ds-btn ds-btn-primary" id="productModalSave">Save Product</button>
+        </div>
+    </div>
+</div>
+
+<!-- Partner Modal -->
+<div class="ds-modal-backdrop" id="partnerModalBackdrop">
+    <div class="ds-modal">
+        <div class="ds-modal-header">
+            <h3 id="partnerModalTitle">Add Partner</h3>
+            <button class="ds-modal-close" id="partnerModalClose">✕</button>
+        </div>
+        <div class="ds-modal-body">
+            <input type="hidden" id="paPartnerId" />
+            <div class="ds-form-grid">
+                <div class="ds-field"><label>Name <span class="req">*</span></label><input class="ds-input" id="paName" placeholder="Partner / brand name" /></div>
+                <div class="ds-field"><label>Email <span class="req">*</span></label><input class="ds-input" id="paEmail" type="email" placeholder="partner@brand.com" /></div>
+                <div class="ds-field ds-field-full"><label>Brand / Notes</label><input class="ds-input" id="paBrand" placeholder="e.g. Handles decks and footwear" /></div>
+            </div>
+        </div>
+        <div class="ds-modal-footer">
+            <button class="ds-btn ds-btn-ghost" id="partnerModalCancel">Cancel</button>
+            <button class="ds-btn ds-btn-primary" id="partnerModalSave">Save Partner</button>
+        </div>
+    </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="ds-modal-backdrop" id="orderModalBackdrop">
+    <div class="ds-modal">
+        <div class="ds-modal-header">
+            <h3 id="orderModalTitle">Order Detail</h3>
+            <button class="ds-modal-close" id="orderModalClose">✕</button>
+        </div>
+        <div class="ds-modal-body" id="orderModalBody"></div>
+        <div class="ds-modal-footer" id="orderModalFooter"></div>
+    </div>
+</div>
+
+<!-- Confirm Delete -->
+<div class="ds-modal-backdrop" id="confirmBackdrop">
+    <div class="ds-modal ds-modal-sm">
+        <div class="ds-modal-header">
+            <h3>Confirm Delete</h3>
+            <button class="ds-modal-close" id="confirmClose">✕</button>
+        </div>
+        <div class="ds-modal-body"><p id="confirmMsg" style="font-size:14px;line-height:1.6;color:var(--muted)"></p></div>
+        <div class="ds-modal-footer">
+            <button class="ds-btn ds-btn-ghost" id="confirmCancel">Cancel</button>
+            <button class="ds-btn ds-btn-danger" id="confirmOk">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div id="dsToast"></div>
+
+<script src="script/global.js"></script>
+<script src="script/auth.js"></script>
+<script>
+const ORDER_STATES = ['Placed','Confirmed','Processing','Dispatched','In Transit','Delivered','Disputed'];
+const STATE_COLORS = {Placed:'#86868b',Confirmed:'#0071e3',Processing:'#ff9f0a',Dispatched:'#30d158','In Transit':'#32ade6',Delivered:'#34c759',Disputed:'#ff453a'};
+
+const NAV_CFG = {
+    admin:   [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'All Orders'},{id:'products',icon:'▣',label:'Products'},{id:'partners',icon:'◉',label:'Partners'},{id:'users',icon:'⊙',label:'Users'}],
+    partner: [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'Order Manifest'},{id:'products',icon:'▣',label:'My Products'}],
+    client:  [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'My Orders'},{id:'account',icon:'◐',label:'Account'}],
+};
+
+let PARTNERS = [
+    {id:'p_sk8',   name:'SK8 Partner',  email:'partner@sphiri.com', brand:'Decks, griptape & apparel'},
+    {id:'p_studio',name:'Studio',        email:'admin@sphiri.com',   brand:'In-house 3D & prints'},
+];
+let PRODUCTS = [
+    {id:'SKT-001',name:'Pro Deck 8.25"',price:850, category:'skate',  stock:12, partnerId:'p_sk8',    img:'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=400',desc:'Street-ready 8.25" maple deck.'},
+    {id:'SKT-002',name:'Griptape Set',  price:120, category:'skate',  stock:34, partnerId:'p_sk8',    img:'',desc:'Full sheet black griptape.'},
+    {id:'APP-001',name:'Studio Hoodie', price:1200,category:'apparel',stock:8,  partnerId:'p_sk8',    img:'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',desc:'Studio-branded heavyweight hoodie.'},
+    {id:'3D-001', name:'3D Print — PLA',price:150, category:'3d',     stock:999,partnerId:'p_studio', img:'',desc:'Custom PLA print, per 50g.'},
+];
+let ORDERS = [
+    {id:'ORD-001',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],  total:850, status:'In Transit', history:[{s:'Placed',d:'2026-02-20'},{s:'Confirmed',d:'2026-02-21'},{s:'Processing',d:'2026-02-22'},{s:'Dispatched',d:'2026-02-23'},{s:'In Transit',d:'2026-02-24'}],createdAt:'2026-02-20',updatedAt:'2026-02-24'},
+    {id:'ORD-002',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'APP-001',name:'Studio Hoodie', price:1200,qty:1}],total:1200,status:'Processing', history:[{s:'Placed',d:'2026-02-25'},{s:'Confirmed',d:'2026-02-25'},{s:'Processing',d:'2026-02-26'}],createdAt:'2026-02-25',updatedAt:'2026-02-26'},
+    {id:'ORD-003',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'SKT-002',name:'Griptape Set',price:120,qty:2},{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],total:1090,status:'Placed',history:[{s:'Placed',d:'2026-02-27'}],createdAt:'2026-02-27',updatedAt:'2026-02-27'},
+    {id:'ORD-004',clientId:'u_other', clientName:'Jordan M.',  clientEmail:'jordan@test.com',  items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],  total:850, status:'Delivered',  history:[{s:'Placed',d:'2026-02-15'},{s:'Confirmed',d:'2026-02-16'},{s:'Processing',d:'2026-02-17'},{s:'Dispatched',d:'2026-02-19'},{s:'In Transit',d:'2026-02-20'},{s:'Delivered',d:'2026-02-22'}],createdAt:'2026-02-15',updatedAt:'2026-02-22'},
+    {id:'ORD-005',clientId:'u_other', clientName:'Sam T.',     clientEmail:'sam@test.com',      items:[{id:'APP-001',name:'Studio Hoodie',price:1200,qty:1}], total:1200,status:'Disputed',   history:[{s:'Placed',d:'2026-02-18'},{s:'Confirmed',d:'2026-02-19'},{s:'Disputed',d:'2026-02-26'}],createdAt:'2026-02-18',updatedAt:'2026-02-26'},
+];
+
+let _mod = 'overview';
+
+// BOOT
+document.addEventListener('DOMContentLoaded', () => {
+    window.studioAuth.onChange(user => {
+        if (user) {
+            document.getElementById('dashGate').style.display  = 'none';
+            document.getElementById('dashShell').style.display = 'block';
+            buildSidebar(user);
+            navigate('overview');
+        } else {
+            document.getElementById('dashShell').style.display = 'none';
+            document.getElementById('dashGate').style.display  = 'flex';
+        }
+    });
+    document.getElementById('gateSignIn').addEventListener('click', () => window.studioAuth.openSignIn('Sign in to access your Studio'));
+    document.getElementById('dsSignOut').addEventListener('click', () => window.studioAuth.signOut());
+
+    // Modal close wiring
+    ['productModal','partnerModal','orderModal'].forEach(id => {
+        const bd = document.getElementById(id + 'Backdrop');
+        bd.addEventListener('click', e => { if (e.target === bd) closeModal(id+'Backdrop'); });
+        document.getElementById(id + 'Close').addEventListener('click',  () => closeModal(id+'Backdrop'));
+        const cancel = document.getElementById(id + 'Cancel');
+        if (cancel) cancel.addEventListener('click', () => closeModal(id+'Backdrop'));
+    });
+    document.getElementById('confirmClose').addEventListener('click',  () => closeModal('confirmBackdrop'));
+    document.getElementById('confirmCancel').addEventListener('click', () => closeModal('confirmBackdrop'));
+    document.getElementById('confirmBackdrop').addEventListener('click', e => { if (e.target.id === 'confirmBackdrop') closeModal('confirmBackdrop'); });
+});
+
+function buildSidebar(user) {
+    const colors = {admin:'#ff9500',partner:'#30d158',client:'#0071e3'};
+    document.getElementById('dsUserBlock').innerHTML = `
+        <div class="ds-avatar" style="background:${colors[user.role]}">${user.name[0].toUpperCase()}</div>
+        <div><div class="ds-uname">${user.name}</div><span class="ds-role-badge ds-role-${user.role}">${user.role.toUpperCase()}</span></div>
+    `;
+    document.getElementById('dsNav').innerHTML = (NAV_CFG[user.role]||NAV_CFG.client).map(n=>`
+        <button class="ds-nav-item" data-id="${n.id}" onclick="navigate('${n.id}')"><span>${n.icon}</span><span>${n.label}</span></button>
+    `).join('');
+}
+
+window.navigate = function(id) {
+    _mod = id;
+    document.querySelectorAll('.ds-nav-item').forEach(b => b.classList.toggle('active', b.dataset.id===id));
+    const c = document.getElementById('dsContent');
+    c.style.opacity='0'; c.style.transform='translateY(8px)';
+    setTimeout(() => { c.innerHTML = buildModule(id); c.style.opacity='1'; c.style.transform='translateY(0)'; }, 120);
+};
+
+function buildModule(id) {
+    const u = window.studioAuth.user;
+    if (!u) return '';
+    switch(id) {
+        case 'overview': return modOverview(u);
+        case 'orders':   return modOrders(u);
+        case 'products': return modProducts(u);
+        case 'partners': return modPartners();
+        case 'users':    return modUsers();
+        case 'account':  return modAccount(u);
+        default:         return modOverview(u);
+    }
+}
+
+// OVERVIEW
+function modOverview(u) {
+    const my  = myOrders(u);
+    const active = my.filter(o=>!['Delivered','Disputed'].includes(o.status)).length;
+    const h = new Date().getHours();
+    const greet = h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+    const roleLabel = {admin:'Studio Control',partner:'Partner Dashboard',client:'Your Studio'}[u.role];
+    const stats = u.role==='admin' ? [
+        {n:ORDERS.length,l:'Total Orders'},{n:PRODUCTS.length,l:'Products'},{n:PARTNERS.length,l:'Partners'},{n:ORDERS.filter(o=>o.status==='Disputed').length,l:'Disputes'}
+    ] : u.role==='partner' ? [
+        {n:my.length,l:'Orders w/ my items'},{n:active,l:'Pending action'},{n:myProducts(u).length,l:'My Products'}
+    ] : [
+        {n:my.length,l:'Total Orders'},{n:active,l:'Active'},{n:'R '+my.reduce((s,o)=>s+o.total,0).toLocaleString(),l:'Lifetime Spend'}
+    ];
+    return `
+        <div class="ds-hdr"><p class="ds-eyebrow">${greet}, ${u.name.split(' ')[0]}</p><h1 class="ds-title">${roleLabel}</h1></div>
+        <div class="ds-stats">${stats.map(s=>`<div class="ds-stat"><div class="ds-stat-n">${s.n}</div><div class="ds-stat-l">${s.l}</div></div>`).join('')}</div>
+        ${my.slice(0,3).length ? `
+            <div class="ds-section">
+                <div class="ds-shdr"><h2>Recent Orders</h2><button class="ds-link" onclick="navigate('orders')">View all →</button></div>
+                ${my.slice(0,3).map(o=>oRow(o,u)).join('')}
+            </div>` : `<div class="ds-empty">◎<p>No orders yet.</p></div>`}
+    `;
+}
+
+// ORDERS
+function modOrders(u) {
+    const orders = myOrders(u);
+    const canUpd = u.role !== 'client';
+    return `
+        <div class="ds-hdr" style="flex-wrap:wrap;gap:12px">
+            <div><p class="ds-eyebrow">${{admin:'Platform-wide',partner:'Orders containing your products',client:'Your purchase history'}[u.role]}</p><h1 class="ds-title">${{admin:'All Orders',partner:'Order Manifest',client:'My Orders'}[u.role]}</h1></div>
+            <div class="ds-chips">${ORDER_STATES.map(s=>`<button class="ds-chip active" data-status="${s}" onclick="toggleFilter(this)">${s}</button>`).join('')}</div>
+        </div>
+        <div id="oList">${orders.length ? orders.map(o=>oRow(o,u,canUpd)).join('') : '<div class="ds-empty">◎<p>No orders.</p></div>'}</div>
+    `;
+}
+
+function oRow(o, u, canUpd=false) {
+    const col = STATE_COLORS[o.status]||'#86868b';
+    const nexts = canUpd ? ORDER_STATES.filter(s=>s!==o.status) : [];
+    return `
+        <div class="ds-orow" data-id="${o.id}">
+            <div class="ds-omn" onclick="openOrderDetail('${o.id}')">
+                <div class="ds-oid">${o.id}</div>
+                <div class="ds-oitems">${o.items.map(i=>i.name).join(', ')}</div>
+                ${u.role!=='client'?`<div class="ds-oclient">${o.clientName} · ${o.clientEmail}</div>`:''}
+            </div>
+            <div class="ds-ometa">
+                <span class="ds-pill" style="background:${col}18;color:${col};border-color:${col}35">${o.status}</span>
+                <span class="ds-ototal">R ${o.total.toLocaleString()}</span>
+                <span class="ds-odate">${o.updatedAt}</span>
+                ${canUpd?`<select class="ds-sel" onchange="updateStatus('${o.id}',this.value);this.value=''"><option value="">Update…</option>${nexts.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>`:''}
+            </div>
+        </div>
+    `;
+}
+
+window.toggleFilter = function(btn) {
+    btn.classList.toggle('active');
+    const active = [...document.querySelectorAll('.ds-chip.active')].map(b=>b.dataset.status);
+    document.querySelectorAll('.ds-orow').forEach(r => {
+        const p = r.querySelector('.ds-pill');
+        r.style.display = active.includes(p?.textContent.trim()) ? '' : 'none';
+    });
+};
+
+window.openOrderDetail = function(orderId) {
+    const o = ORDERS.find(x=>x.id===orderId); if (!o) return;
+    const col = STATE_COLORS[o.status];
+    const u   = window.studioAuth.user;
+    const canUpd = u.role !== 'client';
+    document.getElementById('orderModalTitle').textContent = o.id;
+    document.getElementById('orderModalBody').innerHTML = `
+        <div class="od-items">
+            ${o.items.map(i=>`<div class="od-item"><span>${i.name}</span><span style="color:var(--muted);font-size:12px">×${i.qty}</span><span class="od-ip">R ${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
+            <div class="od-tot">Total <strong>R ${o.total.toLocaleString()}</strong></div>
+        </div>
+        <div class="od-tl"><h4>Timeline</h4>${o.history.map((h,i,a)=>`<div class="od-tli ${i===a.length-1?'cur':''}"><div class="od-dot" style="background:${i===a.length-1?STATE_COLORS[h.s]:'var(--border)'}"></div><div class="od-tli-info"><span>${h.s}</span><span style="color:var(--muted);font-size:11px">${h.d}</span></div></div>`).join('')}</div>
+        ${u.role!=='client'?`<div class="od-cli"><strong>Client:</strong> ${o.clientName} · ${o.clientEmail}</div>`:''}
+    `;
+    document.getElementById('orderModalFooter').innerHTML = canUpd ? `
+        <span style="font-size:12px;color:var(--muted)">Status: <strong style="color:${col}">${o.status}</strong></span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${ORDER_STATES.filter(s=>s!==o.status).map(s=>`<button class="ds-btn ds-btn-sm" style="border-color:${STATE_COLORS[s]};color:${STATE_COLORS[s]}" onclick="updateStatus('${o.id}','${s}');closeModal('orderModalBackdrop')">${s}</button>`).join('')}
+        </div>
+    ` : `<button class="ds-btn ds-btn-ghost" onclick="closeModal('orderModalBackdrop')">Close</button>`;
+    openModal('orderModalBackdrop');
+};
+
+window.updateStatus = function(orderId, newStatus) {
+    if (!newStatus) return;
+    const o = ORDERS.find(x=>x.id===orderId); if (!o) return;
+    o.status = newStatus; o.updatedAt = new Date().toISOString().split('T')[0];
+    o.history.push({s:newStatus, d:o.updatedAt});
+    showToast(`${orderId} → ${newStatus}`);
+    navigate(_mod);
+};
+
+// PRODUCTS
+function modProducts(u) {
+    const prods = myProducts(u);
+    const isAdmin = u.role==='admin';
+    return `
+        <div class="ds-hdr"><div><p class="ds-eyebrow">${isAdmin?'All platform products':'Products you manage'}</p><h1 class="ds-title">${isAdmin?'Products':'My Products'}</h1></div><button class="ds-btn ds-btn-primary" onclick="openProductModal()">+ Add Product</button></div>
+        <div class="ds-twrap"><table class="ds-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th>${isAdmin?'<th>Partner</th>':''}<th>Actions</th></tr></thead>
+            <tbody>${prods.map(p=>{
+                const pa = PARTNERS.find(x=>x.id===p.partnerId);
+                return `<tr>
+                    <td class="mono">${p.id}</td><td><strong>${p.name}</strong></td>
+                    <td><span class="ds-tag">${p.category}</span></td>
+                    <td>R ${p.price.toLocaleString()}</td>
+                    <td class="${p.stock<10?'text-warn':''}">${p.stock}</td>
+                    ${isAdmin?`<td>${pa?.name||'—'}</td>`:''}
+                    <td class="ds-tact">
+                        <button class="ds-btn ds-btn-sm" onclick="openProductModal('${p.id}')">Edit</button>
+                        <button class="ds-btn ds-btn-sm ds-btn-do" onclick="confirmDelete('product','${p.id}','${p.name}')">Delete</button>
+                    </td>
+                </tr>`;
+            }).join('')}${prods.length===0?`<tr><td colspan="7" class="ds-te">No products yet.</td></tr>`:''}</tbody>
+        </table></div>
+    `;
+}
+
+window.openProductModal = function(pid) {
+    const p = pid ? PRODUCTS.find(x=>x.id===pid) : null;
+    const u = window.studioAuth.user;
+    document.getElementById('productModalTitle').textContent = p ? 'Edit Product' : 'Add Product';
+    document.getElementById('pmProductId').value = pid||'';
+    document.getElementById('pmId').value        = p?.id||''; document.getElementById('pmId').disabled = !!pid;
+    document.getElementById('pmName').value      = p?.name||'';
+    document.getElementById('pmPrice').value     = p?.price||'';
+    document.getElementById('pmCategory').value  = p?.category||'skate';
+    document.getElementById('pmImg').value       = p?.img||'';
+    document.getElementById('pmDesc').value      = p?.desc||'';
+    document.getElementById('pmStock').value     = p?.stock||'';
+    const pSel = document.getElementById('pmPartner');
+    pSel.innerHTML = u.role==='admin'
+        ? PARTNERS.map(pa=>`<option value="${pa.id}" ${p?.partnerId===pa.id?'selected':''}>${pa.name}</option>`).join('')
+        : `<option value="${PARTNERS.find(pa=>pa.email===u.email)?.id||''}">Me (${u.name})</option>`;
+    document.getElementById('productModalSave').onclick = saveProduct;
+    openModal('productModalBackdrop');
+};
+
+function saveProduct() {
+    const pid   = document.getElementById('pmProductId').value;
+    const id    = document.getElementById('pmId').value.trim();
+    const name  = document.getElementById('pmName').value.trim();
+    const price = parseFloat(document.getElementById('pmPrice').value);
+    if (!id||!name||isNaN(price)) { showToast('ID, name & price required.', true); return; }
+    const data = { id, name, price, category:document.getElementById('pmCategory').value, img:document.getElementById('pmImg').value.trim(), desc:document.getElementById('pmDesc').value.trim(), stock:parseInt(document.getElementById('pmStock').value)||0, partnerId:document.getElementById('pmPartner').value };
+    if (pid) {
+        const idx = PRODUCTS.findIndex(x=>x.id===pid);
+        if (idx>-1) PRODUCTS[idx] = {...PRODUCTS[idx],...data};
+        showToast(`${name} updated.`);
+    } else {
+        if (PRODUCTS.find(x=>x.id===id)) { showToast('Product ID already exists.', true); return; }
+        PRODUCTS.push(data);
+        showToast(`${name} added.`);
+    }
+    closeModal('productModalBackdrop');
+    navigate('products');
+}
+
+// PARTNERS
+function modPartners() {
+    return `
+        <div class="ds-hdr"><div><p class="ds-eyebrow">Studio partner network</p><h1 class="ds-title">Partners</h1></div><button class="ds-btn ds-btn-primary" onclick="openPartnerModal()">+ Add Partner</button></div>
+        <div class="ds-twrap"><table class="ds-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Brand / Notes</th><th>Products</th><th>Actions</th></tr></thead>
+            <tbody>${PARTNERS.map(pa=>`<tr>
+                <td><strong>${pa.name}</strong></td><td class="mono">${pa.email}</td>
+                <td style="color:var(--muted);font-size:13px">${pa.brand}</td>
+                <td>${PRODUCTS.filter(p=>p.partnerId===pa.id).length}</td>
+                <td class="ds-tact">
+                    <button class="ds-btn ds-btn-sm" onclick="openPartnerModal('${pa.id}')">Edit</button>
+                    <button class="ds-btn ds-btn-sm ds-btn-do" onclick="confirmDelete('partner','${pa.id}','${pa.name}')">Delete</button>
+                </td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+    `;
+}
+
+window.openPartnerModal = function(paid) {
+    const pa = paid ? PARTNERS.find(x=>x.id===paid) : null;
+    document.getElementById('partnerModalTitle').textContent = pa ? 'Edit Partner' : 'Add Partner';
+    document.getElementById('paPartnerId').value = paid||'';
+    document.getElementById('paName').value      = pa?.name||'';
+    document.getElementById('paEmail').value     = pa?.email||'';
+    document.getElementById('paBrand').value     = pa?.brand||'';
+    document.getElementById('partnerModalSave').onclick = savePartner;
+    openModal('partnerModalBackdrop');
+};
+
+function savePartner() {
+    const paid  = document.getElementById('paPartnerId').value;
+    const name  = document.getElementById('paName').value.trim();
+    const email = document.getElementById('paEmail').value.trim();
+    const brand = document.getElementById('paBrand').value.trim();
+    if (!name||!email) { showToast('Name and email required.', true); return; }
+    if (paid) {
+        const pa = PARTNERS.find(x=>x.id===paid);
+        if (pa) Object.assign(pa, {name,email,brand});
+        showToast(`${name} updated.`);
+    } else {
+        PARTNERS.push({id:'p_'+Date.now().toString(36), name, email, brand, productIds:[]});
+        showToast(`${name} added as Partner.`);
+    }
+    closeModal('partnerModalBackdrop');
+    navigate('partners');
+}
+
+// USERS
+function modUsers() {
+    const users = [{uid:'u_admin',name:'Studio Admin',email:'admin@sphiri.com',role:'admin'},{uid:'u_partner',name:'SK8 Partner',email:'partner@sphiri.com',role:'partner'},{uid:'u_client',name:'Alex Client',email:'client@sphiri.com',role:'client'}];
+    return `
+        <div class="ds-hdr"><div><p class="ds-eyebrow">Identity & access</p><h1 class="ds-title">Users</h1></div></div>
+        <div class="ds-twrap"><table class="ds-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Change Role</th></tr></thead>
+            <tbody>${users.map(u=>`<tr>
+                <td><strong>${u.name}</strong></td><td class="mono">${u.email}</td>
+                <td><span class="ds-role-badge ds-role-${u.role}">${u.role.toUpperCase()}</span></td>
+                <td><select class="ds-sel" onchange="showToast('Role → '+this.value+' (demo only)')">
+                    ${['admin','partner','client'].map(r=>`<option value="${r}" ${r===u.role?'selected':''}>${r}</option>`).join('')}
+                </select></td>
+            </tr>`).join('')}</tbody>
+        </table></div>
+    `;
+}
+
+// ACCOUNT
+function modAccount(u) {
+    return `
+        <div class="ds-hdr"><p class="ds-eyebrow">Your identity</p><h1 class="ds-title">Account</h1></div>
+        <div class="ds-acct">
+            <div class="ds-field"><label>Display Name</label><input class="ds-input" value="${u.name}" readonly /></div>
+            <div class="ds-field"><label>Email</label><input class="ds-input" value="${u.email}" readonly /></div>
+            <div class="ds-field"><label>Role</label><input class="ds-input" value="${u.role.toUpperCase()}" readonly /></div>
+            <button class="ds-btn ds-btn-do" style="margin-top:8px" onclick="window.studioAuth.signOut()">Sign Out</button>
+        </div>
+    `;
+}
+
+// CONFIRM DELETE
+window.confirmDelete = function(type, id, name) {
+    document.getElementById('confirmMsg').textContent = `Delete "${name}"? This cannot be undone.`;
+    document.getElementById('confirmOk').onclick = () => {
+        if (type==='product') { const i=PRODUCTS.findIndex(p=>p.id===id); if(i>-1) PRODUCTS.splice(i,1); navigate('products'); }
+        if (type==='partner') { const i=PARTNERS.findIndex(p=>p.id===id); if(i>-1) PARTNERS.splice(i,1); navigate('partners'); }
+        showToast(`${name} deleted.`);
+        closeModal('confirmBackdrop');
+    };
+    openModal('confirmBackdrop');
+};
+
+// HELPERS
+function myOrders(u) {
+    if (u.role==='admin') return ORDERS;
+    if (u.role==='partner') {
+        const pa = PARTNERS.find(x=>x.email===u.email);
+        const ids = pa ? PRODUCTS.filter(p=>p.partnerId===pa.id).map(p=>p.id) : [];
+        return ORDERS.filter(o=>o.items.some(i=>ids.includes(i.id)));
+    }
+    return ORDERS.filter(o=>o.clientId===u.uid);
+}
+function myProducts(u) {
+    if (u.role==='admin') return PRODUCTS;
+    const pa = PARTNERS.find(x=>x.email===u.email);
+    return pa ? PRODUCTS.filter(p=>p.partnerId===pa.id) : [];
+}
+function openModal(id) { const el=document.getElementById(id); if(!el) return; el.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { const el=document.getElementById(id); if(!el) return; el.classList.remove('open'); document.body.style.overflow=''; }
+window.closeModal = closeModal;
+function showToast(msg, err=false) {
+    const t=document.getElementById('dsToast');
+    t.textContent=msg; t.style.background=err?'#ff453a':'var(--text)'; t.style.color=err?'#fff':'var(--bg)';
+    t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3000);
+}
+window.showToast = showToast;
+</script>
+
+<style>
+#dashGate { min-height:calc(100vh - var(--nav-h,64px)); align-items:center; justify-content:center; padding:40px 20px; flex-direction:column; }
+.gate-inner { text-align:center; max-width:400px; }
+.gate-eyebrow { font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:12px; }
+.gate-title { font-size:clamp(2rem,6vw,3.5rem);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:16px; }
+.gate-sub { font-size:15px;color:var(--muted);margin-bottom:28px;line-height:1.6; }
+.gate-btn { background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:980px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;transition:opacity 0.2s,transform 0.2s; }
+.gate-btn:hover { opacity:.85;transform:translateY(-1px); }
+
+.ds-layout { display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - var(--nav-h,64px)); }
+.ds-sidebar { background:var(--bg2);border-right:1px solid var(--border);padding:16px 10px;display:flex;flex-direction:column;gap:4px;position:sticky;top:var(--nav-h,64px);height:calc(100vh - var(--nav-h,64px));overflow-y:auto; }
+.ds-user-block { display:flex;align-items:center;gap:10px;padding:10px 8px 14px;border-bottom:1px solid var(--border);margin-bottom:8px; }
+.ds-avatar { width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:900;flex-shrink:0; }
+.ds-uname { font-size:13px;font-weight:700; }
+.ds-role-badge { font-size:9px;font-weight:900;letter-spacing:.8px;padding:2px 7px;border-radius:20px;display:inline-block;margin-top:2px; }
+.ds-role-admin   { background:rgba(255,149,0,.15);color:#ff9500; }
+.ds-role-partner { background:rgba(48,209,88,.15);color:#30d158; }
+.ds-role-client  { background:rgba(0,113,227,.12);color:#0071e3; }
+.ds-nav-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;border:none;background:none;color:var(--muted);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;width:100%;text-align:left;transition:all .2s; }
+.ds-nav-item:hover { background:var(--border);color:var(--text); }
+.ds-nav-item.active { background:var(--accent);color:#fff; }
+.ds-signout { margin-top:auto;padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s; }
+.ds-signout:hover { border-color:var(--text);color:var(--text); }
+
+.ds-main { padding:32px 40px; }
+#dsContent { transition:opacity .15s,transform .15s;max-width:960px; }
+
+.ds-hdr { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;gap:14px;flex-wrap:wrap; }
+.ds-eyebrow { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);margin-bottom:5px; }
+.ds-title { font-size:clamp(20px,4vw,30px);font-weight:900;letter-spacing:-1px;line-height:1; }
+.ds-stats { display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:28px; }
+.ds-stat { background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:16px 14px; }
+.ds-stat-n { font-size:22px;font-weight:900;letter-spacing:-.5px; }
+.ds-stat-l { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-top:3px; }
+.ds-section { margin-bottom:24px; }
+.ds-shdr { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
+.ds-shdr h2 { font-size:14px;font-weight:800; }
+.ds-link { background:none;border:none;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit; }
+.ds-empty { text-align:center;padding:50px 20px;color:var(--muted);font-size:26px;display:flex;flex-direction:column;align-items:center;gap:8px; }
+.ds-empty p { font-size:13px;font-weight:600; }
+
+.ds-orow { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;flex-wrap:wrap;transition:border-color .2s; }
+.ds-orow:hover { border-color:var(--accent); }
+.ds-omn { flex:1;min-width:0;cursor:pointer; }
+.ds-oid { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted); }
+.ds-oitems { font-size:14px;font-weight:600;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.ds-oclient { font-size:11px;color:var(--muted); }
+.ds-ometa { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
+.ds-ototal { font-size:14px;font-weight:800; }
+.ds-odate { font-size:11px;color:var(--muted); }
+.ds-pill { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 8px;border-radius:20px;border:1px solid;white-space:nowrap; }
+.ds-chips { display:flex;flex-wrap:wrap;gap:5px; }
+.ds-chip { padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:none;color:var(--muted);font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;opacity:.4;transition:all .2s; }
+.ds-chip.active { opacity:1;color:var(--text);border-color:var(--text); }
+
+.ds-twrap { overflow-x:auto;border-radius:13px;border:1px solid var(--border); }
+.ds-table { width:100%;border-collapse:collapse;font-size:13px; }
+.ds-table th { padding:10px 14px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg2); }
+.ds-table td { padding:11px 14px;border-bottom:1px solid var(--border); }
+.ds-table tr:last-child td { border-bottom:none; }
+.ds-table tr:hover td { background:var(--bg2); }
+.ds-tact { display:flex;gap:6px;flex-wrap:wrap; }
+.ds-te { text-align:center;color:var(--muted);padding:40px!important; }
+.mono { font-family:monospace;font-size:12px; }
+.text-warn { color:#ff453a;font-weight:700; }
+.ds-tag { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;background:var(--border);border-radius:6px; }
+
+.ds-btn { display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap; }
+.ds-btn:hover { border-color:var(--accent);color:var(--accent); }
+.ds-btn-primary { background:var(--accent);color:#fff;border-color:var(--accent); }
+.ds-btn-primary:hover { opacity:.85;color:#fff; }
+.ds-btn-ghost { color:var(--muted); }
+.ds-btn-sm { padding:5px 11px;font-size:11px; }
+.ds-btn-do { border-color:#ff453a;color:#ff453a; }
+.ds-btn-do:hover { background:#ff453a;color:#fff;border-color:#ff453a; }
+.ds-btn-danger { background:#ff453a;color:#fff;border-color:#ff453a; }
+.ds-btn-danger:hover { opacity:.85; }
+.ds-sel { padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;outline:none; }
+
+.ds-modal-backdrop { position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:6000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s; }
+.ds-modal-backdrop.open { opacity:1;pointer-events:all; }
+.ds-modal { background:var(--bg);border:1px solid var(--border);border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(12px) scale(.97);transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+.ds-modal-backdrop.open .ds-modal { transform:none; }
+.ds-modal-sm { max-width:400px; }
+.ds-modal-header { display:flex;justify-content:space-between;align-items:center;padding:18px 22px 14px;border-bottom:1px solid var(--border); }
+.ds-modal-header h3 { font-size:16px;font-weight:800; }
+.ds-modal-close { background:var(--bg2);border:none;width:26px;height:26px;border-radius:50%;font-size:11px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center; }
+.ds-modal-close:hover { background:var(--border); }
+.ds-modal-body { padding:18px 22px; }
+.ds-modal-footer { display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap; }
+.ds-form-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.ds-field { display:flex;flex-direction:column;gap:4px; }
+.ds-field-full { grid-column:1/-1; }
+.ds-field label { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted); }
+.req { color:#ff453a; }
+.ds-input { padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;width:100%; }
+.ds-input:focus { border-color:var(--accent); }
+.ds-input[readonly] { opacity:.6;cursor:default; }
+.ds-textarea { min-height:68px;resize:vertical; }
+.ds-acct { max-width:380px;display:flex;flex-direction:column;gap:12px; }
+
+.od-items { margin-bottom:18px; }
+.od-item { display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px; }
+.od-item:last-child { border-bottom:none; }
+.od-item span:first-child { flex:1; }
+.od-ip { font-weight:800; }
+.od-tot { display:flex;justify-content:space-between;padding:8px 0 0;font-size:13px;color:var(--muted); }
+.od-tot strong { color:var(--text);font-size:15px; }
+.od-tl h4 { font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px; }
+.od-tli { display:flex;align-items:center;gap:10px;padding:5px 0; }
+.od-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
+.od-tli-info { display:flex;gap:12px;align-items:center;font-size:13px;font-weight:600; }
+.od-tli.cur .od-tli-info span:first-child { font-weight:900; }
+.od-cli { margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted); }
+.od-cli strong { color:var(--text); }
+
+#dsToast { position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:9999;white-space:nowrap;pointer-events:none; }
+#dsToast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+
+@media(max-width:700px) {
+    .ds-layout { grid-template-columns:1fr; }
+    .ds-sidebar { display:none; }
+    .ds-main { padding:18px 14px; }
+    .ds-form-grid { grid-template-columns:1fr; }
+    .ds-stats { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</body>
+</html>

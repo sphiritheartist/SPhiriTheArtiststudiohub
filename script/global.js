@@ -26,6 +26,7 @@ async function loadComponents() {
             navEl.innerHTML = html;
             initNav();
             initBagBtn();
+            initAccountBtn();
             highlightActiveLink();
         } catch(e) { console.warn('nav load failed', e); }
     }
@@ -87,6 +88,30 @@ function initBagBtn() {
     if (btn) {
         btn.addEventListener('click', openCart);
     }
+}
+
+// ---------- NAV ACCOUNT BUTTON ----------
+function initAccountBtn() {
+    const btn = document.getElementById('navAccountBtn');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+        // Evaluate studioAuth at click time, not wire time
+        const auth = window.studioAuth;
+        if (!auth) {
+            // auth.js not ready — dashboard will handle the gate
+            window.location.href = 'dashboard.html';
+            return;
+        }
+        if (auth.isSignedIn) {
+            window.location.href = 'dashboard.html';
+        } else {
+            auth.openSignIn();
+        }
+    });
+
+    // Signal to auth.js that nav DOM exists and icon can be rendered
+    window.dispatchEvent(new CustomEvent('navReady'));
 }
 
 // ---------- CART OPEN / CLOSE ----------
