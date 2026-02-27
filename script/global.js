@@ -221,10 +221,21 @@ function initCartSidebar() {
 
 // ---------- REVEAL OBSERVER ----------
 function initReveal() {
+    const els = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    }, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
+    els.forEach(el => obs.observe(el));
+
+    // Fallback: activate any .reveal elements already in viewport after a short delay
+    setTimeout(() => {
+        els.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.classList.add('active');
+            }
+        });
+    }, 300);
 }
 
 // ---------- BOOT ----------
