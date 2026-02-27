@@ -201,9 +201,10 @@ a   { color: inherit; }
     backdrop-filter: blur(4px);
     z-index: 2900;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.3s;
 }
-.nav-backdrop.visible { opacity: 1; }
+.nav-backdrop.visible { opacity: 1; pointer-events: all; }
 
 /* ---------- 4. RESPONSIVE NAV ---------- */
 @media (max-width: 900px) {
