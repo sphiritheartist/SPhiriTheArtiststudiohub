@@ -477,12 +477,10 @@ body.no-nav-offset { padding-top: 0; }
     transform: translateY(24px);
     transition: opacity 0.9s cubic-bezier(0.2,0.8,0.2,1),
                 transform 0.9s cubic-bezier(0.2,0.8,0.2,1);
-    pointer-events: none;
 }
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto;
 }
 
 /* ---------- 12. SECTION UTILITIES ---------- */
