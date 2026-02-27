@@ -1,273 +1,683 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WESORTED | SKATE HUB</title>
+    <title>WeSorted | Skate Hub</title>
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/menu-system.css">
     <link rel="stylesheet" href="style/skate.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body class="theme-dark">
+<body>
+<div id="nav-placeholder"></div>
+<main>
 
-    <nav class="studio-nav">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">WESORTED<span>.</span></a>
-            
-            <button class="hamburger" id="menuBtn">
-                <span></span>
-            </button>
+  <!-- Hero -->
+  <section style="text-align:center;padding:80px 40px 0;">
+      <span class="hero-tagline">SPhiri × WeSorted</span>
+      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">SKATE<br>HUB</h1>
+      <p class="reveal" style="font-size:16px;color:var(--muted);max-width:440px;margin:0 auto;">Decks, completes, trucks, footwear and apparel. Built for the street.</p>
+  </section>
 
-            <div class="nav-links" id="navLinks">
-                <a href="#events" class="theme-link">Events</a>
-                <a href="#pro-shop" class="theme-link">Shop</a>
-                <a href="#community" class="theme-link">Community</a>
-                <a href="index.html" class="theme-link">Sphiri</a>
-            </div>
+  <!-- Events -->
+  <section id="events" class="section reveal">
+      <span class="hero-tagline">Next Up</span>
+      <div class="skate-event-card">
+          <div class="skate-event-info">
+              <div class="skate-event-date">
+                  <span class="skate-event-day">24</span>
+                  <span class="skate-event-month">OCT</span>
+              </div>
+              <div>
+                  <span class="hero-tagline" style="margin-bottom:8px;display:block;">Studio Session 004</span>
+                  <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;letter-spacing:-1px;line-height:1.05;margin-bottom:12px;">OPEN MIC &amp;<br>STREET SKATE</h2>
+                  <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px;">An evening of hardware testing and local street culture. Come through.</p>
+                  <button class="btn-outline">RSVP for Entry</button>
+              </div>
+          </div>
+          <div class="skate-event-map">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.123!2d28.058!3d-26.204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzE0LjQiUyAyOMKwMDMnMjguOCJF!5e0!3m2!1sen!2sza!4v1600000000000" allowfullscreen loading="lazy" title="WeSorted Studio location"></iframe>
+              <div class="skate-map-overlay">
+                  <strong>WESORTED STUDIO</strong>
+                  <span>Unit 4B, Maboneng District</span>
+              </div>
+          </div>
+      </div>
+  </section>
 
-            <div class="nav-actions">
-                <button class="theme-toggle-btn" id="themeToggle">🌓</button>
-                <div class="bag-icon-wrapper">
-                    <svg class="bag-icon" viewBox="0 0 24 24">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
-                    </svg>
-                    <span class="bag-count">0</span>
-                </div>
-            </div>
+  <!-- Category Rail -->
+  <div id="shop" class="cat-rail">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="decks">🛹 Decks</button>
+      <button class="cat-tab" data-cat="completes">✅ Completes</button>
+      <button class="cat-tab" data-cat="trucks">⚙️ Trucks</button>
+      <button class="cat-tab" data-cat="footwear">👟 Footwear</button>
+      <button class="cat-tab" data-cat="apparel">👕 Apparel</button>
+      <button class="cat-tab" data-cat="accessories">🔧 Grip &amp; Tools</button>
+  </div>
+
+  <!-- Billboard -->
+  <div class="cat-billboard">
+      <div class="billboard-slide active" data-cat="all">
+          <img src="https://images.unsplash.com/photo-1520156584141-247ff189b751?q=80&w=1600" alt="All">
+          <div class="billboard-text"><h2>Full Drop</h2><p>Everything in the Skate Hub. All brands, all builds.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="decks">
+          <img src="https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=1600" alt="Decks">
+          <div class="billboard-text"><h2>Decks</h2><p>Globe, Primitive, Element and more. All shapes, all sizes.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="completes">
+          <img src="https://images.unsplash.com/photo-1520256862855-398228c41684?q=80&w=1600" alt="Completes">
+          <div class="billboard-text"><h2>Completes</h2><p>Ready to ride straight out the box.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="trucks">
+          <img src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?q=80&w=1600" alt="Trucks">
+          <div class="billboard-text"><h2>Trucks</h2><p>Independent, Thunder, Ace. Lock in your grind.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="footwear">
+          <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1600" alt="Footwear">
+          <div class="billboard-text"><h2>Footwear</h2><p>Nike SB, Etnies, Vans. Built for the street.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="apparel">
+          <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=1600" alt="Apparel">
+          <div class="billboard-text"><h2>Apparel</h2><p>WeSorted exclusives and skate-ready fits.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="accessories">
+          <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1600" alt="Accessories">
+          <div class="billboard-text"><h2>Grip &amp; Tools</h2><p>Bearings, grip tape, hardware — the essentials.</p></div>
+      </div>
+  </div>
+
+  <div class="menu-search-bar"><input type="text" id="skateSearch" placeholder="Search skate hardware…"></div>
+
+  <!-- Upsell strip -->
+  <div class="upsell-strip" id="upsellStrip">
+      <p class="upsell-label">⚡ Goes well with</p>
+      <div class="upsell-row" id="upsellRow"></div>
+  </div>
+
+  <!-- Grid -->
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- DECKS -->
+    <div class="menu-card" data-cat="decks" data-id="globe-neon"
+         data-name="Globe Goodstock 8.125 Neon"
+         data-price="1199"
+         data-img="https://www.boardhub.co.za/cdn/shop/files/GlobeGoodstock8.125DeckNeonGreen.jpg"
+         data-desc="The Globe Goodstock is a workhorse street deck. Pressed from 7-ply North American maple with a mid concave and medium wheelbase."
+         data-specs='[["Width","8.125 inches"],["Shape","Street"],["Concave","Mid"],["Material","7-Ply Maple"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/files/GlobeGoodstock8.125DeckNeonGreen.jpg" alt="Globe Neon Deck" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
         </div>
-    </nav>
-
-    <header class="skate-hero-bg">
-        <div class="hero-overlay">
-            <div class="studio-hero">
-                <span class="hero-tag">SPhiri x Wesorted</span>
-                <h1>STREET SESSIONS</h1>
-                <div class="hero-btns">
-                    <a href="#pro-shop" class="btn-outline">Shop Hardware</a>
-                    <a href="#events" class="btn-outline">View Events</a>
+        <div class="card-body">
+            <span class="card-cat-tag">Globe · Deck</span>
+            <h3>Globe Goodstock 8.125</h3>
+            <p class="card-sub">Neon Green · Mid concave · 7-ply</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,199</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="globe-neon">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="globe-neon">🛒</button>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <main class="studio-page-wrapper">
-        
-        <section id="events" class="event-studio-wrapper">
-            <div class="event-glass-card">
-                <div class="event-info-pane">
-                    <div class="event-date-badge">
-                        <span class="day">24</span>
-                        <span class="month">OCT</span>
-                    </div>
-                    <div class="event-details">
-                        <span class="event-tag">Studio Session 004</span>
-                        <h2>OPEN MIC & <br>STREET SKATE</h2>
-                        <p>An evening of hardware testing and local street culture.</p>
-                        <button class="btn-outline">RSVP for Entry</button>
-                    </div>
-                </div>
-                <div class="event-map-pane">
-                    <div class="map-placeholder">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.123!2d28.058!3d-26.204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzE0LjQiUyAyOMKwMDMnMjguOCJF!5e0!3m2!1sen!2sza!4v1600000000000" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                    <div class="map-overlay">
-                        <div class="location-meta">
-                            <strong>WESORTED STUDIO</strong>
-                            <span>Unit 4B, Maboneng District</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="shop-utilities">
-            <div class="util-container">
-                <div class="search-bar">
-                    <input type="text" id="productSearch" placeholder="Search hardware, apparel, tools...">
-                </div>
-                <div class="filter-pills">
-                    <button class="filter-btn active" data-category="all">All</button>
-                    <button class="filter-btn" data-category="decks">Decks</button>
-                    <button class="filter-btn" data-category="trucks">Trucks</button> 
-                    <button class="filter-btn" data-category="apparel">Apparel</button> 
-                    <button class="filter-btn" data-category="footwear">Footwear</button>
-                    <button class="filter-btn" data-category="accessories">Grip & Tools</button> </div>
-            </div>
-        </section>
-
-        <section id="pro-shop" class="skate-grid">
-            <div class="skate-item" data-category="decks">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeGoodstock8.125DeckNeonGreen.jpg" alt="Globe Neon"></div>
-                <div class="skate-info">
-                    <h3>Globe Goodstock 8.125" (Neon)</h3>
-                    <p class="skate-price">R 1,199</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Neon Deck" data-price="1199">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="decks">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/PrimitiveDirtyPDeck.jpg" alt="Primitive Deck"></div>
-                <div class="skate-info">
-                    <h3>Primitive Dirty P 8.25"</h3>
-                    <p class="skate-price">R 1,450</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Primitive Deck" data-price="1450">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="decks">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementSection8.0Deck.jpg" alt="Element Deck"></div>
-                <div class="skate-info">
-                    <h3>Element Section 8.0" Classic</h3>
-                    <p class="skate-price">R 1,299</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Element Deck" data-price="1299">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item" data-category="completes">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/GlobeG1StackComplete.jpg" alt="Globe Complete"></div>
-                <div class="skate-info">
-                    <h3>Globe G1 Stack Complete</h3>
-                    <p class="skate-price">R 2,499</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Globe Complete" data-price="2499">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="completes">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/ElementHatchedComplete.jpg" alt="Element Complete"></div>
-                <div class="skate-info">
-                    <h3>Element Hatched 8.0" Complete</h3>
-                    <p class="skate-price">R 2,200</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Element Complete" data-price="2200">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="completes">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/AlmostLogoComplete.jpg" alt="Almost Complete"></div>
-                <div class="skate-info">
-                    <h3>Almost Logo Fade 7.75"</h3>
-                    <p class="skate-price">R 2,150</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Almost Complete" data-price="2150">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item" data-category="footwear">
-                <div class="skate-img-container"><img src="https://images.tshirthell.com/shoes/nikesb_dunk_low_black.jpg" alt="Nike SB"></div>
-                <div class="skate-info">
-                    <h3>Nike SB Dunk Low Pro</h3>
-                    <p class="skate-price">R 2,299</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Dunk" data-price="2299">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="footwear">
-                <div class="skate-img-container"><img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800" alt="SB Janoski"></div>
-                <div class="skate-info">
-                    <h3>Nike SB Stefan Janoski OG</h3>
-                    <p class="skate-price">R 1,899</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Nike SB Janoski" data-price="1899">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="footwear">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/files/EtniesJoslinVulcWhiteNavy.jpg" alt="Etnies"></div>
-                <div class="skate-info">
-                    <h3>Etnies Joslin (Studio Navy)</h3>
-                    <p class="skate-price">R 1,750</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Etnies Joslin" data-price="1750">Add to Bag</button>
-                </div>
-            </div>
-
-            <div class="skate-item" data-category="accessories">
-                <div class="skate-img-container"><img src="https://www.vans.co.za/media/catalog/product/v/a/vans-classic-patch-trucker-black.jpg" alt="Vans Cap"></div>
-                <div class="skate-info">
-                    <h3>Vans Classic Patch Trucker</h3>
-                    <p class="skate-price">R 499</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Vans Trucker Cap" data-price="499">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="accessories">
-                <div class="skate-img-container"><img src="https://www.boardhub.co.za/cdn/shop/products/BonesRedsBearings.jpg" alt="Bones Reds"></div>
-                <div class="skate-info">
-                    <h3>Bones Reds Bearings</h3>
-                    <p class="skate-price">R 450</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Bones Reds" data-price="450">Add to Bag</button>
-                </div>
-            </div>
-            <div class="skate-item" data-category="accessories">
-                <div class="skate-img-container"><img src="https://skateshack.co.za/wp-content/uploads/2022/01/IMG_7009-scaled.jpg" alt="Hardware"></div>
-                <div class="skate-info">
-                    <h3>WeSorted Studio Hardware</h3>
-                    <p class="skate-price">R 100</p>
-                    <button class="btn-outline small add-to-cart-btn" data-name="Studio Hardware" data-price="100">Add to Bag</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="community" class="community-thread">
-            <div class="thread-header">
-                <h2>Community Feed</h2>
-                <div class="chat-composer">
-                    <textarea id="user-comment-input" placeholder="What's happening in the streets?"></textarea>
-                    <div class="composer-actions">
-                        <div class="media-uploads">
-                            <label class="media-btn">📷<input type="file" id="image-input" accept="image/*" hidden></label>
-                            <label class="media-btn">🎥<input type="file" id="video-input" accept="video/*" hidden></label>
-                            <button class="media-btn" id="vn-record-btn">🎤</button>
-                            <span id="recording-status" style="color: #ff4b4b; font-size: 10px; display: none; font-weight: 800;">REC...</span>
-                        </div>
-                        <button class="btn-outline small" id="submit-post-btn">Post Thread</button>
-                    </div>
-                    <div id="media-preview-container"></div>
-                </div>
-            </div>
-
-            <div id="comment-list-container">
-                </div>
-        </section>
-    </main>
-
-    <footer class="studio-footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-column brand-col">
-                    <a href="#" class="nav-logo">WE<span>SORTED</span></a>
-                    <p>Elevating street culture through tech and hardware.</p>
-                </div>
-                
-                <div class="footer-column">
-                    <h4>Navigation</h4>
-                    <div class="footer-btn-stack">
-                        <a href="#events" class="btn-outline small">Events</a>
-                        <a href="#pro-shop" class="btn-outline small">Shop</a>
-                        <a href="#community" class="btn-outline small">Community</a>
-                    </div>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Connect</h4>
-                    <div class="footer-btn-stack">
-                        <a href="index.html" class="btn-outline small">Sphiri Main</a>
-                        <p class="location-text">Unit 4B, Maboneng District</p>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2026 WESORTED. Managed by SPhiri Studio.</p>
-            </div>
-        </div>
-    </footer>
-
-    <div class="cart-active-overlay" id="cart-blur"></div>
-
-    <div id="cart-overlay" style="position:fixed; top:0; right:-400px; width:100%; max-width:400px; height:100vh; background:var(--system-card); z-index:3000; transition:0.4s ease; border-left:1px solid var(--system-border); padding:40px; display:flex; flex-direction:column;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h2 style="font-weight:900; margin:0;">YOUR BAG</h2>
-            <button id="close-cart" style="background:none; border:none; color:var(--system-text); cursor:pointer; font-size:24px;">×</button>
-        </div>
-        <div id="cart-items-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:20px;">
-            </div>
-        <div style="padding-top:20px; border-top:1px solid var(--system-border);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:800;">
-                <span>TOTAL</span>
-                <span id="cart-total">R 0</span>
-            </div>
-            <button class="btn-outline" style="width:100%; background:var(--we-green); color:#000; border:none;">Checkout</button>
         </div>
     </div>
 
-    <script src="script/skate.js"></script>
+    <div class="menu-card" data-cat="decks" data-id="primitive-dirty"
+         data-name="Primitive Dirty P 8.25"
+         data-price="1450"
+         data-img="https://www.boardhub.co.za/cdn/shop/products/PrimitiveDirtyPDeck.jpg"
+         data-desc="Primitive Skateboarding's signature Dirty P deck. Full 7-ply North American maple with steep concave built for technical tricks."
+         data-specs='[["Width","8.25 inches"],["Shape","Street"],["Concave","Steep"],["Material","7-Ply Maple"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/products/PrimitiveDirtyPDeck.jpg" alt="Primitive Deck" loading="lazy">
+            <span class="stock-badge in">Hot</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Primitive · Deck</span>
+            <h3>Primitive Dirty P 8.25</h3>
+            <p class="card-sub">Steep concave · Technical street</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="primitive-dirty">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="primitive-dirty">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="decks" data-id="element-section"
+         data-name="Element Section 8.0"
+         data-price="1299"
+         data-img="https://www.boardhub.co.za/cdn/shop/files/ElementSection8.0Deck.jpg"
+         data-desc="Element's Section deck brings eco-conscious construction with FSC certified maple. Classic street shape with mellow concave — a great all-rounder."
+         data-specs='[["Width","8.0 inches"],["Shape","Street"],["Concave","Mellow"],["Material","FSC Maple"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/files/ElementSection8.0Deck.jpg" alt="Element Deck" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Element · Deck</span>
+            <h3>Element Section 8.0</h3>
+            <p class="card-sub">FSC maple · Mellow concave</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,299</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="element-section">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="element-section">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPLETES -->
+    <div class="menu-card" data-cat="completes" data-id="globe-g1"
+         data-name="Globe G1 Stack Complete"
+         data-price="2499"
+         data-img="https://www.boardhub.co.za/cdn/shop/files/GlobeG1StackComplete.jpg"
+         data-desc="The Globe G1 Stack comes fully assembled and ready to ride. Great for beginners — quality components, no assembly required."
+         data-specs='[["Deck","7.75 inches"],["Trucks","Globe"],["Wheels","54mm"],["Bearings","Abec-7"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/files/GlobeG1StackComplete.jpg" alt="Globe Complete" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Globe · Complete</span>
+            <h3>Globe G1 Stack Complete</h3>
+            <p class="card-sub">Ready to ride · Great for beginners</p>
+            <div class="card-footer">
+                <span class="card-price">R 2,499</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="globe-g1">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="globe-g1">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="completes" data-id="element-hatched"
+         data-name="Element Hatched 8.0 Complete"
+         data-price="2200"
+         data-img="https://www.boardhub.co.za/cdn/shop/files/ElementHatchedComplete.jpg"
+         data-desc="Element Hatched complete comes pre-built with quality components. FSC-certified deck with Independent trucks — a solid intermediate setup."
+         data-specs='[["Deck","8.0 inches"],["Trucks","Independent"],["Wheels","52mm"],["Bearings","Abec-5"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/files/ElementHatchedComplete.jpg" alt="Element Complete" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Element · Complete</span>
+            <h3>Element Hatched 8.0</h3>
+            <p class="card-sub">FSC maple · Independent trucks</p>
+            <div class="card-footer">
+                <span class="card-price">R 2,200</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="element-hatched">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="element-hatched">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRUCKS -->
+    <div class="menu-card" data-cat="trucks" data-id="indy-149"
+         data-name="Independent 149 Stage 11"
+         data-price="980"
+         data-img="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?q=80&w=700"
+         data-desc="The Independent Stage 11 is the gold standard in skateboarding trucks. Hollow kingpin and axle reduce weight without sacrificing strength."
+         data-specs='[["Size","149mm"],["Stage","11"],["Kingpin","Hollow"],["Axle","Hollow"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?q=80&w=700" alt="Independent Trucks" loading="lazy">
+            <span class="stock-badge in">Best Seller</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Independent · Trucks</span>
+            <h3>Independent 149 Stage 11</h3>
+            <p class="card-sub">Hollow · Lightweight · Pair</p>
+            <div class="card-footer">
+                <span class="card-price">R 980</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="indy-149">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="indy-149">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="trucks" data-id="thunder-148"
+         data-name="Thunder 148 Hollow Lights"
+         data-price="890"
+         data-img="https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=700"
+         data-desc="Thunder Hollow Lights are built for the tech skater. High-response turning geometry with hollow construction for a lighter, more responsive ride."
+         data-specs='[["Size","148mm"],["Profile","High"],["Weight","Ultralight"],["Turn","Responsive"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=700" alt="Thunder Trucks" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Thunder · Trucks</span>
+            <h3>Thunder 148 Hollow Lights</h3>
+            <p class="card-sub">Ultralight · High profile · Pair</p>
+            <div class="card-footer">
+                <span class="card-price">R 890</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="thunder-148">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="thunder-148">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTWEAR -->
+    <div class="menu-card" data-cat="footwear" data-id="nike-sb-dunk"
+         data-name="Nike SB Dunk Low Pro"
+         data-price="2299"
+         data-img="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=700"
+         data-desc="The Nike SB Dunk Low Pro. Padded collar, Zoom Air cushioning and sticky rubber outsole for maximum board feel."
+         data-specs='[["Profile","Low"],["Cushion","Zoom Air"],["Sole","Rubber"],["Sizes","UK 5-12"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=700" alt="Nike SB Dunk" loading="lazy">
+            <span class="stock-badge low">Low Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Nike SB · Footwear</span>
+            <h3>Nike SB Dunk Low Pro</h3>
+            <p class="card-sub">Zoom Air · Sticky rubber sole</p>
+            <div class="card-footer">
+                <span class="card-price">R 2,299</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="nike-sb-dunk">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="nike-sb-dunk">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="footwear" data-id="etnies-joslin"
+         data-name="Etnies Joslin Vulc"
+         data-price="1350"
+         data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=700"
+         data-desc="The Etnies Joslin — slim, low-profile vulc with reinforced toe cap and STI Evolution Foam footbed. Designed with Chris Joslin for technical street skating."
+         data-specs='[["Profile","Low vulc"],["Toe","Reinforced"],["Footbed","STI Foam"],["Sizes","UK 5-12"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=700" alt="Etnies Joslin" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Etnies · Footwear</span>
+            <h3>Etnies Joslin Vulc</h3>
+            <p class="card-sub">Slim vulc · STI foam footbed</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,350</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="etnies-joslin">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="etnies-joslin">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPAREL -->
+    <div class="menu-card" data-cat="apparel" data-id="ws-logo-tee"
+         data-name="WeSorted Logo Tee"
+         data-price="450"
+         data-img="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=700"
+         data-desc="Heavyweight 240gsm WeSorted logo tee. Screen printed chest graphic in WeSorted green. Relaxed fit, pre-shrunk, double-stitched seams."
+         data-specs='[["Weight","240gsm"],["Fit","Relaxed"],["Print","Screen print"],["Sizes","S-3XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=700" alt="WeSorted Tee" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">WeSorted · Tee</span>
+            <h3>WeSorted Logo Tee</h3>
+            <p class="card-sub">240gsm · Screen printed · Relaxed</p>
+            <div class="card-footer">
+                <span class="card-price">R 450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ws-logo-tee">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ws-logo-tee">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="apparel" data-id="ws-hood"
+         data-name="WeSorted Street Hoodie"
+         data-price="850"
+         data-img="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=700"
+         data-desc="400gsm French terry hoodie in WeSorted colourway. Embroidered back logo, kangaroo pocket, ribbed cuffs. Built for sessions, worn after."
+         data-specs='[["Weight","400gsm"],["Material","French Terry"],["Fit","Oversized"],["Sizes","S-3XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=700" alt="WeSorted Hoodie" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">WeSorted · Hoodie</span>
+            <h3>WeSorted Street Hoodie</h3>
+            <p class="card-sub">400gsm · Embroidered · Oversized</p>
+            <div class="card-footer">
+                <span class="card-price">R 850</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ws-hood">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ws-hood">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCESSORIES -->
+    <div class="menu-card" data-cat="accessories" data-id="bones-reds"
+         data-name="Bones Reds Bearings"
+         data-price="450"
+         data-img="https://www.boardhub.co.za/cdn/shop/products/BonesRedsBearings.jpg"
+         data-desc="Bones Reds are the world's most popular skateboard bearings. High-speed steel balls, single contact rubber shield, pre-lubed. Fits all standard wheels."
+         data-specs='[["Type","Steel"],["Shield","Single rubber"],["Rating","Abec-7 equiv"],["Pack","8 bearings"]]'>
+        <div class="card-img-wrap">
+            <img src="https://www.boardhub.co.za/cdn/shop/products/BonesRedsBearings.jpg" alt="Bones Reds" loading="lazy">
+            <span class="stock-badge in">Best Seller</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bones · Bearings</span>
+            <h3>Bones Reds Bearings</h3>
+            <p class="card-sub">8-pack · Pre-lubed · All wheels</p>
+            <div class="card-footer">
+                <span class="card-price">R 450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bones-reds">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bones-reds">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="accessories" data-id="mob-grip"
+         data-name="MOB Grip Tape Black"
+         data-price="180"
+         data-img="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=700"
+         data-desc="MOB Grip is the most popular grip tape in skateboarding. Extra coarse silicon carbide grit, strong adhesive, perforated for bubble-free application."
+         data-specs='[["Grit","Extra coarse"],["Backing","Strong adhesive"],["Size","9x33 inch"],["Colour","Black"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=700" alt="MOB Grip" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">MOB · Grip Tape</span>
+            <h3>MOB Grip Tape Black</h3>
+            <p class="card-sub">Extra coarse · Perforated · 9x33</p>
+            <div class="card-footer">
+                <span class="card-price">R 180</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="mob-grip">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="mob-grip">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="accessories" data-id="ws-hardware"
+         data-name="WeSorted Hardware Set"
+         data-price="100"
+         data-img="https://skateshack.co.za/wp-content/uploads/2022/01/IMG_7009-scaled.jpg"
+         data-desc="WeSorted branded hardware. 8 bolts and 8 nuts, 1 inch Phillips head. Works with all standard skateboard trucks and decks."
+         data-specs='[["Length","1 inch"],["Head","Phillips"],["Count","8 bolts + 8 nuts"],["Colour","Black/Silver"]]'>
+        <div class="card-img-wrap">
+            <img src="https://skateshack.co.za/wp-content/uploads/2022/01/IMG_7009-scaled.jpg" alt="WeSorted Hardware" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">WeSorted · Hardware</span>
+            <h3>WeSorted Hardware Set</h3>
+            <p class="card-sub">1 inch Phillips · 8 bolts + 8 nuts</p>
+            <div class="card-footer">
+                <span class="card-price">R 100</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ws-hardware">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ws-hardware">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div><!-- /menu-grid -->
+
+  <!-- Community -->
+  <section id="community" class="section">
+      <span class="hero-tagline">The Feed</span>
+      <h2 class="reveal" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-1.5px;margin-bottom:32px;">Community Thread</h2>
+
+      <!-- Composer -->
+      <div class="skate-composer">
+          <textarea id="user-comment-input" placeholder="What's happening in the streets?"></textarea>
+          <div class="skate-composer-actions">
+              <div class="skate-media-btns">
+                  <label class="skate-media-btn" title="Attach photo">
+                      📷<input type="file" id="image-input" accept="image/*" hidden>
+                  </label>
+                  <label class="skate-media-btn" title="Attach video">
+                      🎥<input type="file" id="video-input" accept="video/*" hidden>
+                  </label>
+                  <button class="skate-media-btn" id="vn-record-btn" title="Voice note">🎤</button>
+                  <span id="recording-status" style="display:none;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:1px;">● REC</span>
+              </div>
+              <button class="btn-outline" id="submit-post-btn">Post Thread</button>
+          </div>
+          <div id="media-preview-container"></div>
+      </div>
+
+      <!-- Feed -->
+      <div id="comment-list-container"></div>
+  </section>
+
+</main>
+
+<div id="footer-placeholder"></div>
+
+<!-- Order Tray -->
+<div class="order-tray">
+    <div class="tray-bar" id="trayBar">
+        <span class="tray-count" id="trayCount">0</span>
+        <span class="tray-label">View Order</span>
+        <span class="tray-total" id="trayTotal">R 0</span>
+        <span class="tray-arrow">▲</span>
+    </div>
+</div>
+
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-header">
+        <h3>Your Bag</h3>
+        <button class="cart-panel-close" id="cartPanelClose">×</button>
+    </div>
+    <div class="cart-panel-items" id="cartPanelItems"></div>
+    <div class="cart-panel-footer">
+        <div class="cart-total-row"><span>Total</span><span id="cartPanelTotal">R 0</span></div>
+        <button class="checkout-cta">Checkout →</button>
+    </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-modal-backdrop" id="checkoutModalBackdrop"></div>
+    <div class="checkout-modal-box">
+        <div class="checkout-drag-pill"></div>
+        <div class="checkout-modal-header">
+            <h3>Checkout</h3>
+            <button class="checkout-modal-close" id="checkoutModalClose">×</button>
+        </div>
+        <div id="checkoutFormView">
+            <div class="checkout-order-summary">
+                <div class="checkout-summary-title">Your Order</div>
+                <div id="checkoutSummaryLines"></div>
+            </div>
+            <div class="checkout-method">
+                <span class="checkout-method-label">Fulfilment</span>
+                <div class="method-toggle">
+                    <button class="method-btn active" data-method="pickup">🏪 Pickup</button>
+                    <button class="method-btn" data-method="delivery">🚚 Delivery</button>
+                </div>
+            </div>
+            <div class="checkout-fields">
+                <div class="checkout-field"><label>Full Name</label><input id="checkoutName" type="text" placeholder="Your name" autocomplete="name"></div>
+                <div class="checkout-field"><label>Email or WhatsApp</label><input id="checkoutEmail" type="text" placeholder="For order confirmation" autocomplete="email"></div>
+                <div class="checkout-field"><label>Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Size, colour, anything special…"></textarea></div>
+                <div class="checkout-address-fields" id="addressFields">
+                    <div class="checkout-field"><label>Street Address</label><input id="checkoutAddress" type="text" placeholder="123 Street Rd" autocomplete="street-address"></div>
+                    <div class="checkout-field"><label>City</label><input id="checkoutCity" type="text" placeholder="Johannesburg" autocomplete="address-level2"></div>
+                </div>
+            </div>
+            <button class="place-order-btn" id="placeOrderBtn">Place Order →</button>
+        </div>
+        <div class="checkout-confirm" id="checkoutConfirm">
+            <div class="confirm-icon">🎉</div>
+            <div class="confirm-title">Order Placed!</div>
+            <p class="confirm-sub">Thanks — we will confirm your order via email or WhatsApp shortly.</p>
+            <div class="confirm-order-num" id="confirmOrderNum">Order # —</div>
+            <button class="confirm-done-btn" id="confirmDoneBtn">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
+<div class="product-modal" id="productModal">
+    <div class="product-modal-backdrop" id="modalBackdrop"></div>
+    <div class="product-modal-box">
+        <button class="modal-close-btn" id="modalCloseBtn">×</button>
+        <img class="modal-img" id="modalImg" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modalName"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+            <p class="modal-desc" id="modalDesc"></p>
+            <div class="modal-specs-grid" id="modalSpecs"></div>
+            <button class="modal-add-btn" id="modalAddBtn">Add to Bag</button>
+        </div>
+    </div>
+</div>
+
+<script src="script/global.js"></script>
+<script src="script/menu-system.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.initMenuSystem({
+        searchId: 'skateSearch',
+        upsells: {
+            decks:       ['bones-reds', 'mob-grip', 'ws-hardware'],
+            completes:   ['bones-reds', 'mob-grip'],
+            trucks:      ['ws-hardware', 'bones-reds'],
+            footwear:    ['mob-grip', 'ws-logo-tee'],
+            apparel:     ['ws-logo-tee', 'ws-hood'],
+            accessories: ['bones-reds', 'mob-grip'],
+        }
+    });
+
+    /* ── COMMUNITY FEED ── */
+    var postBtn      = document.getElementById('submit-post-btn');
+    var commentInput = document.getElementById('user-comment-input');
+    var previewEl    = document.getElementById('media-preview-container');
+    var feed         = document.getElementById('comment-list-container');
+    var imageIn      = document.getElementById('image-input');
+    var videoIn      = document.getElementById('video-input');
+    var recordBtn    = document.getElementById('vn-record-btn');
+    var recStatus    = document.getElementById('recording-status');
+
+    // Seed posts
+    var seedPosts = [
+        { user: 'skate_za',    initials: 'SZ', time: '2h ago',  text: 'New Primitive just dropped at WeSorted. Steep concave is proper — exactly what I needed for switch heels.' },
+        { user: 'maboneng_sk', initials: 'MB', time: '5h ago',  text: 'Session 004 RSVP is open. Last one was packed. Come early.' },
+        { user: 'boardhub_jb', initials: 'BJ', time: '1d ago',  text: 'Bones Reds on a fresh setup. Night and day difference from stock bearings. Worth every rand.' },
+    ];
+    seedPosts.forEach(function(p) { appendPost(p.user, p.initials, p.time, p.text, ''); });
+
+    // Media preview
+    [imageIn, videoIn].forEach(function(input) {
+        if (!input) return;
+        input.addEventListener('change', function() {
+            var file = input.files[0];
+            if (!file || !previewEl) return;
+            var url = URL.createObjectURL(file);
+            previewEl.innerHTML = '';
+            var el = file.type.startsWith('image/') ? document.createElement('img') : document.createElement('video');
+            if (!file.type.startsWith('image/')) el.controls = true;
+            el.src = url;
+            el.className = 'skate-post-media';
+            previewEl.appendChild(el);
+        });
+    });
+
+    // Voice note
+    var mediaRecorder, audioChunks = [];
+    if (recordBtn) {
+        recordBtn.addEventListener('click', async function() {
+            if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                try {
+                    var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+                    mediaRecorder.onstop = function() {
+                        var blob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                        var url  = URL.createObjectURL(blob);
+                        if (previewEl) previewEl.innerHTML = '<audio controls src="' + url + '" class="skate-post-media"></audio>';
+                    };
+                    mediaRecorder.start();
+                    if (recStatus) recStatus.style.display = 'inline';
+                    recordBtn.textContent = '🛑';
+                } catch(e) { console.warn('Mic denied', e); }
+            } else {
+                mediaRecorder.stop();
+                if (recStatus) recStatus.style.display = 'none';
+                recordBtn.textContent = '🎤';
+            }
+        });
+    }
+
+    // Submit post
+    if (postBtn && feed) {
+        postBtn.addEventListener('click', function() {
+            var text      = commentInput ? commentInput.value.trim() : '';
+            var mediaHtml = previewEl ? previewEl.innerHTML : '';
+            if (!text && !mediaHtml) return;
+            appendPost('@You', 'U', 'Just now', text, mediaHtml);
+            if (commentInput) commentInput.value = '';
+            if (previewEl)    previewEl.innerHTML = '';
+        });
+    }
+
+    function appendPost(user, initials, time, text, mediaHtml) {
+        if (!feed) return;
+        var post = document.createElement('div');
+        post.className = 'skate-thread-post';
+        post.innerHTML =
+            '<div class="skate-avatar">' + initials + '</div>' +
+            '<div class="skate-post-body">' +
+                '<div class="skate-post-meta"><strong>' + user + '</strong><span>' + time + '</span></div>' +
+                (text ? '<p class="skate-post-text">' + text + '</p>' : '') +
+                (mediaHtml ? '<div class="skate-post-media-wrap">' + mediaHtml + '</div>' : '') +
+                '<div class="skate-post-actions">' +
+                    '<button class="skate-action-btn like-btn">▲ <span>0</span></button>' +
+                    '<button class="skate-action-btn dislike-btn">▼ <span>0</span></button>' +
+                    '<button class="skate-action-btn">Reply</button>' +
+                '</div>' +
+            '</div>';
+
+        var lBtn = post.querySelector('.like-btn');
+        var dBtn = post.querySelector('.dislike-btn');
+        lBtn.onclick = function() {
+            lBtn.classList.toggle('active-like');
+            dBtn.classList.remove('active-dislike');
+            lBtn.querySelector('span').textContent = lBtn.classList.contains('active-like') ? '1' : '0';
+            dBtn.querySelector('span').textContent = '0';
+        };
+        dBtn.onclick = function() {
+            dBtn.classList.toggle('active-dislike');
+            lBtn.classList.remove('active-like');
+            dBtn.querySelector('span').textContent = dBtn.classList.contains('active-dislike') ? '1' : '0';
+            lBtn.querySelector('span').textContent = '0';
+        };
+        feed.prepend(post);
+    }
+});
+</script>
 </body>
 </html>

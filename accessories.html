@@ -5,436 +5,439 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPhiriTheArtist | Accessories</title>
     <link rel="stylesheet" href="style/main.css">
-    <style>
-/* ============ ACCESSORIES PAGE ============ */
-.acc-hero {
-    text-align: center;
-    padding: 80px 40px 60px;
-}
-.acc-hero h1 {
-    font-size: clamp(2.8rem, 8vw, 5.5rem);
-    font-weight: 900;
-    letter-spacing: -3px;
-    line-height: 0.9;
-    margin-bottom: 16px;
-}
-.acc-hero p {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 440px;
-    margin: 0 auto;
-}
-
-.shop-bar {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-}
-.search-pill {
-    width: 100%;
-    max-width: 480px;
-    position: relative;
-}
-.search-pill input {
-    width: 100%;
-    padding: 13px 20px 13px 42px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-}
-.search-pill input:focus { border-color: var(--accent); }
-.search-pill::before {
-    content: '⌕';
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: var(--muted);
-    pointer-events: none;
-}
-.filter-strip {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.filter-chip {
-    padding: 8px 18px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.filter-chip:hover { border-color: var(--text); }
-.filter-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-/* Grid */
-.acc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 100px;
-}
-
-/* Product card — consistent btn position via flex column */
-.acc-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s cubic-bezier(0.2,1,0.2,1), box-shadow 0.4s;
-}
-.acc-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-}
-.acc-img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    background: var(--bg);
-    transition: transform 0.6s ease;
-    display: block;
-}
-.acc-card:hover .acc-img { transform: scale(1.06); }
-
-.acc-body {
-    padding: 18px 18px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.acc-tag {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
-    margin-bottom: 6px;
-}
-.acc-body h3 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    letter-spacing: -0.2px;
-    line-height: 1.3;
-}
-.acc-body .acc-price {
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-.acc-add {
-    margin-top: auto;
-    width: 100%;
-    padding: 13px;
-    background: transparent;
-    border: 1.5px solid var(--text);
-    color: var(--text);
-    border-radius: 980px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-.acc-add:hover { background: var(--text); color: var(--bg); }
-
-.no-results {
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--muted);
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .acc-hero { padding: 60px 20px 40px; }
-    .shop-bar { padding: 0 20px 36px; }
-    .acc-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 60px; }
-}
-@media (max-width: 400px) {
-    .acc-grid { grid-template-columns: 1fr; }
-}
-    </style>
+    <link rel="stylesheet" href="style/menu-system.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+<div id="nav-placeholder"></div>
+<main>
 
-    <main>
-        <header class="acc-hero">
-            <span class="hero-tagline">Curated Pieces</span>
-            <h1 class="reveal">ACCESSORIES</h1>
-            <p class="reveal">Jewellery, bags, wallets and lifestyle objects for the discerning individual.</p>
-        </header>
+  <section style="text-align:center;padding:80px 40px 0;">
+      <span class="hero-tagline">Curated Pieces</span>
+      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">ACCESSORIES</h1>
+      <p class="reveal" style="font-size:16px;color:var(--muted);max-width:440px;margin:0 auto;">Jewellery, bags, wallets and lifestyle objects for the discerning individual.</p>
+  </section>
 
-        <div class="shop-bar">
-            <div class="search-pill reveal">
-                <input type="text" id="accSearch" placeholder="Search accessories…">
-            </div>
-            <div class="filter-strip reveal">
-                <button class="filter-chip active" data-filter="all">All</button>
-                <button class="filter-chip" data-filter="rings">Rings</button>
-                <button class="filter-chip" data-filter="bangles">Bangles</button>
-                <button class="filter-chip" data-filter="necklaces">Necklaces</button>
-                <button class="filter-chip" data-filter="bags">Bags</button>
-                <button class="filter-chip" data-filter="wallets">Wallets</button>
-                <button class="filter-chip" data-filter="lifestyle">Lifestyle</button>
+  <div class="cat-rail">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="rings">Rings</button>
+      <button class="cat-tab" data-cat="bangles">Bangles</button>
+      <button class="cat-tab" data-cat="necklaces">Necklaces</button>
+      <button class="cat-tab" data-cat="bags">Bags</button>
+      <button class="cat-tab" data-cat="wallets">Wallets</button>
+      <button class="cat-tab" data-cat="lifestyle">Lifestyle</button>
+  </div>
+
+  <div class="cat-billboard">
+      <div class="billboard-slide active" data-cat="all">
+          <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Full Collection</h2><p>Every curated piece in one place.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="rings">
+          <img src="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Rings</h2><p>Signet rings, stackers and statement pieces.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="bangles">
+          <img src="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Bangles</h2><p>Gold and silver cuffs.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="necklaces">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Necklaces</h2><p>Chains, pendants and layering pieces.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="bags">
+          <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Bags</h2><p>Totes, crossbodies and daypacks.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="wallets">
+          <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Wallets</h2><p>Slim card holders and bifolds.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="lifestyle">
+          <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Lifestyle</h2><p>Objects for the studio and beyond.</p></div>
+      </div>
+  </div>
+
+  <div class="menu-search-bar"><input type="text" id="accSearch" placeholder="Search accessories…"></div>
+
+  <div class="upsell-strip" id="upsellStrip">
+      <p class="upsell-label">⚡ Goes well with</p>
+      <div class="upsell-row" id="upsellRow"></div>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+
+    <div class="menu-card" data-cat="rings" data-id="ring-signet"
+         data-name="Architect's Signet Ring" data-price="1200"
+         data-img="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=800"
+         data-desc="Gold vermeil signet ring. Engraved geometric pattern. Available in sizes 6–12. Comes in a branded box."
+         data-specs='[["Material","Gold Vermeil"],["Sizes","6–12"],["Style","Signet"],["Box","Included"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=800" alt="Signet Ring" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Rings · Gold Vermeil</span>
+            <h3>Architect's Signet Ring</h3>
+            <p class="card-sub">Engraved geometric · Sizes 6–12</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,200</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ring-signet">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ring-signet">🛒</button>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="acc-grid" id="accGrid">
-
-            <!-- RINGS -->
-            <div class="acc-card reveal" data-category="rings">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=700" alt="Architect's Signet Ring">
-                <div class="acc-body">
-                    <span class="acc-tag">Rings · Gold Vermeil</span>
-                    <h3>Architect's Signet Ring</h3>
-                    <p class="acc-price">R 1,200.00</p>
-                    <button class="acc-add" data-name="Architect's Signet Ring" data-price="1200">Add to Bag +</button>
+    <div class="menu-card" data-cat="rings" data-id="ring-stack"
+         data-name="Minimal Stacking Rings ×3" data-price="780"
+         data-img="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800"
+         data-desc="Set of 3 sterling silver stacking rings. Thin band, polished finish. Wear together or individually."
+         data-specs='[["Material","Sterling Silver"],["Set","3 rings"],["Band","Thin"],["Sizes","5–11"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800" alt="Stacking Rings" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Rings · Silver</span>
+            <h3>Minimal Stacking Rings ×3</h3>
+            <p class="card-sub">Sterling silver · Set of 3</p>
+            <div class="card-footer">
+                <span class="card-price">R 780</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ring-stack">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ring-stack">🛒</button>
                 </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="rings">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=700" alt="Stacking Ring Set">
-                <div class="acc-body">
-                    <span class="acc-tag">Rings · Silver</span>
-                    <h3>Minimal Stacking Rings (×3)</h3>
-                    <p class="acc-price">R 780.00</p>
-                    <button class="acc-add" data-name="Minimal Stacking Rings ×3" data-price="780">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="rings">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=700" alt="Statement Ring">
-                <div class="acc-body">
-                    <span class="acc-tag">Rings · Statement</span>
-                    <h3>Oxidised Silver Statement Ring</h3>
-                    <p class="acc-price">R 950.00</p>
-                    <button class="acc-add" data-name="Oxidised Silver Statement Ring" data-price="950">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- BANGLES -->
-            <div class="acc-card reveal" data-category="bangles">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=700" alt="Cuff Bangle">
-                <div class="acc-body">
-                    <span class="acc-tag">Bangles · Cuff</span>
-                    <h3>Wide Gold Cuff Bangle</h3>
-                    <p class="acc-price">R 1,100.00</p>
-                    <button class="acc-add" data-name="Wide Gold Cuff Bangle" data-price="1100">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="bangles">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=700" alt="Twisted Bangle Set">
-                <div class="acc-body">
-                    <span class="acc-tag">Bangles · Set of 2</span>
-                    <h3>Twisted Silver Bangle Set</h3>
-                    <p class="acc-price">R 860.00</p>
-                    <button class="acc-add" data-name="Twisted Silver Bangle Set" data-price="860">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- NECKLACES -->
-            <div class="acc-card reveal" data-category="necklaces">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=700" alt="Chain Necklace">
-                <div class="acc-body">
-                    <span class="acc-tag">Necklaces · Chain</span>
-                    <h3>Cuban Link Chain 18"</h3>
-                    <p class="acc-price">R 1,650.00</p>
-                    <button class="acc-add" data-name="Cuban Link Chain 18"" data-price="1650">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="necklaces">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=700" alt="Pendant Necklace">
-                <div class="acc-body">
-                    <span class="acc-tag">Necklaces · Pendant</span>
-                    <h3>Geometric Pendant Necklace</h3>
-                    <p class="acc-price">R 890.00</p>
-                    <button class="acc-add" data-name="Geometric Pendant Necklace" data-price="890">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- BAGS -->
-            <div class="acc-card reveal" data-category="bags">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=700" alt="Studio Tote">
-                <div class="acc-body">
-                    <span class="acc-tag">Bags · Tote</span>
-                    <h3>Canvas Studio Tote</h3>
-                    <p class="acc-price">R 580.00</p>
-                    <button class="acc-add" data-name="Canvas Studio Tote" data-price="580">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="bags">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=700" alt="Mini Crossbody">
-                <div class="acc-body">
-                    <span class="acc-tag">Bags · Crossbody</span>
-                    <h3>Leather Mini Crossbody</h3>
-                    <p class="acc-price">R 1,400.00</p>
-                    <button class="acc-add" data-name="Leather Mini Crossbody" data-price="1400">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="bags">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=700" alt="Backpack">
-                <div class="acc-body">
-                    <span class="acc-tag">Bags · Backpack</span>
-                    <h3>Minimal Daypack 20L</h3>
-                    <p class="acc-price">R 1,950.00</p>
-                    <button class="acc-add" data-name="Minimal Daypack 20L" data-price="1950">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- WALLETS -->
-            <div class="acc-card reveal" data-category="wallets">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=700" alt="Card Holder">
-                <div class="acc-body">
-                    <span class="acc-tag">Wallets · Card Holder</span>
-                    <h3>Slim Leather Card Holder</h3>
-                    <p class="acc-price">R 450.00</p>
-                    <button class="acc-add" data-name="Slim Leather Card Holder" data-price="450">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="wallets">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1614267861476-0d129972a0f4?q=80&w=700" alt="Bifold Wallet">
-                <div class="acc-body">
-                    <span class="acc-tag">Wallets · Bifold</span>
-                    <h3>Full Grain Bifold Wallet</h3>
-                    <p class="acc-price">R 720.00</p>
-                    <button class="acc-add" data-name="Full Grain Bifold Wallet" data-price="720">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- LIFESTYLE -->
-            <div class="acc-card reveal" data-category="lifestyle">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=700" alt="Wax Seal Kit">
-                <div class="acc-body">
-                    <span class="acc-tag">Lifestyle · Stationery</span>
-                    <h3>Wax Seal Kit — SPhiri Stamp</h3>
-                    <p class="acc-price">R 320.00</p>
-                    <button class="acc-add" data-name="Wax Seal Kit — SPhiri Stamp" data-price="320">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="lifestyle">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?q=80&w=700" alt="Lighter">
-                <div class="acc-body">
-                    <span class="acc-tag">Lifestyle · Objects</span>
-                    <h3>Matte Black Slim Lighter</h3>
-                    <p class="acc-price">R 280.00</p>
-                    <button class="acc-add" data-name="Matte Black Slim Lighter" data-price="280">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="acc-card reveal" data-category="lifestyle">
-                <img class="acc-img" src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=700" alt="Scented Candle">
-                <div class="acc-body">
-                    <span class="acc-tag">Lifestyle · Home</span>
-                    <h3>Studio Signature Candle</h3>
-                    <p class="acc-price">R 380.00</p>
-                    <button class="acc-add" data-name="Studio Signature Candle" data-price="380">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="no-results" id="noResults">
-                <p style="font-size:36px;margin-bottom:10px;">🔍</p>
-                <p>Nothing found. Try a different filter.</p>
             </div>
         </div>
-    </main>
+    </div>
 
-    <div id="footer-placeholder"></div>
-    <div id="overlay"></div>
-
-    <aside id="cartSidebar">
-        <div class="cart-header" style="display:flex;justify-content:space-between;align-items:center;padding:28px 28px 20px;border-bottom:1px solid var(--border);">
-            <h3 style="font-size:18px;font-weight:800;">Your Bag</h3>
-            <button id="closeCart" class="close-btn">×</button>
+    <div class="menu-card" data-cat="bangles" data-id="bangle-gold"
+         data-name="Wide Gold Cuff Bangle" data-price="1100"
+         data-img="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=800"
+         data-desc="Wide cuff bangle in brushed gold plate. Open-ended for easy fit. Fits most wrists."
+         data-specs='[["Material","Gold plate"],["Style","Cuff"],["Width","18mm"],["Fit","Open-ended"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=800" alt="Gold Cuff" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
         </div>
-        <ul id="cartItems"></ul>
-        <div class="cart-footer" style="padding:20px 28px 28px;border-top:1px solid var(--border);">
-            <div id="cartTotal" class="cart-total" style="font-size:14px;font-weight:800;margin-bottom:14px;"></div>
-            <button id="checkoutTrigger" class="checkout-btn">Proceed to Checkout</button>
-            <div id="checkoutForm" style="display:none;margin-top:16px;">
-                <h4 style="margin-bottom:10px;font-size:13px;font-weight:700;">Shipping Details</h4>
-                <input type="email" placeholder="Email address" class="shop-input">
-                <input type="text" placeholder="Full delivery address" class="shop-input">
-                <button class="checkout-btn" style="margin-top:10px;">Pay via PayStack / EFT</button>
+        <div class="card-body">
+            <span class="card-cat-tag">Bangles · Cuff</span>
+            <h3>Wide Gold Cuff Bangle</h3>
+            <p class="card-sub">Brushed gold · Open-ended</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,100</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bangle-gold">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bangle-gold">🛒</button>
+                </div>
             </div>
         </div>
-    </aside>
+    </div>
 
-    <script src="script/global.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var chips  = document.querySelectorAll('.filter-chip');
-        var cards  = document.querySelectorAll('.acc-card');
-        var search = document.getElementById('accSearch');
-        var empty  = document.getElementById('noResults');
-        var active = 'all';
+    <div class="menu-card" data-cat="bangles" data-id="bangle-twisted"
+         data-name="Twisted Silver Bangle Set" data-price="860"
+         data-img="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=800"
+         data-desc="Set of 2 twisted sterling silver bangles. Classic rope twist pattern, polished finish."
+         data-specs='[["Material","Sterling Silver"],["Set","2 bangles"],["Pattern","Rope twist"],["Finish","Polished"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1573408301185-9519f94815b8?q=80&w=800" alt="Silver Bangles" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bangles · Set of 2</span>
+            <h3>Twisted Silver Bangle Set</h3>
+            <p class="card-sub">Sterling silver · Rope twist</p>
+            <div class="card-footer">
+                <span class="card-price">R 860</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bangle-twisted">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bangle-twisted">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function filterCards() {
-            var term = search ? search.value.toLowerCase() : '';
-            var visible = 0;
-            cards.forEach(function(c) {
-                var name = (c.querySelector('h3') || {}).textContent || '';
-                var cat  = c.dataset.category;
-                var show = (active === 'all' || cat === active) && name.toLowerCase().includes(term);
-                c.style.display = show ? '' : 'none';
-                if (show) visible++;
-            });
-            empty.style.display = visible === 0 ? 'block' : 'none';
+    <div class="menu-card" data-cat="necklaces" data-id="neck-chain"
+         data-name='Cuban Link Chain 18"' data-price="1650"
+         data-img="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800"
+         data-desc="Cuban link chain in gold-plate. 18 inch length, lobster clasp closure. Bold and stackable."
+         data-specs='[["Material","Gold plate"],["Length","18 inch"],["Closure","Lobster clasp"],["Width","6mm"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800" alt="Cuban Chain" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Necklaces · Chain</span>
+            <h3>Cuban Link Chain 18"</h3>
+            <p class="card-sub">Gold plate · 6mm width</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,650</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="neck-chain">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="neck-chain">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="necklaces" data-id="neck-pendant"
+         data-name="Geometric Pendant Necklace" data-price="890"
+         data-img="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800"
+         data-desc="Sterling silver geometric pendant on an 18 inch box chain. Architectural inspired design. Unisex."
+         data-specs='[["Material","Sterling Silver"],["Length","18 inch"],["Pendant","22mm"],["Style","Unisex"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800" alt="Pendant" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Necklaces · Pendant</span>
+            <h3>Geometric Pendant Necklace</h3>
+            <p class="card-sub">Silver · Architectural · Unisex</p>
+            <div class="card-footer">
+                <span class="card-price">R 890</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="neck-pendant">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="neck-pendant">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="bags" data-id="bag-tote"
+         data-name="Canvas Studio Tote" data-price="580"
+         data-img="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800"
+         data-desc="Heavy-duty waxed canvas tote. Inner zip pocket, reinforced handles, screen-printed logo."
+         data-specs='[["Material","Waxed canvas"],["Capacity","~20L"],["Pockets","1 inner zip"],["Handles","Reinforced"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800" alt="Tote" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bags · Tote</span>
+            <h3>Canvas Studio Tote</h3>
+            <p class="card-sub">Waxed canvas · ~20L capacity</p>
+            <div class="card-footer">
+                <span class="card-price">R 580</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bag-tote">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bag-tote">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="bags" data-id="bag-crossbody"
+         data-name="Leather Mini Crossbody" data-price="1400"
+         data-img="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=800"
+         data-desc="Genuine leather mini crossbody bag. Adjustable strap, magnetic snap closure, two internal card slots."
+         data-specs='[["Material","Genuine Leather"],["Closure","Magnetic snap"],["Strap","Adjustable"],["Slots","2 card"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=800" alt="Crossbody" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bags · Crossbody</span>
+            <h3>Leather Mini Crossbody</h3>
+            <p class="card-sub">Genuine leather · Adjustable strap</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,400</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bag-crossbody">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bag-crossbody">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="wallets" data-id="wallet-card"
+         data-name="Slim Leather Card Holder" data-price="450"
+         data-img="https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=800"
+         data-desc="Minimalist vegetable-tanned leather card holder. Holds 4–6 cards, slim profile, ages beautifully."
+         data-specs='[["Material","Veg-tanned leather"],["Cards","4–6"],["Profile","Slim"],["Style","Minimalist"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=800" alt="Card Holder" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Wallets · Card Holder</span>
+            <h3>Slim Leather Card Holder</h3>
+            <p class="card-sub">Veg-tanned · Holds 4–6 cards</p>
+            <div class="card-footer">
+                <span class="card-price">R 450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="wallet-card">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="wallet-card">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="wallets" data-id="wallet-bifold"
+         data-name="Full Grain Bifold Wallet" data-price="720"
+         data-img="https://images.unsplash.com/photo-1614267861476-0d129972a0f4?q=80&w=800"
+         data-desc="Full grain leather bifold. 8 card slots, 2 note compartments, coin pocket. Will last years."
+         data-specs='[["Material","Full Grain Leather"],["Cards","8 slots"],["Notes","2 compartments"],["Coin","Yes"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1614267861476-0d129972a0f4?q=80&w=800" alt="Bifold" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Wallets · Bifold</span>
+            <h3>Full Grain Bifold Wallet</h3>
+            <p class="card-sub">8 card slots · Coin pocket</p>
+            <div class="card-footer">
+                <span class="card-price">R 720</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="wallet-bifold">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="wallet-bifold">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="lifestyle" data-id="life-candle"
+         data-name="Studio Signature Candle" data-price="380"
+         data-img="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800"
+         data-desc="60hr burn time, hand-poured soy wax. Studio signature scent: cedar, leather and bergamot."
+         data-specs='[["Wax","Soy"],["Burn","~60 hours"],["Scent","Cedar/Leather/Bergamot"],["Weight","280g"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800" alt="Candle" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Lifestyle · Home</span>
+            <h3>Studio Signature Candle</h3>
+            <p class="card-sub">Soy wax · ~60hr burn</p>
+            <div class="card-footer">
+                <span class="card-price">R 380</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="life-candle">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="life-candle">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="lifestyle" data-id="life-wax"
+         data-name="Wax Seal Kit — SPhiri Stamp" data-price="320"
+         data-img="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=800"
+         data-desc="Wax seal kit with SPhiri Studio custom stamp. Includes stamp, wax sticks ×5, and spoon. Great for correspondence."
+         data-specs='[["Includes","Stamp + spoon"],["Wax sticks","×5"],["Diameter","25mm"],["Use","Correspondence"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=800" alt="Wax Seal" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Lifestyle · Stationery</span>
+            <h3>Wax Seal Kit — SPhiri Stamp</h3>
+            <p class="card-sub">Custom stamp · 5 wax sticks</p>
+            <div class="card-footer">
+                <span class="card-price">R 320</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="life-wax">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="life-wax">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div><!-- /menu-grid -->
+</main>
+
+<div id="footer-placeholder"></div>
+
+<div class="order-tray">
+    <div class="tray-bar" id="trayBar">
+        <span class="tray-count" id="trayCount">0</span>
+        <span class="tray-label">View Order</span>
+        <span class="tray-total" id="trayTotal">R 0</span>
+        <span class="tray-arrow">▲</span>
+    </div>
+</div>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-header"><h3>Your Bag</h3><button class="cart-panel-close" id="cartPanelClose">×</button></div>
+    <div class="cart-panel-items" id="cartPanelItems"></div>
+    <div class="cart-panel-footer">
+        <div class="cart-total-row"><span>Total</span><span id="cartPanelTotal">R 0</span></div>
+        <button class="checkout-cta">Checkout →</button>
+    </div>
+</div>
+<div class="product-modal" id="productModal">
+    <div class="product-modal-backdrop" id="modalBackdrop"></div>
+    <div class="product-modal-box">
+        <button class="modal-close-btn" id="modalCloseBtn">×</button>
+        <img class="modal-img" id="modalImg" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modalName"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+            <p class="modal-desc" id="modalDesc"></p>
+            <div class="modal-specs-grid" id="modalSpecs"></div>
+            <button class="modal-add-btn" id="modalAddBtn">Add to Bag →</button>
+        </div>
+    </div>
+</div>
+
+<script src="script/global.js"></script>
+<script src="script/menu-system.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.initMenuSystem({
+        searchId: 'accSearch',
+        upsells: {
+            rings:     ['neck-chain', 'bangle-gold'],
+            bangles:   ['ring-signet', 'neck-chain'],
+            necklaces: ['ring-stack', 'bangle-twisted'],
+            bags:      ['wallet-card', 'life-candle'],
+            wallets:   ['bag-tote', 'bag-crossbody'],
+            lifestyle: ['life-candle', 'life-wax'],
         }
-
-        chips.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                chips.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                active = btn.dataset.filter;
-                filterCards();
-            });
-        });
-
-        if (search) search.addEventListener('input', filterCards);
-
-        document.querySelectorAll('.acc-add').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var name  = btn.dataset.name;
-                var price = parseFloat(btn.dataset.price);
-                window.addToBag({ name: name, price: 'R ' + price.toFixed(2) });
-                var orig = btn.textContent;
-                btn.textContent = 'Added ✓';
-                setTimeout(function() { btn.textContent = orig; }, 1200);
-            });
-        });
     });
-    </script>
+});
+</script>
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-modal-backdrop" id="checkoutModalBackdrop"></div>
+    <div class="checkout-modal-box">
+        <div class="checkout-drag-pill"></div>
+        <div class="checkout-modal-header">
+            <h3>Checkout</h3>
+            <button class="checkout-modal-close" id="checkoutModalClose">×</button>
+        </div>
+        <div id="checkoutFormView">
+            <div class="checkout-order-summary">
+                <div class="checkout-summary-title">Your Order</div>
+                <div id="checkoutSummaryLines"></div>
+            </div>
+            <div class="checkout-method">
+                <span class="checkout-method-label">Fulfilment</span>
+                <div class="method-toggle">
+                    <button class="method-btn active" data-method="pickup">🏪 Pickup</button>
+                    <button class="method-btn" data-method="delivery">🚚 Delivery</button>
+                </div>
+            </div>
+            <div class="checkout-fields">
+                <div class="checkout-field"><label>Full Name</label><input id="checkoutName" type="text" placeholder="Your name" autocomplete="name"></div>
+                <div class="checkout-field"><label>Email or WhatsApp</label><input id="checkoutEmail" type="text" placeholder="For order confirmation" autocomplete="email"></div>
+                <div class="checkout-field"><label>Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Size, colour, anything special…"></textarea></div>
+                <div class="checkout-address-fields" id="addressFields">
+                    <div class="checkout-field"><label>Street Address</label><input id="checkoutAddress" type="text" placeholder="123 Street Rd" autocomplete="street-address"></div>
+                    <div class="checkout-field"><label>City</label><input id="checkoutCity" type="text" placeholder="Johannesburg" autocomplete="address-level2"></div>
+                </div>
+            </div>
+            <button class="place-order-btn" id="placeOrderBtn">Place Order →</button>
+        </div>
+        <div class="checkout-confirm" id="checkoutConfirm">
+            <div class="confirm-icon">🎉</div>
+            <div class="confirm-title">Order Placed!</div>
+            <p class="confirm-sub">Thanks — we'll confirm your order via email or WhatsApp shortly.</p>
+            <div class="confirm-order-num" id="confirmOrderNum">Order # —</div>
+            <button class="confirm-done-btn" id="confirmDoneBtn">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

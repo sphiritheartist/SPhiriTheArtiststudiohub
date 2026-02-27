@@ -5,798 +5,642 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPhiriTheArtist | Tech Store</title>
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/menu-system.css">
     <style>
-/* ============ TECH PAGE ============ */
-.tech-hero {
-    text-align: center;
-    padding: 80px 40px 60px;
-}
-.tech-hero h1 {
-    font-size: clamp(2.8rem, 8vw, 6rem);
-    font-weight: 900;
-    letter-spacing: -4px;
-    line-height: 0.88;
-    margin-bottom: 20px;
-}
-.tech-hero p {
-    font-size: 17px;
-    color: var(--muted);
-    max-width: 560px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-}
-.tech-badges {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 50px;
-}
-.badge {
-    padding: 6px 16px;
-    border-radius: 980px;
-    border: 1px solid var(--border);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--muted);
-}
-.badge.accent { background: var(--accent); color: #fff; border-color: transparent; }
+/* Tech-specific tag overrides */
+.tag-new  { background:#e8f5e9; color:#2e7d32; border-radius:5px; padding:3px 8px; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.8px; }
+.tag-used { background:#fff3e0; color:#e65100; border-radius:5px; padding:3px 8px; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.8px; }
+.tag-hot  { background:#fce4ec; color:#c62828; border-radius:5px; padding:3px 8px; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.8px; }
+[data-theme="dark"] .tag-new  { background:rgba(46,125,50,.2);  color:#69f0ae; }
+[data-theme="dark"] .tag-used { background:rgba(230,81,0,.2);   color:#ffcc80; }
+[data-theme="dark"] .tag-hot  { background:rgba(198,40,40,.2);  color:#ef9a9a; }
+.tag-row { display:flex; gap:5px; margin-bottom:8px; flex-wrap:wrap; }
+.card-price small { display:block; font-size:9px; font-weight:600; color:var(--muted); }
 
-/* Shop Controls */
-.shop-controls-bar {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+/* Trade-in banner */
+.tradein-banner {
+    max-width:1400px; margin:0 auto 60px; padding:0 40px;
 }
-.search-pill {
-    width: 100%;
-    max-width: 560px;
-    position: relative;
+.tradein-inner {
+    background:linear-gradient(135deg,var(--accent) 0%,#005bb5 100%);
+    border-radius:24px;
+    padding:40px 48px;
+    display:flex; align-items:center; justify-content:space-between; gap:32px;
+    flex-wrap:wrap; color:#fff;
 }
-.search-pill input {
-    width: 100%;
-    padding: 14px 20px 14px 44px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
+.tradein-inner h2 { font-size:clamp(1.4rem,3vw,2rem); font-weight:900; letter-spacing:-1px; margin-bottom:6px; }
+.tradein-inner p  { font-size:14px; opacity:.85; max-width:380px; line-height:1.5; }
+.tradein-btn {
+    flex-shrink:0; padding:12px 24px; border-radius:980px;
+    border:1.5px solid rgba(255,255,255,.5); background:transparent;
+    color:#fff; font-size:12px; font-weight:800; text-transform:uppercase;
+    letter-spacing:.8px; cursor:pointer; text-decoration:none;
+    transition:.2s; white-space:nowrap;
 }
-.search-pill input:focus { border-color: var(--accent); }
-.search-pill::before {
-    content: '⌕';
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: var(--muted);
-    pointer-events: none;
-}
-.filter-strip {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.filter-chip {
-    padding: 8px 18px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.filter-chip:hover { border-color: var(--text); }
-.filter-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-/* Product Grid */
-.tech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-}
-
-.tech-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s cubic-bezier(0.2,1,0.2,1), box-shadow 0.4s;
-    position: relative;
-}
-.tech-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-}
-
-.tech-img-wrap {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-.tech-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform 0.6s ease;
-}
-.tech-card:hover .tech-img-wrap img { transform: scale(1.05); }
-
-.tech-card-body {
-    padding: 20px 20px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.tech-tag-row {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
-.tech-tag {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--muted);
-}
-.tech-tag.new    { background: #e8f5e9; color: #2e7d32; border-color: transparent; }
-.tech-tag.used   { background: #fff3e0; color: #e65100; border-color: transparent; }
-.tech-tag.hot    { background: #fce4ec; color: #c62828; border-color: transparent; }
-
-[data-theme="dark"] .tech-tag.new  { background: rgba(46,125,50,0.2);  color: #69f0ae; }
-[data-theme="dark"] .tech-tag.used { background: rgba(230,81,0,0.2);   color: #ffcc80; }
-[data-theme="dark"] .tech-tag.hot  { background: rgba(198,40,40,0.2);  color: #ef9a9a; }
-
-.tech-card-body h3 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    letter-spacing: -0.2px;
-}
-.tech-card-body .tech-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-.tech-price-row {
-    margin-top: auto;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 8px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-}
-.tech-price {
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-}
-.tech-price small {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-top: 1px;
-}
-.tech-add-btn {
-    background: var(--text);
-    color: var(--bg);
-    border: none;
-    padding: 10px 16px;
-    border-radius: 980px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: opacity 0.2s, transform 0.2s;
-    flex-shrink: 0;
-}
-.tech-add-btn:hover { opacity: 0.75; transform: scale(1.03); }
-
-/* Services section */
-.services-strip {
-    max-width: 1400px;
-    margin: 0 auto 80px;
-    padding: 0 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-}
-.service-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 24px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.service-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.07);
-}
-.service-icon {
-    font-size: 28px;
-    margin-bottom: 14px;
-    display: block;
-}
-.service-card h3 {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
-}
-.service-card p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.55;
-}
-.service-cta {
-    display: inline-block;
-    margin-top: 14px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--accent);
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
-}
-
-/* Trade-in section */
-.tradein-section {
-    max-width: 1400px;
-    margin: 0 auto 80px;
-    padding: 0 40px;
-}
-.tradein-card {
-    background: linear-gradient(135deg, var(--accent) 0%, #005bb5 100%);
-    border-radius: 28px;
-    padding: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    color: #fff;
-    flex-wrap: wrap;
-}
-.tradein-text h2 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 900;
-    letter-spacing: -1.5px;
-    margin-bottom: 12px;
-    line-height: 1;
-}
-.tradein-text p { font-size: 15px; opacity: 0.85; max-width: 400px; line-height: 1.5; }
-.tradein-card .btn-outline {
-    color: #fff !important;
-    border-color: rgba(255,255,255,0.5) !important;
-    flex-shrink: 0;
-}
-.tradein-card .btn-outline:hover {
-    background: #fff !important;
-    color: var(--accent) !important;
-}
-
-/* Empty state */
-.no-results {
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--muted);
-    display: none;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .tech-hero { padding: 60px 20px 40px; }
-    .shop-controls-bar { padding: 0 20px 30px; }
-    .tech-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 60px; }
-    .services-strip { padding: 0 16px; }
-    .tradein-section { padding: 0 16px; }
-    .tradein-card { padding: 36px 28px; }
-}
-@media (max-width: 480px) {
-    .tech-grid { grid-template-columns: 1fr; }
-}
+.tradein-btn:hover { background:#fff; color:var(--accent); border-color:#fff; }
+@media(max-width:600px){ .tradein-inner{padding:28px 24px;} .tradein-banner{padding:0 16px;} }
     </style>
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+<div id="nav-placeholder"></div>
+<main>
 
-    <main>
-        <section class="tech-hero">
-            <span class="hero-tagline">WeSorted Tech</span>
-            <h1 class="reveal">EVERYTHING<br>TECH.</h1>
-            <p class="reveal">New &amp; pre-owned devices. Expert repairs. Trade-ins &amp; upgrades. We stock it all.</p>
-            <div class="tech-badges reveal">
-                <span class="badge accent">50/50 Payments</span>
-                <span class="badge">Trade-In Welcome</span>
-                <span class="badge">Apple &amp; Android</span>
-                <span class="badge">PC &amp; Console</span>
-                <span class="badge">Repairs</span>
-                <span class="badge">Upgrades</span>
-            </div>
-        </section>
+  <section style="text-align:center;padding:80px 40px 0;">
+      <span class="hero-tagline">WeSorted Tech</span>
+      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">EVERYTHING<br>TECH.</h1>
+      <p class="reveal" style="font-size:16px;color:var(--muted);max-width:500px;margin:0 auto 20px;">New &amp; pre-owned. Trade-ins. Repairs. Upgrades. 50/50 payments. We stock it all.</p>
+      <div class="reveal" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
+          <span style="padding:5px 14px;border-radius:980px;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);">50/50 Payments</span>
+          <span style="padding:5px 14px;border-radius:980px;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);">Trade-In Welcome</span>
+          <span style="padding:5px 14px;border-radius:980px;background:var(--accent);color:#fff;border:none;font-size:11px;font-weight:700;">Apple &amp; Android</span>
+          <span style="padding:5px 14px;border-radius:980px;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);">PC &amp; Console</span>
+      </div>
+  </section>
 
-        <!-- Search & Filter -->
-        <div class="shop-controls-bar">
-            <div class="search-pill reveal">
-                <input type="text" id="techSearch" placeholder="Search phones, laptops, consoles…">
-            </div>
-            <div class="filter-strip reveal">
-                <button class="filter-chip active" data-cat="all">All</button>
-                <button class="filter-chip" data-cat="phones">Phones</button>
-                <button class="filter-chip" data-cat="laptops">Laptops</button>
-                <button class="filter-chip" data-cat="tablets">Tablets</button>
-                <button class="filter-chip" data-cat="consoles">Consoles</button>
-                <button class="filter-chip" data-cat="audio">Audio</button>
-                <button class="filter-chip" data-cat="peripherals">Peripherals</button>
-                <button class="filter-chip" data-cat="components">Components</button>
+  <div class="cat-rail">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="phones">Phones</button>
+      <button class="cat-tab" data-cat="laptops">Laptops</button>
+      <button class="cat-tab" data-cat="tablets">Tablets</button>
+      <button class="cat-tab" data-cat="consoles">Consoles</button>
+      <button class="cat-tab" data-cat="audio">Audio</button>
+      <button class="cat-tab" data-cat="peripherals">Peripherals</button>
+      <button class="cat-tab" data-cat="components">Components</button>
+  </div>
+
+  <div class="cat-billboard">
+      <div class="billboard-slide active" data-cat="all">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Everything Tech</h2><p>New, used, Apple, Android — all in one place.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="phones">
+          <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Phones</h2><p>Apple and Android. New and pre-owned.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="laptops">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Laptops</h2><p>MacBooks, Windows, new and used.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="tablets">
+          <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Tablets</h2><p>iPad Pro, Galaxy Tab and more.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="consoles">
+          <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Consoles</h2><p>PS5, Xbox Series X, and pre-owned.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="audio">
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Audio</h2><p>AirPods, Sony, Bose and more.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="peripherals">
+          <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Peripherals</h2><p>Monitors, keyboards, stands.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="components">
+          <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1400" alt="">
+          <div class="billboard-text"><h2>Components</h2><p>RAM, SSDs, hard drives and more.</p></div>
+      </div>
+  </div>
+
+  <div class="menu-search-bar"><input type="text" id="techSearch" placeholder="Search phones, laptops, consoles…"></div>
+
+  <div class="upsell-strip" id="upsellStrip">
+      <p class="upsell-label">⚡ Frequently bought with</p>
+      <div class="upsell-row" id="upsellRow"></div>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- PHONES -->
+    <div class="menu-card" data-cat="phones" data-id="ph-ip15pro"
+         data-name="iPhone 15 Pro" data-price="22999"
+         data-img="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800"
+         data-desc="iPhone 15 Pro. A17 Pro chip, titanium design, Action button, 48MP main camera. New, sealed in box."
+         data-specs='[["Storage","128GB"],["Chip","A17 Pro"],["Colour","Titanium"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800" alt="iPhone 15 Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span style="font-size:9px;font-weight:700;color:var(--muted);padding:3px 0;">Apple</span></div>
+            <h3>iPhone 15 Pro</h3>
+            <p class="card-sub">128GB · A17 Pro · Titanium</p>
+            <div class="card-footer">
+                <span class="card-price">R 22,999<small>or 2× R 11,499</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ph-ip15pro">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ph-ip15pro">🛒</button>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Product Grid -->
-        <div class="tech-grid" id="techGrid">
-
-            <!-- PHONES -->
-            <div class="tech-card reveal" data-cat="phones">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800" alt="iPhone 15 Pro">
+    <div class="menu-card" data-cat="phones" data-id="ph-ip13pro-used"
+         data-name="iPhone 13 Pro (Grade A)" data-price="11500"
+         data-img="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800"
+         data-desc="Pre-owned iPhone 13 Pro. Grade A — minimal signs of use, new battery, unlocked for all networks."
+         data-specs='[["Storage","256GB"],["Condition","Grade A"],["Battery","New"],["Network","Unlocked"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800" alt="iPhone 13 Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-used">Used</span></div>
+            <h3>iPhone 13 Pro (Grade A)</h3>
+            <p class="card-sub">256GB · Unlocked · New battery</p>
+            <div class="card-footer">
+                <span class="card-price">R 11,500<small>or 2× R 5,750</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ph-ip13pro-used">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ph-ip13pro-used">🛒</button>
                 </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Apple</span></div>
-                    <h3>iPhone 15 Pro</h3>
-                    <p class="tech-sub">128GB · Titanium · iOS 17</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 22,999<small>or 2× R 11,499</small></div>
-                        <button class="tech-add-btn" data-name="iPhone 15 Pro" data-price="22999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="phones">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1592890288564-76628a30a657?q=80&w=800" alt="iPhone 13 Pro">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag used">Used</span><span class="tech-tag">Apple</span></div>
-                    <h3>iPhone 13 Pro</h3>
-                    <p class="tech-sub">256GB · Grade A · Unlocked</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 11,500<small>or 2× R 5,750</small></div>
-                        <button class="tech-add-btn" data-name="iPhone 13 Pro (Used)" data-price="11500">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="phones">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800" alt="Samsung S24">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Android</span></div>
-                    <h3>Samsung Galaxy S24</h3>
-                    <p class="tech-sub">256GB · Phantom Black</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 19,999<small>or 2× R 9,999</small></div>
-                        <button class="tech-add-btn" data-name="Samsung Galaxy S24" data-price="19999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="phones">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800" alt="Samsung A55">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Android</span></div>
-                    <h3>Samsung Galaxy A55</h3>
-                    <p class="tech-sub">128GB · Awesome Navy</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 9,499<small>or 2× R 4,749</small></div>
-                        <button class="tech-add-btn" data-name="Samsung Galaxy A55" data-price="9499">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- LAPTOPS -->
-            <div class="tech-card reveal" data-cat="laptops">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800" alt="MacBook Pro">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Apple</span></div>
-                    <h3>MacBook Pro 14" M3</h3>
-                    <p class="tech-sub">16GB RAM · 512GB SSD · Space Black</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 52,999<small>or 2× R 26,499</small></div>
-                        <button class="tech-add-btn" data-name="MacBook Pro 14" M3" data-price="52999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="laptops">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800" alt="Dell XPS 15">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag used">Used</span><span class="tech-tag">Windows</span></div>
-                    <h3>Dell XPS 15 (2022)</h3>
-                    <p class="tech-sub">Intel i7 · 16GB · 512GB · Grade B</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 18,500<small>or 2× R 9,250</small></div>
-                        <button class="tech-add-btn" data-name="Dell XPS 15 (Used)" data-price="18500">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="laptops">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=800" alt="Lenovo ThinkPad">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Windows</span></div>
-                    <h3>Lenovo ThinkPad X1 Carbon</h3>
-                    <p class="tech-sub">Intel i5 · 16GB · 256GB SSD</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 24,999<small>or 2× R 12,499</small></div>
-                        <button class="tech-add-btn" data-name="ThinkPad X1 Carbon" data-price="24999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABLETS -->
-            <div class="tech-card reveal" data-cat="tablets">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800" alt="iPad Pro">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Apple</span></div>
-                    <h3>iPad Pro 11" M4</h3>
-                    <p class="tech-sub">256GB · Wi-Fi · Space Black</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 22,999<small>or 2× R 11,499</small></div>
-                        <button class="tech-add-btn" data-name="iPad Pro 11" M4" data-price="22999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="tablets">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=800" alt="Samsung Tab S9">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Android</span></div>
-                    <h3>Samsung Galaxy Tab S9</h3>
-                    <p class="tech-sub">256GB · S Pen Included</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 16,999<small>or 2× R 8,499</small></div>
-                        <button class="tech-add-btn" data-name="Samsung Galaxy Tab S9" data-price="16999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONSOLES -->
-            <div class="tech-card reveal" data-cat="consoles">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800" alt="PS5">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag hot">Hot</span></div>
-                    <h3>PlayStation 5 Slim</h3>
-                    <p class="tech-sub">Digital Edition · 1TB</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 11,999<small>or 2× R 5,999</small></div>
-                        <button class="tech-add-btn" data-name="PS5 Slim Digital" data-price="11999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="consoles">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=800" alt="Xbox Series X">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Xbox Series X</h3>
-                    <p class="tech-sub">1TB · Includes Game Pass trial</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 12,499<small>or 2× R 6,249</small></div>
-                        <button class="tech-add-btn" data-name="Xbox Series X" data-price="12499">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="consoles">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800" alt="PS4 Pro">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag used">Used</span></div>
-                    <h3>PlayStation 4 Pro</h3>
-                    <p class="tech-sub">1TB · 2 Controllers · Grade A</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 4,999<small>or 2× R 2,499</small></div>
-                        <button class="tech-add-btn" data-name="PS4 Pro (Used)" data-price="4999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AUDIO -->
-            <div class="tech-card reveal" data-cat="audio">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?q=80&w=800" alt="AirPods Pro">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag">Apple</span></div>
-                    <h3>AirPods Pro (2nd Gen)</h3>
-                    <p class="tech-sub">ANC · USB-C Case · MagSafe</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 5,999</div>
-                        <button class="tech-add-btn" data-name="AirPods Pro 2nd Gen" data-price="5999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="audio">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800" alt="Sony WH-1000XM5">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span><span class="tech-tag hot">Best Seller</span></div>
-                    <h3>Sony WH-1000XM5</h3>
-                    <p class="tech-sub">Industry-leading ANC · 30hr battery</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 7,499<small>or 2× R 3,749</small></div>
-                        <button class="tech-add-btn" data-name="Sony WH-1000XM5" data-price="7499">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PERIPHERALS -->
-            <div class="tech-card reveal" data-cat="peripherals">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=800" alt="Monitor">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>LG 27" 4K IPS Monitor</h3>
-                    <p class="tech-sub">3840×2160 · USB-C · HDR400</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 9,999<small>or 2× R 4,999</small></div>
-                        <button class="tech-add-btn" data-name="LG 27" 4K Monitor" data-price="9999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="peripherals">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=800" alt="Keyboard">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Keychron K2 Mechanical</h3>
-                    <p class="tech-sub">Wireless · Backlit · Brown Switches</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 2,299</div>
-                        <button class="tech-add-btn" data-name="Keychron K2" data-price="2299">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="peripherals">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?q=80&w=800" alt="Laptop Stand">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Aluminium Laptop Stand</h3>
-                    <p class="tech-sub">Adjustable · Compatible with all laptops</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 799</div>
-                        <button class="tech-add-btn" data-name="Aluminium Laptop Stand" data-price="799">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMPONENTS -->
-            <div class="tech-card reveal" data-cat="components">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="SSD">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Samsung 870 EVO SSD 1TB</h3>
-                    <p class="tech-sub">2.5" SATA · 560MB/s read</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 1,899</div>
-                        <button class="tech-add-btn" data-name="Samsung 870 EVO SSD 1TB" data-price="1899">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="components">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="RAM">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Corsair 16GB DDR4 3200MHz</h3>
-                    <p class="tech-sub">Vengeance LPX · Low Profile</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 1,299</div>
-                        <button class="tech-add-btn" data-name="Corsair 16GB DDR4 RAM" data-price="1299">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tech-card reveal" data-cat="components">
-                <div class="tech-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="HDD">
-                </div>
-                <div class="tech-card-body">
-                    <div class="tech-tag-row"><span class="tech-tag new">New</span></div>
-                    <h3>Seagate 2TB External HDD</h3>
-                    <p class="tech-sub">USB 3.0 · Portable · Plug &amp; Play</p>
-                    <div class="tech-price-row">
-                        <div class="tech-price">R 999</div>
-                        <button class="tech-add-btn" data-name="Seagate 2TB External HDD" data-price="999">Add +</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="no-results" id="techEmpty">
-                <p style="font-size:40px;margin-bottom:12px;">🔍</p>
-                <p>No items match your search. Try a different term or filter.</p>
             </div>
         </div>
+    </div>
 
-        <!-- Services -->
-        <div class="services-strip reveal">
-            <div class="service-card">
-                <span class="service-icon">🔧</span>
-                <h3>Repairs</h3>
-                <p>Screen replacements, battery swaps, water damage recovery. All devices, all brands.</p>
-                <button class="service-cta">Book a Repair →</button>
-            </div>
-            <div class="service-card">
-                <span class="service-icon">⚡</span>
-                <h3>Upgrades</h3>
-                <p>RAM expansions, SSD installations, thermal repaste — we boost your existing gear.</p>
-                <button class="service-cta">Check Compatibility →</button>
-            </div>
-            <div class="service-card">
-                <span class="service-icon">💳</span>
-                <h3>50/50 Payments</h3>
-                <p>Split any purchase into two easy payments. No interest, no hidden fees.</p>
-                <button class="service-cta">Learn More →</button>
-            </div>
-            <div class="service-card">
-                <span class="service-icon">🎮</span>
-                <h3>Games</h3>
-                <p>New &amp; pre-owned titles for PS5, Xbox, Switch and PC. Physical &amp; digital codes.</p>
-                <button class="service-cta">View Library →</button>
-            </div>
+    <div class="menu-card" data-cat="phones" data-id="ph-s24"
+         data-name="Samsung Galaxy S24" data-price="19999"
+         data-img="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800"
+         data-desc="Samsung Galaxy S24. Snapdragon 8 Gen 3, 50MP camera, 4000mAh battery, Galaxy AI features. New sealed."
+         data-specs='[["Storage","256GB"],["Chip","Snapdragon 8 Gen 3"],["Camera","50MP"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800" alt="S24" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
         </div>
-
-        <!-- Trade-In Banner -->
-        <div class="tradein-section reveal">
-            <div class="tradein-card">
-                <div class="tradein-text">
-                    <h2>Trade in.<br>Upgrade smarter.</h2>
-                    <p>Bring your old device and get a credit toward your next purchase. We accept phones, laptops, tablets and consoles in any condition.</p>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span style="font-size:9px;font-weight:700;color:var(--muted);padding:3px 0;">Android</span></div>
+            <h3>Samsung Galaxy S24</h3>
+            <p class="card-sub">256GB · Snapdragon · Galaxy AI</p>
+            <div class="card-footer">
+                <span class="card-price">R 19,999<small>or 2× R 9,999</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ph-s24">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ph-s24">🛒</button>
                 </div>
-                <a href="mailto:contact@sphiri.art" class="btn-outline">Get a Trade-In Quote →</a>
             </div>
         </div>
-    </main>
+    </div>
 
-    <div id="footer-placeholder"></div>
-    <div id="overlay"></div>
-
-    <aside id="cartSidebar">
-        <div class="cart-header">
-            <h3>Your Bag</h3>
-            <button id="closeCart" class="close-btn">×</button>
+    <div class="menu-card" data-cat="phones" data-id="ph-a55"
+         data-name="Samsung Galaxy A55" data-price="9499"
+         data-img="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800"
+         data-desc="Mid-range powerhouse. 50MP camera, 5000mAh battery, IP67 water resistance. New sealed."
+         data-specs='[["Storage","128GB"],["Battery","5000mAh"],["Camera","50MP"],["Rating","IP67"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=800" alt="A55" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
         </div>
-        <ul id="cartItems"></ul>
-        <div class="cart-footer">
-            <div id="cartTotal" class="cart-total"></div>
-            <button id="checkoutTrigger" class="checkout-btn">Proceed to Checkout</button>
-            <div id="checkoutForm" style="display:none; margin-top:16px;">
-                <h4>Shipping Details</h4>
-                <input type="email" placeholder="Email address" class="shop-input">
-                <input type="text" placeholder="Full delivery address" class="shop-input">
-                <button class="checkout-btn" style="margin-top:10px; background:var(--accent) !important; color:#fff !important; border-color:var(--accent) !important;">Pay via PayStack / EFT</button>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span style="font-size:9px;font-weight:700;color:var(--muted);padding:3px 0;">Android</span></div>
+            <h3>Samsung Galaxy A55</h3>
+            <p class="card-sub">128GB · 5000mAh · IP67</p>
+            <div class="card-footer">
+                <span class="card-price">R 9,499<small>or 2× R 4,749</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="ph-a55">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="ph-a55">🛒</button>
+                </div>
             </div>
         </div>
-    </aside>
+    </div>
 
-    <script src="script/global.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var chips  = document.querySelectorAll('.filter-chip');
-        var cards  = document.querySelectorAll('.tech-card');
-        var search = document.getElementById('techSearch');
-        var empty  = document.getElementById('techEmpty');
-        var activeCat = 'all';
+    <!-- LAPTOPS -->
+    <div class="menu-card" data-cat="laptops" data-id="lap-mbp"
+         data-name='MacBook Pro 14" M3' data-price="52999"
+         data-img="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800"
+         data-desc="MacBook Pro 14-inch with M3 chip. 16GB unified memory, 512GB SSD, Liquid Retina XDR display. New sealed."
+         data-specs='[["Chip","Apple M3"],["RAM","16GB"],["Storage","512GB SSD"],["Display","14\" Retina XDR"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800" alt="MacBook Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span class="tag-hot">🔥 Popular</span></div>
+            <h3>MacBook Pro 14" M3</h3>
+            <p class="card-sub">16GB · 512GB · Retina XDR</p>
+            <div class="card-footer">
+                <span class="card-price">R 52,999<small>or 2× R 26,499</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="lap-mbp">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="lap-mbp">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function filterAll() {
-            var term = search ? search.value.toLowerCase() : '';
-            var visible = 0;
-            cards.forEach(function(c) {
-                var name = (c.querySelector('h3') || {}).textContent || '';
-                var sub  = (c.querySelector('.tech-sub') || {}).textContent || '';
-                var cat  = c.dataset.cat;
-                var matchCat  = activeCat === 'all' || cat === activeCat;
-                var matchText = (name + sub).toLowerCase().includes(term);
-                var show = matchCat && matchText;
-                c.style.display = show ? '' : 'none';
-                if (show) visible++;
-            });
-            if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+    <div class="menu-card" data-cat="laptops" data-id="lap-dell-used"
+         data-name="Dell XPS 15 2022 (Used)" data-price="18500"
+         data-img="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800"
+         data-desc="Pre-owned Dell XPS 15. Intel i7, 16GB RAM, 512GB SSD, 4K OLED display. Grade B — minor cosmetic marks."
+         data-specs='[["CPU","Intel i7-12700H"],["RAM","16GB DDR5"],["Storage","512GB SSD"],["Condition","Grade B"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800" alt="Dell XPS" loading="lazy">
+            <span class="stock-badge low">Low Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-used">Used</span></div>
+            <h3>Dell XPS 15 2022 (Used)</h3>
+            <p class="card-sub">i7 · 16GB · 4K OLED · Grade B</p>
+            <div class="card-footer">
+                <span class="card-price">R 18,500<small>or 2× R 9,250</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="lap-dell-used">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="lap-dell-used">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLETS -->
+    <div class="menu-card" data-cat="tablets" data-id="tab-ipad"
+         data-name='iPad Pro 11" M4' data-price="22999"
+         data-img="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800"
+         data-desc="iPad Pro 11-inch with M4 chip. Ultra Retina XDR display, 256GB storage, Wi-Fi. New sealed."
+         data-specs='[["Chip","Apple M4"],["Storage","256GB"],["Display","11\" Ultra Retina XDR"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800" alt="iPad Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>iPad Pro 11" M4</h3>
+            <p class="card-sub">256GB · M4 · Ultra Retina XDR</p>
+            <div class="card-footer">
+                <span class="card-price">R 22,999<small>or 2× R 11,499</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="tab-ipad">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="tab-ipad">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="tablets" data-id="tab-s9"
+         data-name="Samsung Galaxy Tab S9" data-price="16999"
+         data-img="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=800"
+         data-desc="Samsung Galaxy Tab S9. Dynamic AMOLED 2X display, S Pen included, Snapdragon 8 Gen 2. New sealed."
+         data-specs='[["Storage","256GB"],["S Pen","Included"],["Display","11\" AMOLED 2X"],["Chip","Snapdragon 8 Gen 2"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?q=80&w=800" alt="Tab S9" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Samsung Galaxy Tab S9</h3>
+            <p class="card-sub">256GB · S Pen · AMOLED 2X</p>
+            <div class="card-footer">
+                <span class="card-price">R 16,999<small>or 2× R 8,499</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="tab-s9">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="tab-s9">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONSOLES -->
+    <div class="menu-card" data-cat="consoles" data-id="con-ps5"
+         data-name="PlayStation 5 Slim Digital" data-price="11999"
+         data-img="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800"
+         data-desc="PS5 Slim Digital Edition. 1TB internal storage, DualSense controller, ultra-high speed SSD. New sealed."
+         data-specs='[["Storage","1TB SSD"],["Edition","Digital"],["Controller","DualSense"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800" alt="PS5" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span class="tag-hot">🔥 Hot</span></div>
+            <h3>PlayStation 5 Slim Digital</h3>
+            <p class="card-sub">1TB · DualSense · Ultra SSD</p>
+            <div class="card-footer">
+                <span class="card-price">R 11,999<small>or 2× R 5,999</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="con-ps5">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="con-ps5">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="consoles" data-id="con-xbox"
+         data-name="Xbox Series X" data-price="12499"
+         data-img="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=800"
+         data-desc="Xbox Series X. 1TB custom SSD, Xbox Velocity Architecture, 4K gaming at 60–120fps. Includes Game Pass trial."
+         data-specs='[["Storage","1TB Custom SSD"],["Resolution","4K @ 120fps"],["Game Pass","Trial included"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=800" alt="Xbox" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Xbox Series X</h3>
+            <p class="card-sub">1TB · 4K 120fps · Game Pass trial</p>
+            <div class="card-footer">
+                <span class="card-price">R 12,499<small>or 2× R 6,249</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="con-xbox">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="con-xbox">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="consoles" data-id="con-ps4-used"
+         data-name="PlayStation 4 Pro (Used)" data-price="4999"
+         data-img="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800"
+         data-desc="Pre-owned PS4 Pro. 1TB, 2 DualShock 4 controllers, cleaned and tested. Grade A condition."
+         data-specs='[["Storage","1TB"],["Controllers","×2 DualShock 4"],["Condition","Grade A"],["Tested","Yes"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=800" alt="PS4 Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-used">Used</span></div>
+            <h3>PlayStation 4 Pro (Used)</h3>
+            <p class="card-sub">1TB · 2 controllers · Grade A</p>
+            <div class="card-footer">
+                <span class="card-price">R 4,999<small>or 2× R 2,499</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="con-ps4-used">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="con-ps4-used">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO -->
+    <div class="menu-card" data-cat="audio" data-id="aud-airpods"
+         data-name="AirPods Pro 2nd Gen" data-price="5999"
+         data-img="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?q=80&w=800"
+         data-desc="AirPods Pro 2nd Gen. Active Noise Cancellation, Transparency mode, Adaptive Audio, MagSafe USB-C case."
+         data-specs='[["ANC","Yes"],["Case","MagSafe USB-C"],["Chip","H2"],["Condition","Brand New"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?q=80&w=800" alt="AirPods Pro" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>AirPods Pro 2nd Gen</h3>
+            <p class="card-sub">ANC · MagSafe USB-C · H2 chip</p>
+            <div class="card-footer">
+                <span class="card-price">R 5,999</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="aud-airpods">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="aud-airpods">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="audio" data-id="aud-sony"
+         data-name="Sony WH-1000XM5" data-price="7499"
+         data-img="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800"
+         data-desc="Industry-leading ANC headphones. 30hr battery, 8 mics for precise voice pickup, multipoint Bluetooth."
+         data-specs='[["ANC","Industry leading"],["Battery","30 hours"],["Mics","8"],["Bluetooth","Multipoint"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800" alt="Sony XM5" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span><span class="tag-hot">Best Seller</span></div>
+            <h3>Sony WH-1000XM5</h3>
+            <p class="card-sub">30hr · Industry ANC · Multipoint</p>
+            <div class="card-footer">
+                <span class="card-price">R 7,499<small>or 2× R 3,749</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="aud-sony">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="aud-sony">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERIPHERALS -->
+    <div class="menu-card" data-cat="peripherals" data-id="per-monitor"
+         data-name='LG 27" 4K IPS Monitor' data-price="9999"
+         data-img="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=800"
+         data-desc="LG 27-inch 4K IPS monitor. 3840×2160, USB-C 90W charging, HDR400, ergonomic stand. New."
+         data-specs='[["Resolution","3840×2160"],["Panel","IPS"],["USB-C","90W charging"],["HDR","400"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=800" alt="LG Monitor" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>LG 27" 4K IPS Monitor</h3>
+            <p class="card-sub">4K · USB-C 90W · HDR400</p>
+            <div class="card-footer">
+                <span class="card-price">R 9,999<small>or 2× R 4,999</small></span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="per-monitor">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="per-monitor">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="peripherals" data-id="per-keyboard"
+         data-name="Keychron K2 Mechanical" data-price="2299"
+         data-img="https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=800"
+         data-desc="75% mechanical keyboard. Wireless Bluetooth or USB-C, hot-swappable switches, RGB backlight. Gateron Brown switches."
+         data-specs='[["Layout","75%"],["Switches","Gateron Brown"],["Connection","BT / USB-C"],["RGB","Yes"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=800" alt="Keychron" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Keychron K2 Mechanical</h3>
+            <p class="card-sub">75% · Wireless · Hot-swap</p>
+            <div class="card-footer">
+                <span class="card-price">R 2,299</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="per-keyboard">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="per-keyboard">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPONENTS -->
+    <div class="menu-card" data-cat="components" data-id="comp-ssd"
+         data-name="Samsung 870 EVO SSD 1TB" data-price="1899"
+         data-img="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800"
+         data-desc="Samsung 870 EVO 1TB SATA SSD. 560MB/s read, 530MB/s write. Plug and play upgrade for laptops and desktops."
+         data-specs='[["Capacity","1TB"],["Interface","SATA"],["Read","560MB/s"],["Write","530MB/s"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="SSD" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Samsung 870 EVO SSD 1TB</h3>
+            <p class="card-sub">SATA · 560MB/s read · Plug &amp; play</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,899</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="comp-ssd">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="comp-ssd">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="components" data-id="comp-ram"
+         data-name="Corsair 16GB DDR4 3200MHz" data-price="1299"
+         data-img="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800"
+         data-desc="Corsair Vengeance LPX 16GB DDR4 3200MHz. Low-profile design fits under most coolers. Plug and play."
+         data-specs='[["Capacity","16GB"],["Speed","3200MHz"],["Type","DDR4"],["Profile","Low"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="RAM" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Corsair 16GB DDR4 3200MHz</h3>
+            <p class="card-sub">Vengeance LPX · Low profile</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,299</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="comp-ram">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="comp-ram">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="components" data-id="comp-hdd"
+         data-name="Seagate 2TB External HDD" data-price="999"
+         data-img="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800"
+         data-desc="Seagate 2TB portable external hard drive. USB 3.0, bus-powered, compatible with PC, Mac and consoles."
+         data-specs='[["Capacity","2TB"],["Interface","USB 3.0"],["Power","Bus-powered"],["Compatible","PC/Mac/Console"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800" alt="HDD" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <div class="tag-row"><span class="tag-new">New</span></div>
+            <h3>Seagate 2TB External HDD</h3>
+            <p class="card-sub">USB 3.0 · Bus-powered · Portable</p>
+            <div class="card-footer">
+                <span class="card-price">R 999</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="comp-hdd">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="comp-hdd">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div><!-- /menu-grid -->
+
+  <!-- Trade-In Banner -->
+  <div class="tradein-banner reveal">
+      <div class="tradein-inner">
+          <div>
+              <h2>Trade in. Upgrade smarter.</h2>
+              <p>Bring your old device and get credit toward your next purchase. Phones, laptops, tablets, consoles — any condition.</p>
+          </div>
+          <a href="mailto:contact@sphiri.art" class="tradein-btn">Get a Quote →</a>
+      </div>
+  </div>
+
+</main>
+
+<div id="footer-placeholder"></div>
+
+<div class="order-tray">
+    <div class="tray-bar" id="trayBar">
+        <span class="tray-count" id="trayCount">0</span>
+        <span class="tray-label">View Order</span>
+        <span class="tray-total" id="trayTotal">R 0</span>
+        <span class="tray-arrow">▲</span>
+    </div>
+</div>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-header"><h3>Your Bag</h3><button class="cart-panel-close" id="cartPanelClose">×</button></div>
+    <div class="cart-panel-items" id="cartPanelItems"></div>
+    <div class="cart-panel-footer">
+        <div class="cart-total-row"><span>Total</span><span id="cartPanelTotal">R 0</span></div>
+        <button class="checkout-cta">Checkout →</button>
+    </div>
+</div>
+<div class="product-modal" id="productModal">
+    <div class="product-modal-backdrop" id="modalBackdrop"></div>
+    <div class="product-modal-box">
+        <button class="modal-close-btn" id="modalCloseBtn">×</button>
+        <img class="modal-img" id="modalImg" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modalName"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+            <p class="modal-desc" id="modalDesc"></p>
+            <div class="modal-specs-grid" id="modalSpecs"></div>
+            <button class="modal-add-btn" id="modalAddBtn">Add to Bag →</button>
+        </div>
+    </div>
+</div>
+
+<script src="script/global.js"></script>
+<script src="script/menu-system.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.initMenuSystem({
+        searchId: 'techSearch',
+        upsells: {
+            phones:      ['aud-airpods', 'per-keyboard'],
+            laptops:     ['comp-ssd', 'comp-ram', 'per-monitor'],
+            tablets:     ['aud-airpods'],
+            consoles:    ['comp-hdd', 'aud-sony'],
+            audio:       ['aud-airpods', 'aud-sony'],
+            peripherals: ['per-keyboard', 'per-monitor'],
+            components:  ['comp-ssd', 'comp-ram', 'comp-hdd'],
         }
-
-        chips.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                chips.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeCat = btn.dataset.cat;
-                filterAll();
-            });
-        });
-
-        if (search) search.addEventListener('input', filterAll);
-
-        document.querySelectorAll('.tech-add-btn').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var name  = btn.dataset.name;
-                var price = parseFloat(btn.dataset.price);
-                window.addToBag({ name: name, price: 'R ' + price.toFixed(2) });
-                var orig = btn.textContent;
-                btn.textContent = 'Added ✓';
-                setTimeout(function() { btn.textContent = orig; }, 1200);
-            });
-        });
     });
-    </script>
+});
+</script>
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-modal-backdrop" id="checkoutModalBackdrop"></div>
+    <div class="checkout-modal-box">
+        <div class="checkout-drag-pill"></div>
+        <div class="checkout-modal-header">
+            <h3>Checkout</h3>
+            <button class="checkout-modal-close" id="checkoutModalClose">×</button>
+        </div>
+        <div id="checkoutFormView">
+            <div class="checkout-order-summary">
+                <div class="checkout-summary-title">Your Order</div>
+                <div id="checkoutSummaryLines"></div>
+            </div>
+            <div class="checkout-method">
+                <span class="checkout-method-label">Fulfilment</span>
+                <div class="method-toggle">
+                    <button class="method-btn active" data-method="pickup">🏪 Pickup</button>
+                    <button class="method-btn" data-method="delivery">🚚 Delivery</button>
+                </div>
+            </div>
+            <div class="checkout-fields">
+                <div class="checkout-field"><label>Full Name</label><input id="checkoutName" type="text" placeholder="Your name" autocomplete="name"></div>
+                <div class="checkout-field"><label>Email or WhatsApp</label><input id="checkoutEmail" type="text" placeholder="For order confirmation" autocomplete="email"></div>
+                <div class="checkout-field"><label>Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Size, colour, anything special…"></textarea></div>
+                <div class="checkout-address-fields" id="addressFields">
+                    <div class="checkout-field"><label>Street Address</label><input id="checkoutAddress" type="text" placeholder="123 Street Rd" autocomplete="street-address"></div>
+                    <div class="checkout-field"><label>City</label><input id="checkoutCity" type="text" placeholder="Johannesburg" autocomplete="address-level2"></div>
+                </div>
+            </div>
+            <button class="place-order-btn" id="placeOrderBtn">Place Order →</button>
+        </div>
+        <div class="checkout-confirm" id="checkoutConfirm">
+            <div class="confirm-icon">🎉</div>
+            <div class="confirm-title">Order Placed!</div>
+            <p class="confirm-sub">Thanks — we'll confirm your order via email or WhatsApp shortly.</p>
+            <div class="confirm-order-num" id="confirmOrderNum">Order # —</div>
+            <button class="confirm-done-btn" id="confirmDoneBtn">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

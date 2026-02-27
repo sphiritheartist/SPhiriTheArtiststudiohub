@@ -5,460 +5,421 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPhiriTheArtist | Apparel Lab</title>
     <link rel="stylesheet" href="style/main.css">
-    <style>
-/* ============ APPAREL PAGE ============ */
-.apparel-hero {
-    text-align: center;
-    padding: 80px 40px 60px;
-}
-.apparel-hero h1 {
-    font-size: clamp(2.8rem, 8vw, 5.5rem);
-    font-weight: 900;
-    letter-spacing: -3px;
-    line-height: 0.9;
-    margin-bottom: 16px;
-}
-.apparel-hero p {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 480px;
-    margin: 0 auto;
-}
-
-.shop-bar {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-}
-.search-pill {
-    width: 100%;
-    max-width: 480px;
-    position: relative;
-}
-.search-pill input {
-    width: 100%;
-    padding: 13px 20px 13px 42px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-}
-.search-pill input:focus { border-color: var(--accent); }
-.search-pill::before {
-    content: '⌕';
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: var(--muted);
-    pointer-events: none;
-}
-.filter-strip {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.filter-chip {
-    padding: 8px 18px;
-    border-radius: 980px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.filter-chip:hover { border-color: var(--text); }
-.filter-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-/* Category section label */
-.category-label {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 20px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 32px;
-}
-
-/* PRODUCT GRID */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-}
-
-/* Product Card — consistent structure with btn at fixed bottom position */
-.product-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s cubic-bezier(0.2,1,0.2,1), box-shadow 0.4s;
-}
-.product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
-}
-
-.product-image {
-    width: 100%;
-    aspect-ratio: 3 / 4;  /* portrait — clothing ratio */
-    overflow: hidden;
-    background: var(--bg);
-    position: relative;
-}
-.product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-}
-.product-card:hover .product-image img { transform: scale(1.06); }
-
-/* Info section fills remaining space so btn always at same height */
-.product-info {
-    padding: 18px 18px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.category-tag {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
-    margin-bottom: 6px;
-}
-.product-info h3 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    letter-spacing: -0.2px;
-    line-height: 1.3;
-}
-.product-info .price {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 16px;
-}
-
-/* Push btn to bottom — consistent across all cards regardless of text length */
-.quick-add {
-    margin-top: auto;
-    width: 100%;
-    padding: 13px 16px;
-    background: transparent;
-    border: 1.5px solid var(--text);
-    color: var(--text);
-    border-radius: 980px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-.quick-add:hover { background: var(--text); color: var(--bg); }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .apparel-hero { padding: 60px 20px 40px; }
-    .shop-bar { padding: 0 20px 40px; }
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 60px; }
-    .category-label { padding: 0 16px 16px; margin-bottom: 24px; }
-}
-@media (max-width: 380px) {
-    .product-grid { grid-template-columns: 1fr; }
-}
-    </style>
+    <link rel="stylesheet" href="style/menu-system.css">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
+<div id="nav-placeholder"></div>
+<main>
 
-    <main>
-        <header class="apparel-hero">
-            <span class="hero-tagline">Studio Wear</span>
-            <h1 class="reveal">APPAREL<br>LAB</h1>
-            <p class="reveal">Architected uniforms for the modern innovator. Clothes, footwear &amp; accessories.</p>
-        </header>
+  <!-- Hero -->
+  <section style="text-align:center;padding:80px 40px 0;">
+      <span class="hero-tagline">Studio Wear</span>
+      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">APPAREL LAB</h1>
+      <p class="reveal" style="font-size:16px;color:var(--muted);max-width:440px;margin:0 auto;">Architected fits for the modern creative. Clothes, shoes and headwear.</p>
+  </section>
 
-        <div class="shop-bar">
-            <div class="search-pill reveal">
-                <input type="text" id="apparelSearch" placeholder="Search collection…">
-            </div>
-            <div class="filter-strip reveal">
-                <button class="filter-chip active" data-filter="all">All</button>
-                <button class="filter-chip" data-filter="tees">Tees</button>
-                <button class="filter-chip" data-filter="hoodies">Hoodies</button>
-                <button class="filter-chip" data-filter="bottoms">Bottoms</button>
-                <button class="filter-chip" data-filter="footwear">Footwear</button>
-                <button class="filter-chip" data-filter="headwear">Headwear</button>
-                <button class="filter-chip" data-filter="accessories">Accessories</button>
+  <!-- Category Rail -->
+  <div class="cat-rail">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="tees">Tees</button>
+      <button class="cat-tab" data-cat="hoodies">Hoodies</button>
+      <button class="cat-tab" data-cat="bottoms">Bottoms</button>
+      <button class="cat-tab" data-cat="footwear">Footwear</button>
+      <button class="cat-tab" data-cat="headwear">Headwear</button>
+  </div>
+
+  <!-- Billboard -->
+  <div class="cat-billboard">
+      <div class="billboard-slide active" data-cat="all">
+          <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1400" alt="All">
+          <div class="billboard-text"><h2>Full Collection</h2><p>Every piece, in one drop.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="tees">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400" alt="Tees">
+          <div class="billboard-text"><h2>Tees</h2><p>Heavyweight, oversized, graphic.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="hoodies">
+          <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=1400" alt="Hoodies">
+          <div class="billboard-text"><h2>Hoodies</h2><p>Premium fleece, built to last.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="bottoms">
+          <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f43?q=80&w=1400" alt="Bottoms">
+          <div class="billboard-text"><h2>Bottoms</h2><p>Joggers and cargos for the studio.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="footwear">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1400" alt="Footwear">
+          <div class="billboard-text"><h2>Footwear</h2><p>Sneakers and high-tops.</p></div>
+      </div>
+      <div class="billboard-slide" data-cat="headwear">
+          <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1400" alt="Headwear">
+          <div class="billboard-text"><h2>Headwear</h2><p>Caps and beanies.</p></div>
+      </div>
+  </div>
+
+  <div class="menu-search-bar"><input type="text" id="appSearch" placeholder="Search collection…"></div>
+
+  <!-- Upsell strip -->
+  <div class="upsell-strip" id="upsellStrip">
+      <p class="upsell-label">⚡ Pair it with</p>
+      <div class="upsell-row" id="upsellRow"></div>
+  </div>
+
+  <!-- Grid -->
+  <div class="menu-grid" id="menuGrid">
+
+    <div class="menu-card" data-cat="tees" data-id="tee-artist"
+         data-name='"Artist" Essential Tee' data-price="450"
+         data-img="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800"
+         data-desc="Heavyweight 240gsm cotton tee. Relaxed fit, double-stitched seams, pre-shrunk. Our most versatile piece."
+         data-specs='[["Weight","240gsm"],["Fit","Relaxed"],["Material","100% Cotton"],["Sizes","XS–3XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800" alt="Artist Tee" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Tee · Heavyweight</span>
+            <h3>"Artist" Essential Tee</h3>
+            <p class="card-sub">240gsm · Relaxed fit · Pre-shrunk</p>
+            <div class="card-footer">
+                <span class="card-price">R 450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="tee-artist">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="tee-artist">🛒</button>
+                </div>
             </div>
         </div>
-
-        <div class="product-grid" id="apparelGrid">
-
-            <!-- TEES -->
-            <div class="product-card reveal" data-category="tees">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800" alt="Artist Essential Tee">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Tee · Heavyweight</span>
-                    <h3>"Artist" Essential Tee</h3>
-                    <p class="price">R 450.00</p>
-                    <button class="quick-add" data-name='"Artist" Essential Tee' data-price="450">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="tees">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=800" alt="Sphiri Graphic Tee">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Tee · Graphic</span>
-                    <h3>Studio Graphic Tee Vol.1</h3>
-                    <p class="price">R 380.00</p>
-                    <button class="quick-add" data-name="Studio Graphic Tee Vol.1" data-price="380">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="tees">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=800" alt="Architect Tee">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Tee · Oversized</span>
-                    <h3>Architect OS Tee</h3>
-                    <p class="price">R 420.00</p>
-                    <button class="quick-add" data-name="Architect OS Tee" data-price="420">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- HOODIES -->
-            <div class="product-card reveal" data-category="hoodies">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=800" alt="Studio Logic Hoodie">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Hoodie · Premium</span>
-                    <h3>Studio Logic Hoodie</h3>
-                    <p class="price">R 850.00</p>
-                    <button class="quick-add" data-name="Studio Logic Hoodie" data-price="850">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="hoodies">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=800" alt="Repeat Hoodie">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Hoodie · Zip-Up</span>
-                    <h3>"REPEAT" Zip Hoodie</h3>
-                    <p class="price">R 920.00</p>
-                    <button class="quick-add" data-name='"REPEAT" Zip Hoodie' data-price="920">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- BOTTOMS -->
-            <div class="product-card reveal" data-category="bottoms">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f43?q=80&w=800" alt="Studio Joggers">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Bottoms · Joggers</span>
-                    <h3>Studio Joggers</h3>
-                    <p class="price">R 680.00</p>
-                    <button class="quick-add" data-name="Studio Joggers" data-price="680">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="bottoms">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=800" alt="Cargo Pants">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Bottoms · Cargo</span>
-                    <h3>Architect Cargo Pants</h3>
-                    <p class="price">R 1,100.00</p>
-                    <button class="quick-add" data-name="Architect Cargo Pants" data-price="1100">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- FOOTWEAR -->
-            <div class="product-card reveal" data-category="footwear">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" alt="Studio Runner">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Footwear · Sneaker</span>
-                    <h3>Studio Runner Low</h3>
-                    <p class="price">R 1,800.00</p>
-                    <button class="quick-add" data-name="Studio Runner Low" data-price="1800">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="footwear">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" alt="Canvas High">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Footwear · High-Top</span>
-                    <h3>Canvas High "Architect"</h3>
-                    <p class="price">R 1,450.00</p>
-                    <button class="quick-add" data-name='Canvas High "Architect"' data-price="1450">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- HEADWEAR -->
-            <div class="product-card reveal" data-category="headwear">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800" alt="Studio 5-Panel">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Headwear · 5-Panel</span>
-                    <h3>Studio 5-Panel Cap</h3>
-                    <p class="price">R 320.00</p>
-                    <button class="quick-add" data-name="Studio 5-Panel Cap" data-price="320">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="headwear">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=800" alt="Beanie">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Headwear · Beanie</span>
-                    <h3>"Build" Ribbed Beanie</h3>
-                    <p class="price">R 280.00</p>
-                    <button class="quick-add" data-name='"Build" Ribbed Beanie' data-price="280">Add to Bag +</button>
-                </div>
-            </div>
-
-            <!-- ACCESSORIES -->
-            <div class="product-card reveal" data-category="accessories">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1609767760308-5df3fbd2f1f6?q=80&w=800" alt="Signet Ring">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Accessories · Jewellery</span>
-                    <h3>Architect's Signet Ring</h3>
-                    <p class="price">R 1,200.00</p>
-                    <button class="quick-add" data-name="Architect's Signet Ring" data-price="1200">Add to Bag +</button>
-                </div>
-            </div>
-
-            <div class="product-card reveal" data-category="accessories">
-                <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800" alt="Bag">
-                </div>
-                <div class="product-info">
-                    <span class="category-tag">Accessories · Bag</span>
-                    <h3>Studio Tote Bag</h3>
-                    <p class="price">R 450.00</p>
-                    <button class="quick-add" data-name="Studio Tote Bag" data-price="450">Add to Bag +</button>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <div id="overlay"></div>
-
-    <aside id="cartSidebar">
-        <div class="cart-header">
-            <h3>Your Bag</h3>
-            <button id="closeCart" class="close-btn">×</button>
-        </div>
-        <ul id="cartItems"></ul>
-        <div class="cart-footer">
-            <div id="cartTotal" class="cart-total"></div>
-            <button id="checkoutTrigger" class="checkout-btn">Proceed to Checkout</button>
-            <div id="checkoutForm" style="display:none; margin-top:16px;">
-                <h4 style="margin-bottom:10px;">Shipping Details</h4>
-                <input type="email" placeholder="Email address" class="shop-input">
-                <input type="text" placeholder="Full delivery address" class="shop-input">
-                <button class="checkout-btn" style="margin-top:10px;">Pay via PayStack / EFT</button>
-            </div>
-        </div>
-    </aside>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="" alt="">
-        <div id="lightbox-caption"></div>
     </div>
 
-    <script src="script/global.js"></script>
-    <script src="script/shop.js"></script>
-    <script>
-    // Additional apparel-specific filter logic (chips instead of filter-btn)
-    document.addEventListener('DOMContentLoaded', function() {
-        var chips   = document.querySelectorAll('.filter-chip');
-        var cards   = document.querySelectorAll('.product-card');
-        var search  = document.getElementById('apparelSearch');
-        var active  = 'all';
+    <div class="menu-card" data-cat="tees" data-id="tee-graphic"
+         data-name="Studio Graphic Tee Vol.1" data-price="380"
+         data-img="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=800"
+         data-desc="Screen-printed graphic tee. Original SPhiri Studio artwork, water-based inks that won't crack or fade."
+         data-specs='[["Weight","200gsm"],["Fit","Regular"],["Print","Screen print"],["Sizes","S–2XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=800" alt="Graphic Tee" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Tee · Graphic</span>
+            <h3>Studio Graphic Tee Vol.1</h3>
+            <p class="card-sub">Screen printed · Original artwork</p>
+            <div class="card-footer">
+                <span class="card-price">R 380</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="tee-graphic">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="tee-graphic">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function filter() {
-            var term = search ? search.value.toLowerCase() : '';
-            cards.forEach(function(c) {
-                var name = (c.querySelector('h3') || {}).textContent || '';
-                var cat  = c.dataset.category;
-                var show = (active === 'all' || cat === active) && name.toLowerCase().includes(term);
-                c.style.display = show ? '' : 'none';
-            });
+    <div class="menu-card" data-cat="tees" data-id="tee-os"
+         data-name="Architect OS Tee" data-price="420"
+         data-img="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=800"
+         data-desc="Oversized drop-shoulder tee. Extended length, minimal branding, built for layering."
+         data-specs='[["Weight","220gsm"],["Fit","Oversized"],["Length","Extended"],["Sizes","S–XXL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=800" alt="OS Tee" loading="lazy">
+            <span class="stock-badge low">Low Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Tee · Oversized</span>
+            <h3>Architect OS Tee</h3>
+            <p class="card-sub">Drop shoulder · Extended length</p>
+            <div class="card-footer">
+                <span class="card-price">R 420</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="tee-os">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="tee-os">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="hoodies" data-id="hood-logic"
+         data-name="Studio Logic Hoodie" data-price="850"
+         data-img="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=800"
+         data-desc="400gsm French terry hoodie. Kangaroo pocket, ribbed cuffs and hem, double-lined hood. The centrepiece of the collection."
+         data-specs='[["Weight","400gsm"],["Material","French Terry"],["Fit","Regular"],["Sizes","S–3XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?q=80&w=800" alt="Logic Hoodie" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Hoodie · Premium</span>
+            <h3>Studio Logic Hoodie</h3>
+            <p class="card-sub">400gsm French Terry · Double-lined</p>
+            <div class="card-footer">
+                <span class="card-price">R 850</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="hood-logic">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="hood-logic">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="hoodies" data-id="hood-zip"
+         data-name='"REPEAT" Zip Hoodie' data-price="920"
+         data-img="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=800"
+         data-desc="Full-zip hoodie with two side pockets. YKK zipper, garment-washed finish for a worn-in look straight from the bag."
+         data-specs='[["Weight","380gsm"],["Closure","YKK Zip"],["Finish","Garment washed"],["Sizes","S–2XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=800" alt="Zip Hoodie" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Hoodie · Zip-Up</span>
+            <h3>"REPEAT" Zip Hoodie</h3>
+            <p class="card-sub">YKK zipper · Garment washed</p>
+            <div class="card-footer">
+                <span class="card-price">R 920</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="hood-zip">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="hood-zip">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="bottoms" data-id="bot-jogger"
+         data-name="Studio Joggers" data-price="680"
+         data-img="https://images.unsplash.com/photo-1591195853828-11db59a44f43?q=80&w=800"
+         data-desc="Tapered joggers with elasticated waist and cuffed ankles. Side and rear pockets, drawstring waist."
+         data-specs='[["Fit","Tapered"],["Waist","Elasticated"],["Pockets","4"],["Sizes","XS–2XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f43?q=80&w=800" alt="Joggers" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bottoms · Jogger</span>
+            <h3>Studio Joggers</h3>
+            <p class="card-sub">Tapered · Elasticated waist</p>
+            <div class="card-footer">
+                <span class="card-price">R 680</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bot-jogger">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bot-jogger">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="bottoms" data-id="bot-cargo"
+         data-name="Architect Cargo Pants" data-price="1100"
+         data-img="https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=800"
+         data-desc="Six-pocket cargo pants. Relaxed fit, adjustable ankle cuff, heavy-duty canvas construction."
+         data-specs='[["Fit","Relaxed"],["Pockets","6"],["Material","Canvas"],["Sizes","S–2XL"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=800" alt="Cargo" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Bottoms · Cargo</span>
+            <h3>Architect Cargo Pants</h3>
+            <p class="card-sub">6 pockets · Heavy canvas</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,100</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="bot-cargo">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="bot-cargo">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="footwear" data-id="foot-runner"
+         data-name="Studio Runner Low" data-price="1800"
+         data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800"
+         data-desc="Low-profile runner with cushioned midsole and suede/mesh upper. Versatile enough for the studio and the street."
+         data-specs='[["Profile","Low"],["Upper","Suede/Mesh"],["Sole","Rubber cup"],["Sizes","UK 5–13"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" alt="Runner" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Footwear · Sneaker</span>
+            <h3>Studio Runner Low</h3>
+            <p class="card-sub">Suede/Mesh · Cushioned sole</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,800</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="foot-runner">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="foot-runner">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="footwear" data-id="foot-hightop"
+         data-name='Canvas High "Architect"' data-price="1450"
+         data-img="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800"
+         data-desc="High-top canvas sneaker. Padded ankle collar, vulcanised sole, lace-up closure. Classic silhouette, studio colourway."
+         data-specs='[["Profile","High-Top"],["Upper","Canvas"],["Sole","Vulcanised"],["Sizes","UK 4–12"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" alt="High Top" loading="lazy">
+            <span class="stock-badge low">Low Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Footwear · High-Top</span>
+            <h3>Canvas High "Architect"</h3>
+            <p class="card-sub">Canvas upper · Vulcanised sole</p>
+            <div class="card-footer">
+                <span class="card-price">R 1,450</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="foot-hightop">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="foot-hightop">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="headwear" data-id="head-5panel"
+         data-name="Studio 5-Panel Cap" data-price="320"
+         data-img="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800"
+         data-desc="Structured 5-panel cap with embroidered logo. Adjustable strap, mid-profile fit."
+         data-specs='[["Style","5-Panel"],["Fit","Mid-profile"],["Closure","Adjustable strap"],["Material","Ripstop"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800" alt="5-Panel" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Headwear · Cap</span>
+            <h3>Studio 5-Panel Cap</h3>
+            <p class="card-sub">Embroidered logo · Adjustable</p>
+            <div class="card-footer">
+                <span class="card-price">R 320</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="head-5panel">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="head-5panel">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-card" data-cat="headwear" data-id="head-beanie"
+         data-name='"Build" Ribbed Beanie' data-price="280"
+         data-img="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=800"
+         data-desc="100% acrylic ribbed knit beanie. One size fits most, foldable cuff, embroidered logo patch."
+         data-specs='[["Material","Acrylic knit"],["Style","Ribbed"],["Cuff","Foldable"],["Size","One size"]]'>
+        <div class="card-img-wrap">
+            <img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=800" alt="Beanie" loading="lazy">
+            <span class="stock-badge in">In Stock</span>
+        </div>
+        <div class="card-body">
+            <span class="card-cat-tag">Headwear · Beanie</span>
+            <h3>"Build" Ribbed Beanie</h3>
+            <p class="card-sub">Ribbed knit · One size</p>
+            <div class="card-footer">
+                <span class="card-price">R 280</span>
+                <div class="card-actions">
+                    <button class="icon-btn info-btn" data-id="head-beanie">ⓘ</button>
+                    <button class="icon-btn add-btn"  data-id="head-beanie">🛒</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div><!-- /menu-grid -->
+</main>
+
+<div id="footer-placeholder"></div>
+
+<!-- Order Tray -->
+<div class="order-tray">
+    <div class="tray-bar" id="trayBar">
+        <span class="tray-count" id="trayCount">0</span>
+        <span class="tray-label">View Order</span>
+        <span class="tray-total" id="trayTotal">R 0</span>
+        <span class="tray-arrow">▲</span>
+    </div>
+</div>
+
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-panel-header">
+        <h3>Your Bag</h3>
+        <button class="cart-panel-close" id="cartPanelClose">×</button>
+    </div>
+    <div class="cart-panel-items" id="cartPanelItems"></div>
+    <div class="cart-panel-footer">
+        <div class="cart-total-row"><span>Total</span><span id="cartPanelTotal">R 0</span></div>
+        <button class="checkout-cta">Checkout →</button>
+    </div>
+</div>
+
+<div class="product-modal" id="productModal">
+    <div class="product-modal-backdrop" id="modalBackdrop"></div>
+    <div class="product-modal-box">
+        <button class="modal-close-btn" id="modalCloseBtn">×</button>
+        <img class="modal-img" id="modalImg" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modalName"></h2>
+            <div class="modal-price" id="modalPrice"></div>
+            <p class="modal-desc" id="modalDesc"></p>
+            <div class="modal-specs-grid" id="modalSpecs"></div>
+            <button class="modal-add-btn" id="modalAddBtn">Add to Bag →</button>
+        </div>
+    </div>
+</div>
+
+<script src="script/global.js"></script>
+<script src="script/menu-system.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.initMenuSystem({
+        searchId: 'appSearch',
+        upsells: {
+            tees:     ['head-5panel', 'head-beanie'],
+            hoodies:  ['bot-jogger', 'head-beanie'],
+            bottoms:  ['tee-artist', 'foot-runner'],
+            footwear: ['bot-cargo', 'tee-os'],
+            headwear: ['tee-artist', 'hood-logic'],
         }
-
-        chips.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                chips.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                active = btn.dataset.filter;
-                filter();
-            });
-        });
-
-        if (search) search.addEventListener('input', filter);
-
-        // quick-add uses data attrs
-        document.querySelectorAll('.quick-add').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var name  = btn.dataset.name;
-                var price = parseFloat(btn.dataset.price);
-                window.addToBag({ name: name, price: 'R ' + price.toFixed(2) });
-                var orig = btn.textContent;
-                btn.textContent = 'Added ✓';
-                setTimeout(function() { btn.textContent = orig; }, 1200);
-            });
-        });
     });
-    </script>
+});
+</script>
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-modal-backdrop" id="checkoutModalBackdrop"></div>
+    <div class="checkout-modal-box">
+        <div class="checkout-drag-pill"></div>
+        <div class="checkout-modal-header">
+            <h3>Checkout</h3>
+            <button class="checkout-modal-close" id="checkoutModalClose">×</button>
+        </div>
+        <div id="checkoutFormView">
+            <div class="checkout-order-summary">
+                <div class="checkout-summary-title">Your Order</div>
+                <div id="checkoutSummaryLines"></div>
+            </div>
+            <div class="checkout-method">
+                <span class="checkout-method-label">Fulfilment</span>
+                <div class="method-toggle">
+                    <button class="method-btn active" data-method="pickup">🏪 Pickup</button>
+                    <button class="method-btn" data-method="delivery">🚚 Delivery</button>
+                </div>
+            </div>
+            <div class="checkout-fields">
+                <div class="checkout-field"><label>Full Name</label><input id="checkoutName" type="text" placeholder="Your name" autocomplete="name"></div>
+                <div class="checkout-field"><label>Email or WhatsApp</label><input id="checkoutEmail" type="text" placeholder="For order confirmation" autocomplete="email"></div>
+                <div class="checkout-field"><label>Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Size, colour, anything special…"></textarea></div>
+                <div class="checkout-address-fields" id="addressFields">
+                    <div class="checkout-field"><label>Street Address</label><input id="checkoutAddress" type="text" placeholder="123 Street Rd" autocomplete="street-address"></div>
+                    <div class="checkout-field"><label>City</label><input id="checkoutCity" type="text" placeholder="Johannesburg" autocomplete="address-level2"></div>
+                </div>
+            </div>
+            <button class="place-order-btn" id="placeOrderBtn">Place Order →</button>
+        </div>
+        <div class="checkout-confirm" id="checkoutConfirm">
+            <div class="confirm-icon">🎉</div>
+            <div class="confirm-title">Order Placed!</div>
+            <p class="confirm-sub">Thanks — we'll confirm your order via email or WhatsApp shortly.</p>
+            <div class="confirm-order-num" id="confirmOrderNum">Order # —</div>
+            <button class="confirm-done-btn" id="confirmDoneBtn">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
