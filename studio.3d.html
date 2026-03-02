@@ -5,492 +5,564 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPhiriTheArtist | 3D Fabrication Lab</title>
     <link rel="stylesheet" href="style/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
 /* ================================================================
-   3D STUDIO — Fabrication Lab
+   3D STUDIO — Apple Configurator
    ================================================================ */
 
-/* Hero */
-.studio3d-hero {
-    text-align: center;
-    padding: 80px 40px 60px;
-    max-width: 900px;
+:root {
+    --blue:      #0071e3;
+    --blue-dark: #0060c7;
+    --green:     #28c76f;
+    --r:         28px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 8px 32px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05);
+    --t:         0.25s cubic-bezier(0.2,0.8,0.2,1);
+}
+
+/* ---- HERO ---- */
+.lab-hero {
+    max-width: 800px;
     margin: 0 auto;
+    padding: 96px 40px 80px;
+    text-align: center;
 }
-.studio3d-hero h1 {
-    font-size: clamp(3rem, 9vw, 6rem);
-    font-weight: 900;
-    letter-spacing: -4px;
-    line-height: 0.85;
-    margin-bottom: 20px;
-}
-.studio3d-hero p {
-    font-size: 17px;
-    color: var(--muted);
-    max-width: 520px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-}
-.hero-specs {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-}
-.spec-pill {
-    display: flex;
+.lab-eyebrow {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2.5px;
+    color: var(--blue);
+    margin-bottom: 20px;
+}
+.lab-eyebrow::before, .lab-eyebrow::after {
+    content: '';
+    display: block;
+    width: 28px; height: 1px;
+    background: var(--blue);
+    opacity: 0.4;
+}
+.lab-hero h1 {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 6.5rem);
+    font-weight: 800;
+    letter-spacing: -4px;
+    line-height: 0.88;
+    margin-bottom: 26px;
+}
+.lab-hero h1 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+.lab-hero p {
+    font-size: 18px;
     color: var(--muted);
-    padding: 8px 16px;
+    max-width: 440px;
+    margin: 0 auto 40px;
+    line-height: 1.65;
+    font-weight: 400;
+}
+.lab-specs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.lab-spec {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    padding: 7px 16px;
+    background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 980px;
+    white-space: nowrap;
 }
-.spec-pill span { color: var(--text); }
+.lab-spec strong { color: var(--text); font-weight: 700; }
 
-/* ---- PORTFOLIO SECTION ---- */
-.portfolio-section {
-    max-width: 1400px;
+/* ---- HOW IT WORKS ---- */
+.how-section {
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 40px 80px;
 }
-.section-label {
+.section-eyebrow {
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: var(--muted);
-    margin-bottom: 32px;
-    padding-bottom: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
 }
-.portfolio-grid {
+.how-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 16px;
 }
-/* First item spans 2 cols for visual weight */
-.portfolio-item:first-child { grid-column: span 2; }
-
-.portfolio-item {
-    position: relative;
-    border-radius: 24px;
-    overflow: hidden;
+.how-card {
     background: var(--bg2);
     border: 1px solid var(--border);
-    cursor: pointer;
-    aspect-ratio: 4/3;
+    border-radius: var(--r);
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--t), box-shadow var(--t);
 }
-.portfolio-item:first-child { aspect-ratio: 16/9; }
-
-.portfolio-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.2,0.8,0.2,1);
-    display: block;
+.how-card:hover {
+    border-color: rgba(0,113,227,0.3);
+    box-shadow: var(--shadow-md);
 }
-.portfolio-item:hover img { transform: scale(1.07); }
-
-.portfolio-overlay {
+.how-card::after {
+    content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 40%, rgba(0,0,0,0.85));
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 24px;
-    opacity: 0;
-    transition: opacity 0.35s;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t);
 }
-.portfolio-item:hover .portfolio-overlay { opacity: 1; }
-.portfolio-overlay h3 {
-    color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 4px;
-}
-.portfolio-overlay p {
-    color: rgba(255,255,255,0.7);
-    font-size: 12px;
-    margin-bottom: 14px;
-}
-.portfolio-overlay .p-btns {
-    display: flex;
-    gap: 8px;
-}
-.p-btn {
-    padding: 8px 16px;
-    border-radius: 980px;
+.how-card:hover::after { transform: scaleX(1); }
+.how-step-num {
     font-size: 11px;
     font-weight: 800;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    cursor: pointer;
-    border: 1.5px solid rgba(255,255,255,0.5);
-    background: transparent;
-    color: #fff;
-    transition: 0.2s;
+    color: var(--blue);
+    margin-bottom: 14px;
+    opacity: 0.8;
 }
-.p-btn:hover { background: #fff; color: #000; border-color: #fff; }
-.p-btn.filled { background: #fff; color: #000; border-color: #fff; }
-.p-btn.filled:hover { background: transparent; color: #fff; }
+.how-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+.how-card h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 8px; }
+.how-card p { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 400; }
 
-/* Portfolio placeholder label */
-.portfolio-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--muted);
-    background: var(--bg2);
-}
-.portfolio-placeholder .p-icon { font-size: 36px; opacity: 0.4; }
-.portfolio-placeholder p { font-size: 13px; font-weight: 600; opacity: 0.6; }
-
-/* ---- EXTERNAL REPOS ---- */
-.repos-bar {
-    max-width: 1400px;
+/* ================================================================
+   CONFIGURATOR
+   ================================================================ */
+.config-section {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 40px 60px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    padding: 0 40px 100px;
 }
-.repos-bar p {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 600;
-}
-
-/* ---- CONFIGURATOR ---- */
-.configurator-section {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-}
-.config-card {
-    background: var(--bg2);
+.config-shell {
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 32px;
-    padding: 56px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1fr 360px;
     align-items: start;
 }
-.config-left h2 {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 900;
-    letter-spacing: -1px;
-    margin-bottom: 8px;
+
+/* ── WIZARD (left) ── */
+.wizard-area { border-right: 1px solid var(--border); }
+
+.wizard-progress {
+    height: 2px;
+    background: var(--border);
 }
-.config-left > p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 36px;
-    line-height: 1.6;
+.wizard-progress-fill {
+    height: 100%;
+    background: var(--blue);
+    transition: width 0.45s cubic-bezier(0.2,0.8,0.2,1);
 }
 
-/* Form elements */
-.form-group { margin-bottom: 22px; }
-.form-group label {
-    display: block;
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    margin-bottom: 8px;
+.wizard-tabs {
+    display: flex;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 36px;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
-.form-group select,
-.form-group input[type="text"],
-.form-group input[type="url"] {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1.5px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
+.wizard-tabs::-webkit-scrollbar { display: none; }
+
+.wizard-tab {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 18px 20px 16px;
+    font-size: 13px;
     font-weight: 600;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color var(--t), border-color var(--t);
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+    font-family: inherit;
+    cursor: default;
 }
-.form-group select:focus,
-.form-group input:focus { border-color: var(--accent); }
+.wizard-tab.clickable { cursor: pointer; }
+.wizard-tab.clickable:hover { color: var(--text); }
+.wizard-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 700; }
 
+.step-badge {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    line-height: 1;
+}
+.wizard-tab.active .step-badge { background: var(--blue); color: #fff; }
+.wizard-tab.done .step-badge   { background: var(--green); color: #fff; font-size: 12px; }
+
+.wizard-panel { display: none; padding: 40px 36px 24px; }
+.wizard-panel.active { display: block; }
+
+.panel-title {
+    font-size: 24px; font-weight: 800;
+    letter-spacing: -0.5px; margin-bottom: 5px; line-height: 1.2;
+}
+.panel-sub {
+    font-size: 14px; color: var(--muted);
+    margin-bottom: 28px; font-weight: 400; line-height: 1.5;
+}
+.sub-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--muted); margin: 0 0 10px;
+}
+
+/* TILES */
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+}
+.tiles.compact { grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); }
+
+.tile {
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 22px 16px 18px;
+    cursor: pointer; text-align: center;
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color var(--t), background var(--t), transform var(--t), box-shadow var(--t);
+}
+.tile:hover {
+    border-color: rgba(0,113,227,0.5);
+    background: rgba(0,113,227,0.03);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,113,227,0.07);
+}
+.tile:active { transform: scale(0.97); }
+.tile.selected {
+    border-color: var(--blue);
+    background: rgba(0,113,227,0.06);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+}
+.tile-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 20px; height: 20px;
+    background: var(--blue); border-radius: 50%;
+    display: none; align-items: center; justify-content: center;
+    font-size: 10px; color: #fff; font-weight: 900; line-height: 1;
+}
+.tile.selected .tile-check { display: flex; }
+.tile-icon { font-size: 28px; margin-bottom: 10px; display: block; line-height: 1; }
+.tile-label { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; color: var(--text); margin-bottom: 3px; }
+.tile-sub { font-size: 11.5px; color: var(--muted); line-height: 1.4; font-weight: 400; }
+.tile-badge {
+    position: absolute; top: -7px; right: -7px;
+    background: var(--blue); color: #fff;
+    font-size: 10px; font-weight: 800;
+    padding: 2px 7px; border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* SWATCHES */
+.swatch-row {
+    display: flex; gap: 14px;
+    flex-wrap: wrap; margin-bottom: 24px;
+}
+.swatch-item {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 7px; cursor: pointer;
+}
+.swatch-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 3px solid transparent;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.15);
+    transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+.swatch-circle:hover { transform: scale(1.08); }
+.swatch-circle.selected {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.2), 0 4px 12px rgba(0,0,0,0.2);
+}
+.swatch-circle.selected::after {
+    content: '✓';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.swatch-circle[data-c="white"]  { background: #f0f0f0; }
+.swatch-circle[data-c="black"]  { background: #1c1c1e; }
+.swatch-circle[data-c="grey"]   { background: #8e8e93; }
+.swatch-circle[data-c="silk"]   { background: linear-gradient(135deg,#b8b8b8,#e8e8e8,#a0a0a0); }
+.swatch-circle[data-c="custom"] { background: conic-gradient(from 0deg,#ff6b6b,#ffa552,#ffd93d,#6bcb77,#4d96ff,#c77dff,#ff6b6b); }
+.swatch-name { font-size: 11px; color: var(--muted); font-weight: 600; text-align: center; }
+
+.colour-preview {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+.colour-preview-dot {
+    width: 42px; height: 42px; border-radius: 50%;
+    flex-shrink: 0; background: #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: background 0.25s;
+}
+.colour-preview-text strong { font-size: 15px; font-weight: 700; display: block; margin-bottom: 2px; }
+.colour-preview-text span   { font-size: 12px; color: var(--muted); }
+
+/* UPLOAD ZONE */
 .upload-zone {
     border: 2px dashed var(--border);
-    border-radius: 16px;
-    padding: 40px 20px;
+    border-radius: 18px;
+    padding: 40px 28px;
     text-align: center;
-    background: var(--bg);
+    background: var(--bg2);
     cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    margin-bottom: 22px;
+    transition: border-color var(--t), background var(--t), transform var(--t);
+    margin-bottom: 20px;
 }
 .upload-zone:hover, .upload-zone.active {
-    border-color: var(--accent);
-    background: rgba(0,113,227,0.03);
+    border-color: var(--blue);
+    background: rgba(0,113,227,0.04);
+    transform: scale(1.01);
 }
-.upload-zone .u-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.5; display: block; }
-.upload-zone p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-.upload-zone p strong { color: var(--accent); }
-.upload-zone .file-name {
-    margin-top: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-}
+.upload-zone .u-icon { font-size: 34px; display: block; margin-bottom: 12px; opacity: 0.35; }
+.upload-zone p { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.5; }
+.upload-zone p strong { color: var(--blue); font-weight: 700; }
+.upload-filename { margin-top: 10px !important; font-size: 13px !important; font-weight: 700; color: var(--blue) !important; display: none; }
 
-.url-input-group { display: none; }
-.url-input-group.visible { display: block; }
-
-/* Two col form row */
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+/* TEXT FIELDS */
+.field { margin-bottom: 20px; }
+.field label {
+    display: block; font-size: 11px; font-weight: 700;
+    color: var(--muted); margin-bottom: 7px;
+    text-transform: uppercase; letter-spacing: 0.3px;
 }
-
-/* Right side — price display */
-.config-right {
-    position: sticky;
-    top: calc(var(--nav-h) + 20px);
-}
-.price-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 36px;
-}
-.price-card h3 {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-}
-.price-display {
-    font-size: 52px;
-    font-weight: 900;
-    letter-spacing: -3px;
-    line-height: 1;
-    margin-bottom: 6px;
-    color: var(--text);
-}
-.price-note {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 28px;
-    line-height: 1.5;
-}
-.price-breakdown {
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.price-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: var(--muted);
-}
-.price-row strong { color: var(--text); font-weight: 700; }
-.price-row.total {
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-    color: var(--text);
-    font-weight: 800;
-    font-size: 15px;
-}
-.add-to-bag-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--text) !important;
-    color: var(--bg) !important;
-    border: none !important;
+.field input, .field textarea {
+    width: 100%; padding: 14px 16px;
     border-radius: 14px;
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-bottom: 10px;
-}
-.add-to-bag-btn:hover { opacity: 0.8; }
-.inquiry-btn {
-    width: 100%;
-    padding: 14px;
-    background: transparent;
-    color: var(--text);
     border: 1.5px solid var(--border);
-    border-radius: 14px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: 0.2s;
+    background: var(--bg2); color: var(--text);
+    font-family: inherit; font-size: 15px; font-weight: 500;
+    outline: none; -webkit-appearance: none; box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
-.inquiry-btn:hover { border-color: var(--text); }
+.field textarea { resize: vertical; min-height: 110px; }
+.field input:focus, .field textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
 
-/* Size guide */
-.size-guide {
-    margin-top: 28px;
-    padding: 20px;
-    background: var(--bg2);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-}
-.size-guide h4 {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 12px;
-}
-.size-row {
-    display: flex;
+/* WIZARD NAV */
+.wizard-nav {
+    display: flex; align-items: center;
     justify-content: space-between;
-    font-size: 12px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    color: var(--muted);
-}
-.size-row:last-child { border-bottom: none; }
-.size-row span:last-child { color: var(--text); font-weight: 700; }
-
-/* Modal */
-.studio-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(12px);
-    z-index: 8000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-.studio-modal.open { display: flex; }
-.modal-box {
-    background: var(--bg);
-    border-radius: 28px;
-    padding: 48px;
-    max-width: 580px;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.3);
-}
-.modal-close {
-    position: absolute;
-    top: 20px; right: 20px;
-    background: var(--bg2) !important;
-    border: none !important;
-    color: var(--text) !important;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-}
-.modal-box h2 {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: -0.8px;
-    margin-bottom: 8px;
-}
-.modal-box .modal-sub {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 24px;
-    line-height: 1.5;
-}
-.modal-specs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    padding: 16px 36px 36px;
     gap: 12px;
-    margin-bottom: 24px;
 }
-.modal-spec {
-    background: var(--bg2);
-    border-radius: 12px;
-    padding: 14px;
-}
-.modal-spec span {
-    display: block;
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 4px;
-}
-.modal-spec strong { font-size: 15px; font-weight: 700; }
-.modal-actions { display: flex; gap: 10px; }
-.modal-actions button { flex: 1; }
-
-/* Custom request form in modal */
-.custom-form textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 14px;
+.btn-back {
+    padding: 13px 22px;
+    background: none; color: var(--muted);
     border: 1.5px solid var(--border);
-    background: var(--bg2);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 120px;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 14px;
+    border-radius: 14px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
 }
-.custom-form textarea:focus { border-color: var(--accent); }
+.btn-back:hover { border-color: var(--text); color: var(--text); background: var(--bg2); }
+.btn-next {
+    flex: 1; max-width: 220px;
+    padding: 15px 24px;
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 14px;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.btn-next:hover {
+    background: var(--blue-dark);
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,113,227,0.28);
+}
+.btn-next:active { transform: scale(0.98); }
+.btn-next.final { background: var(--green); }
+.btn-next.final:hover { background: #22b562; box-shadow: 0 8px 24px rgba(40,199,111,0.28); }
 
-/* Cart sidebar wiring */
+/* ── ORDER SUMMARY (right) ── */
+.order-summary {
+    padding: 36px 28px 32px;
+    position: sticky;
+    top: calc(var(--nav-h, 60px) + 20px);
+}
+
+.price-block {
+    text-align: center;
+    padding: 20px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+}
+.price-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); margin-bottom: 6px;
+}
+.price-num {
+    font-size: 60px; font-weight: 900;
+    letter-spacing: -4px; line-height: 1;
+    color: var(--text);
+    transition: opacity 0.18s, transform 0.18s;
+}
+.price-num.flash { opacity: 0.35; transform: scale(0.93); }
+.price-sub { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+.receipt {
+    background: var(--bg2);
+    border-radius: 18px; overflow: hidden;
+    margin-bottom: 20px;
+}
+.rx-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 18px; font-size: 13px; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+}
+.rx-row:last-child { border-bottom: none; }
+.rx-row strong { color: var(--text); font-weight: 700; }
+.rx-row.rx-total {
+    font-size: 15px; font-weight: 800; color: var(--text);
+    padding: 14px 18px;
+    background: linear-gradient(to right, rgba(0,113,227,0.05), transparent);
+}
+.rx-row.rx-total strong { font-size: 15px; }
+
+.btn-add {
+    width: 100%; padding: 18px;
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 16px;
+    font-size: 16px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.btn-add:hover {
+    background: var(--blue-dark);
+    transform: scale(1.01);
+    box-shadow: 0 10px 30px rgba(0,113,227,0.28);
+}
+.btn-add:active { transform: scale(0.99); }
+.btn-inquiry {
+    width: 100%; padding: 13px;
+    background: none; color: var(--muted);
+    border: 1.5px solid var(--border);
+    border-radius: 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+}
+.btn-inquiry:hover { border-color: var(--text); color: var(--text); background: var(--bg2); }
+
+.size-guide {
+    margin-top: 20px; padding: 16px 18px;
+    background: var(--bg2); border-radius: 14px;
+    border: 1px solid var(--border);
+}
+.size-guide-title {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin-bottom: 11px;
+}
+.sz-row {
+    display: flex; justify-content: space-between;
+    font-size: 12.5px; padding: 7px 0;
+    border-bottom: 1px solid var(--border); color: var(--muted);
+}
+.sz-row:last-child { border-bottom: none; }
+.sz-row span:last-child { color: var(--text); font-weight: 700; }
+
+/* ── MODAL ── */
+.fab-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 8000; align-items: center; justify-content: center; padding: 20px;
+}
+.fab-modal.open { display: flex; }
+.fab-modal-box {
+    background: var(--bg); border-radius: 28px;
+    padding: 44px; max-width: 420px; width: 100%;
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.1);
+    position: relative;
+    animation: modalIn 0.3s cubic-bezier(0.2,0.8,0.2,1);
+}
+@keyframes modalIn {
+    from { transform: translateY(20px) scale(0.96); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.fab-modal-close {
+    position: absolute; top: 18px; right: 18px;
+    width: 30px; height: 30px; background: var(--bg2);
+    border: none; border-radius: 50%; font-size: 16px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); transition: background 0.2s; font-family: inherit;
+}
+.fab-modal-close:hover { background: var(--border); color: var(--text); }
+.fab-modal-emoji { font-size: 52px; margin-bottom: 16px; display: block; }
+.fab-modal-box h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.fab-modal-box p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
 #cartSidebar { z-index: 5000; }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .config-card {
-        grid-template-columns: 1fr;
-        padding: 32px 24px;
-        gap: 32px;
-    }
-    .config-right { position: static; }
-    .portfolio-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .portfolio-item:first-child { grid-column: span 2; }
+/* ── RESPONSIVE ── */
+@media (max-width: 1050px) {
+    .config-shell { grid-template-columns: 1fr; }
+    .wizard-area { border-right: none; border-bottom: 1px solid var(--border); }
+    .order-summary { position: static; }
+    .how-grid { grid-template-columns: 1fr; gap: 12px; }
 }
-@media (max-width: 600px) {
-    .portfolio-grid { grid-template-columns: 1fr; }
-    .portfolio-item:first-child { grid-column: span 1; }
-    .portfolio-section, .configurator-section, .repos-bar { padding-left: 20px; padding-right: 20px; }
-    .studio3d-hero { padding: 60px 20px 40px; }
-    .form-row { grid-template-columns: 1fr; }
-    .modal-specs { grid-template-columns: 1fr; }
-    .modal-box { padding: 32px 24px; }
+@media (max-width: 700px) {
+    .lab-hero { padding: 64px 24px 56px; }
+    .how-section, .config-section { padding-left: 20px; padding-right: 20px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .wizard-panel, .wizard-nav, .order-summary { padding-left: 20px; padding-right: 20px; }
+    .wizard-tabs { padding: 0 16px; }
+    .wizard-tab  { padding: 15px 12px; font-size: 12px; }
+    .fab-modal-box { padding: 36px 24px; }
 }
     </style>
 </head>
@@ -498,251 +570,299 @@
     <div id="nav-placeholder"></div>
 
     <main>
-        <!-- Hero -->
-        <section class="studio3d-hero">
-            <span class="hero-tagline">Fabrication Lab</span>
-            <h1 class="reveal">3D STUDIO</h1>
-            <p class="reveal">Precision PLA printing, custom modelling services, and a curated collection of printable objects.</p>
-            <div class="hero-specs reveal">
-                <div class="spec-pill">Printer <span>Ender 6</span></div>
-                <div class="spec-pill">Printer <span>Replicator+</span></div>
-                <div class="spec-pill">Material <span>PLA Only</span></div>
-                <div class="spec-pill">Finish <span>Draft → Fine</span></div>
+
+        <!-- ═══ HERO ═══════════════════════════════════════════ -->
+        <section class="lab-hero">
+            <div class="lab-eyebrow">Fabrication Lab</div>
+            <h1 class="reveal">3D <em>Studio</em></h1>
+            <p class="reveal">You bring the file. We bring it to life — precision PLA printing with professional-grade results.</p>
+            <div class="lab-specs reveal">
+                <div class="lab-spec">Printer <strong>Ender 6</strong></div>
+                <div class="lab-spec">Printer <strong>Replicator+</strong></div>
+                <div class="lab-spec">Material <strong>PLA</strong></div>
+                <div class="lab-spec">Finish <strong>Draft → Fine</strong></div>
+                <div class="lab-spec">Turnaround <strong>2–5 days</strong></div>
             </div>
         </section>
 
-        <!-- Portfolio -->
-        <section class="portfolio-section">
-            <p class="section-label reveal">Portfolio — Recent Work</p>
-            <div class="portfolio-grid reveal">
-
-                <div class="portfolio-item" data-id="planter">
-                    <!-- Replace src with your real image: assets/images/studio/planter.jpg -->
-                    <div class="portfolio-placeholder">
-                        <span class="p-icon">🪴</span>
-                        <p>Geometric Planter</p>
-                        <small style="font-size:11px;opacity:0.5;">Replace with assets/images/studio/planter.jpg</small>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3>Geometric Planter</h3>
-                        <p>Architectural interior piece · Matte White PLA · 120×120mm</p>
-                        <div class="p-btns">
-                            <button class="p-btn filled" onclick="openProjectModal('planter')">View Details</button>
-                            <button class="p-btn" onclick="window.addToBag({name:'Geometric Planter',price:'R 250.00'})">Add to Bag</button>
-                        </div>
-                    </div>
+        <!-- ═══ HOW IT WORKS ════════════════════════════════════ -->
+        <section class="how-section">
+            <p class="section-eyebrow reveal">How it works</p>
+            <div class="how-grid reveal">
+                <div class="how-card">
+                    <p class="how-step-num">Step 01</p>
+                    <span class="how-icon">📤</span>
+                    <h3>You bring the file</h3>
+                    <p>Upload your .STL, .OBJ or .BLEND — or paste a Thingiverse / Printables link. Need a custom design? We model it from scratch.</p>
                 </div>
-
-                <div class="portfolio-item" data-id="gear">
-                    <div class="portfolio-placeholder">
-                        <span class="p-icon">⚙️</span>
-                        <p>Mechanical Assembly</p>
-                        <small style="font-size:11px;opacity:0.5;">Replace with assets/images/studio/gear.jpg</small>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3>Mechanical Assembly</h3>
-                        <p>Industrial gear set · Standard PLA · Display ready</p>
-                        <div class="p-btns">
-                            <button class="p-btn filled" onclick="openProjectModal('gear')">View Details</button>
-                            <button class="p-btn" onclick="window.addToBag({name:'Mechanical Assembly',price:'R 200.00'})">Add to Bag</button>
-                        </div>
-                    </div>
+                <div class="how-card">
+                    <p class="how-step-num">Step 02</p>
+                    <span class="how-icon">⚙️</span>
+                    <h3>We quote &amp; print</h3>
+                    <p>Configure quality, colour and quantity below. We review your file and confirm the final price within 24 hours before printing.</p>
                 </div>
-
-                <div class="portfolio-item" data-id="vase">
-                    <div class="portfolio-placeholder">
-                        <span class="p-icon">🏺</span>
-                        <p>Spiral Vase</p>
-                        <small style="font-size:11px;opacity:0.5;">Replace with assets/images/studio/vase.jpg</small>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3>Spiral Vase</h3>
-                        <p>Vase mode print · Silk PLA · 200mm tall</p>
-                        <div class="p-btns">
-                            <button class="p-btn filled" onclick="openProjectModal('vase')">View Details</button>
-                            <button class="p-btn" onclick="window.addToBag({name:'Spiral Vase',price:'R 180.00'})">Add to Bag</button>
-                        </div>
-                    </div>
+                <div class="how-card">
+                    <p class="how-step-num">Step 03</p>
+                    <span class="how-icon">📦</span>
+                    <h3>Collect your order</h3>
+                    <p>Your print is quality-checked and ready for collection — or we can ship it directly to your door anywhere in South Africa.</p>
                 </div>
-
-                <div class="portfolio-item" data-id="cable">
-                    <div class="portfolio-placeholder">
-                        <span class="p-icon">🔌</span>
-                        <p>Cable Management Clip</p>
-                        <small style="font-size:11px;opacity:0.5;">Replace with assets/images/studio/cable.jpg</small>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3>Cable Management Clip</h3>
-                        <p>Functional desk organiser · Black PLA · Set of 6</p>
-                        <div class="p-btns">
-                            <button class="p-btn filled" onclick="openProjectModal('cable')">View Details</button>
-                            <button class="p-btn" onclick="window.addToBag({name:'Cable Clip Set (×6)',price:'R 120.00'})">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-id="phone">
-                    <div class="portfolio-placeholder">
-                        <span class="p-icon">📱</span>
-                        <p>Phone Stand</p>
-                        <small style="font-size:11px;opacity:0.5;">Replace with assets/images/studio/stand.jpg</small>
-                    </div>
-                    <div class="portfolio-overlay">
-                        <h3>Adjustable Phone Stand</h3>
-                        <p>Universal fit · Matte Black PLA · Desk accessory</p>
-                        <div class="p-btns">
-                            <button class="p-btn filled" onclick="openProjectModal('phone')">View Details</button>
-                            <button class="p-btn" onclick="window.addToBag({name:'Adjustable Phone Stand',price:'R 150.00'})">Add to Bag</button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
-        <!-- External repos -->
-        <div class="repos-bar reveal">
-            <p>Browse more models:</p>
-            <a href="https://www.thingiverse.com" target="_blank" class="btn-outline">Thingiverse ↗</a>
-            <a href="https://www.printables.com" target="_blank" class="btn-outline">Printables ↗</a>
-            <span style="font-size:12px;color:var(--muted);margin-left:4px;">Send us a link and we'll print it for you.</span>
-        </div>
+        <!-- ═══ CONFIGURATOR ════════════════════════════════════ -->
+        <section class="config-section">
+            <p class="section-eyebrow reveal">Build your order — Instant estimate</p>
 
-        <!-- Configurator -->
-        <section class="configurator-section">
-            <p class="section-label reveal">Project Configurator — Get a Quote</p>
-            <div class="config-card reveal">
+            <div class="config-shell reveal">
 
-                <!-- LEFT: Form -->
-                <div class="config-left">
-                    <h2>Build your order</h2>
-                    <p>Upload a file, paste a link, or describe what you need. We'll handle the rest.</p>
+                <!-- ─ LEFT: WIZARD ─ -->
+                <div class="wizard-area">
 
-                    <form id="calcForm">
-                        <!-- Inquiry type -->
-                        <div class="form-group">
-                            <label>What are you bringing?</label>
-                            <select id="projectType" onchange="handleTypeChange()">
-                                <option value="upload">I have a file (.STL / .OBJ / .BLEND)</option>
-                                <option value="link">I have a Thingiverse / URL link</option>
-                                <option value="custom">I need a custom design made</option>
-                                <option value="collection">I want something from your collection</option>
-                            </select>
+                    <div class="wizard-progress">
+                        <div class="wizard-progress-fill" id="wizProgress" style="width:25%"></div>
+                    </div>
+
+                    <nav class="wizard-tabs" id="wizTabs">
+                        <button class="wizard-tab active" data-step="1">
+                            <span class="step-badge">1</span>Your file
+                        </button>
+                        <button class="wizard-tab" data-step="2">
+                            <span class="step-badge">2</span>Quality &amp; Size
+                        </button>
+                        <button class="wizard-tab" data-step="3">
+                            <span class="step-badge">3</span>Colour
+                        </button>
+                        <button class="wizard-tab" data-step="4">
+                            <span class="step-badge">4</span>Quantity
+                        </button>
+                    </nav>
+
+                    <!-- Step 1 — File type -->
+                    <div class="wizard-panel active" id="step1">
+                        <h2 class="panel-title">What are you bringing?</h2>
+                        <p class="panel-sub">Tell us how you'll provide your model file.</p>
+
+                        <div class="tiles" id="typeTiles">
+                            <div class="tile selected" data-value="upload" onclick="pickTile('type',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">📁</span>
+                                <div class="tile-label">My File</div>
+                                <div class="tile-sub">.STL / .OBJ / .BLEND</div>
+                            </div>
+                            <div class="tile" data-value="link" onclick="pickTile('type',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">🔗</span>
+                                <div class="tile-label">URL Link</div>
+                                <div class="tile-sub">Thingiverse / Printables</div>
+                            </div>
+                            <div class="tile" data-value="custom" onclick="pickTile('type',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">✏️</span>
+                                <div class="tile-label">Custom Design</div>
+                                <div class="tile-sub">We'll model it for you</div>
+                            </div>
                         </div>
 
-                        <!-- File upload zone -->
-                        <div id="upload-zone" class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <div id="uploadZone" class="upload-zone" onclick="document.getElementById('fileInput').click()">
                             <input type="file" id="fileInput" hidden accept=".stl,.obj,.blend,.3mf">
-                            <span class="u-icon">⏻</span>
+                            <span class="u-icon">☁</span>
                             <p>Drop your file here or <strong>click to browse</strong></p>
-                            <p class="file-name" id="fileName" style="display:none;"></p>
+                            <p class="upload-filename" id="uploadFilename"></p>
                         </div>
 
-                        <!-- URL input (hidden by default) -->
-                        <div class="url-input-group form-group" id="urlGroup">
+                        <div class="field" id="urlField" style="display:none;">
                             <label>Model URL</label>
                             <input type="url" id="modelUrl" placeholder="https://www.thingiverse.com/thing:…">
                         </div>
 
-                        <!-- Custom request (hidden by default) -->
-                        <div class="custom-form" id="customGroup" style="display:none;">
-                            <div class="form-group">
-                                <label>Describe your project</label>
-                                <textarea id="customDesc" placeholder="Dimensions, purpose, deadline, reference images…" style="width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px;resize:vertical;min-height:120px;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-                            </div>
+                        <div class="field" id="customField" style="display:none;">
+                            <label>Describe your project</label>
+                            <textarea id="customDesc" placeholder="Dimensions, purpose, deadline, reference images…"></textarea>
                         </div>
-
-                        <!-- Print settings -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Print Quality</label>
-                                <select id="quality" onchange="recalculate()">
-                                    <option value="draft">Draft (0.28mm layer)</option>
-                                    <option value="standard" selected>Standard (0.20mm layer)</option>
-                                    <option value="fine">Fine (0.12mm layer)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Estimated Size</label>
-                                <select id="sizeEst" onchange="recalculate()">
-                                    <option value="small">Small (fits in hand)</option>
-                                    <option value="medium" selected>Medium (A5 size)</option>
-                                    <option value="large">Large (A4 size)</option>
-                                    <option value="xlarge">XL (max bed)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Colour</label>
-                                <select id="colour" onchange="recalculate()">
-                                    <option value="white">Matte White</option>
-                                    <option value="black">Matte Black</option>
-                                    <option value="grey">Cool Grey</option>
-                                    <option value="silk">Silk Silver (+ R30)</option>
-                                    <option value="custom">Custom Colour (+ R50)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <select id="quantity" onchange="recalculate()">
-                                    <option value="1">1 unit</option>
-                                    <option value="2">2 units (−5%)</option>
-                                    <option value="5">5 units (−10%)</option>
-                                    <option value="10">10+ units (−15%)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- RIGHT: Price card -->
-                <div class="config-right">
-                    <div class="price-card">
-                        <h3>Estimated Total</h3>
-                        <div class="price-display" id="priceDisplay">R 150</div>
-                        <p class="price-note">Final quote confirmed after file review. Turnaround: 2–5 business days.</p>
-                        <div class="price-breakdown">
-                            <div class="price-row"><span>Base print fee</span><strong id="breakBase">R 150</strong></div>
-                            <div class="price-row"><span>Quality</span><strong id="breakQuality">Standard</strong></div>
-                            <div class="price-row"><span>Size</span><strong id="breakSize">Medium</strong></div>
-                            <div class="price-row"><span>Colour</span><strong id="breakColour">Matte White</strong></div>
-                            <div class="price-row"><span>Quantity</span><strong id="breakQty">×1</strong></div>
-                            <div class="price-row total"><span>TOTAL</span><strong id="breakTotal">R 150</strong></div>
-                        </div>
-                        <button class="add-to-bag-btn" id="addToBagBtn">Add to Bag →</button>
-                        <button class="inquiry-btn" id="sendInquiryBtn">Send Inquiry Instead</button>
                     </div>
+
+                    <!-- Step 2 — Quality + Size -->
+                    <div class="wizard-panel" id="step2">
+                        <h2 class="panel-title">Quality &amp; Size</h2>
+                        <p class="panel-sub">Select your preferred resolution and approximate dimensions.</p>
+
+                        <p class="sub-label">Print quality</p>
+                        <div class="tiles compact" id="qualityTiles">
+                            <div class="tile" data-value="draft" onclick="pickTile('quality',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">⚡</span>
+                                <div class="tile-label">Draft</div>
+                                <div class="tile-sub">0.28mm · Fast</div>
+                            </div>
+                            <div class="tile selected" data-value="standard" onclick="pickTile('quality',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">⚖️</span>
+                                <div class="tile-label">Standard</div>
+                                <div class="tile-sub">0.20mm · Balanced</div>
+                            </div>
+                            <div class="tile" data-value="fine" onclick="pickTile('quality',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">💎</span>
+                                <div class="tile-label">Fine</div>
+                                <div class="tile-sub">0.12mm · Detailed</div>
+                            </div>
+                        </div>
+
+                        <p class="sub-label" style="margin-top:24px;">Estimated size</p>
+                        <div class="tiles compact" id="sizeTiles">
+                            <div class="tile" data-value="small" onclick="pickTile('size',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">🖐</span>
+                                <div class="tile-label">Small</div>
+                                <div class="tile-sub">Fits in hand · &lt;80mm</div>
+                            </div>
+                            <div class="tile selected" data-value="medium" onclick="pickTile('size',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">📦</span>
+                                <div class="tile-label">Medium</div>
+                                <div class="tile-sub">A5 · up to 150mm</div>
+                            </div>
+                            <div class="tile" data-value="large" onclick="pickTile('size',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">🗃️</span>
+                                <div class="tile-label">Large</div>
+                                <div class="tile-sub">A4 · up to 220mm</div>
+                            </div>
+                            <div class="tile" data-value="xlarge" onclick="pickTile('size',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">🏗️</span>
+                                <div class="tile-label">XL</div>
+                                <div class="tile-sub">Max bed · 250mm+</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 — Colour -->
+                    <div class="wizard-panel" id="step3">
+                        <h2 class="panel-title">Pick a colour</h2>
+                        <p class="panel-sub">Standard colours are included. Silk and custom carry a small surcharge.</p>
+
+                        <div class="swatch-row" id="colourSwatches">
+                            <div class="swatch-item" onclick="pickSwatch(this,'white','Matte White','Included')">
+                                <div class="swatch-circle selected" data-c="white"></div>
+                                <span class="swatch-name">White</span>
+                            </div>
+                            <div class="swatch-item" onclick="pickSwatch(this,'black','Matte Black','Included')">
+                                <div class="swatch-circle" data-c="black"></div>
+                                <span class="swatch-name">Black</span>
+                            </div>
+                            <div class="swatch-item" onclick="pickSwatch(this,'grey','Cool Grey','Included')">
+                                <div class="swatch-circle" data-c="grey"></div>
+                                <span class="swatch-name">Grey</span>
+                            </div>
+                            <div class="swatch-item" onclick="pickSwatch(this,'silk','Silk Silver','+R30')">
+                                <div class="swatch-circle" data-c="silk"></div>
+                                <span class="swatch-name">Silk +R30</span>
+                            </div>
+                            <div class="swatch-item" onclick="pickSwatch(this,'custom','Custom Colour','+R50')">
+                                <div class="swatch-circle" data-c="custom"></div>
+                                <span class="swatch-name">Custom +R50</span>
+                            </div>
+                        </div>
+
+                        <div class="colour-preview">
+                            <div class="colour-preview-dot" id="colourDot"></div>
+                            <div class="colour-preview-text">
+                                <strong id="colourName">Matte White</strong>
+                                <span id="colourNote">Included — no surcharge</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 — Quantity -->
+                    <div class="wizard-panel" id="step4">
+                        <h2 class="panel-title">How many units?</h2>
+                        <p class="panel-sub">Bulk orders get automatic discounts applied at checkout.</p>
+
+                        <div class="tiles" id="qtyTiles">
+                            <div class="tile selected" data-value="1" onclick="pickTile('qty',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-icon">1️⃣</span>
+                                <div class="tile-label">1 Unit</div>
+                                <div class="tile-sub">Standard price</div>
+                            </div>
+                            <div class="tile" data-value="2" onclick="pickTile('qty',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-badge">−5%</span>
+                                <span class="tile-icon">2️⃣</span>
+                                <div class="tile-label">2 Units</div>
+                                <div class="tile-sub">Save 5%</div>
+                            </div>
+                            <div class="tile" data-value="5" onclick="pickTile('qty',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-badge">−10%</span>
+                                <span class="tile-icon">5️⃣</span>
+                                <div class="tile-label">5 Units</div>
+                                <div class="tile-sub">Save 10%</div>
+                            </div>
+                            <div class="tile" data-value="10" onclick="pickTile('qty',this)">
+                                <span class="tile-check">✓</span>
+                                <span class="tile-badge">−15%</span>
+                                <span class="tile-icon">🔟</span>
+                                <div class="tile-label">10+ Units</div>
+                                <div class="tile-sub">Best value</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nav -->
+                    <div class="wizard-nav">
+                        <button class="btn-back" id="btnBack" style="display:none;" onclick="wizNav(-1)">← Back</button>
+                        <button class="btn-next" id="btnNext" onclick="wizNav(1)">
+                            Continue <span style="font-size:17px;line-height:1">→</span>
+                        </button>
+                    </div>
+                </div><!-- /wizard-area -->
+
+                <!-- ─ RIGHT: SUMMARY ─ -->
+                <div class="order-summary">
+                    <div class="price-block">
+                        <div class="price-label">Estimated Total</div>
+                        <div class="price-num" id="priceNum">R 150</div>
+                        <div class="price-sub">Final price confirmed after file review.</div>
+                    </div>
+
+                    <div class="receipt">
+                        <div class="rx-row"><span>Base fee</span><strong id="rxBase">R 150</strong></div>
+                        <div class="rx-row"><span>Quality</span><strong id="rxQuality">Standard</strong></div>
+                        <div class="rx-row"><span>Size</span><strong id="rxSize">Medium</strong></div>
+                        <div class="rx-row"><span>Colour</span><strong id="rxColour">Matte White</strong></div>
+                        <div class="rx-row"><span>Quantity</span><strong id="rxQty">× 1</strong></div>
+                        <div class="rx-row rx-total"><span>Total</span><strong id="rxTotal">R 150</strong></div>
+                    </div>
+
+                    <button class="btn-add" id="btnAddBag">
+                        <span>Add to Bag</span><span style="font-size:18px">→</span>
+                    </button>
+                    <button class="btn-inquiry" id="btnInquiry">Send Inquiry Instead</button>
 
                     <div class="size-guide">
-                        <h4>Size Reference</h4>
-                        <div class="size-row"><span>Small</span><span>Up to 80×80×80mm</span></div>
-                        <div class="size-row"><span>Medium</span><span>Up to 150×150×150mm</span></div>
-                        <div class="size-row"><span>Large</span><span>Up to 220×220×220mm</span></div>
-                        <div class="size-row"><span>XL</span><span>Up to 250×250×300mm</span></div>
+                        <div class="size-guide-title">Size reference</div>
+                        <div class="sz-row"><span>Small</span><span>up to 80 × 80 × 80mm</span></div>
+                        <div class="sz-row"><span>Medium</span><span>up to 150 × 150 × 150mm</span></div>
+                        <div class="sz-row"><span>Large</span><span>up to 220 × 220 × 220mm</span></div>
+                        <div class="sz-row"><span>XL</span><span>up to 250 × 250 × 300mm</span></div>
                     </div>
                 </div>
 
-            </div>
+            </div><!-- /config-shell -->
         </section>
+
     </main>
 
-    <!-- Project Detail Modal -->
-    <div class="studio-modal" id="projectModal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeProjectModal()">×</button>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <!-- Custom request sent modal -->
-    <div class="studio-modal" id="inquiryModal">
-        <div class="modal-box" style="text-align:center;max-width:400px;">
-            <button class="modal-close" onclick="document.getElementById('inquiryModal').classList.remove('open')">×</button>
-            <div style="font-size:48px;margin-bottom:16px;">✉️</div>
-            <h2 style="margin-bottom:8px;">Inquiry Sent!</h2>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">We'll review your project and get back to you within 24 hours at <strong>contact@sphiri.art</strong></p>
+    <!-- Inquiry modal -->
+    <div class="fab-modal" id="inquiryModal">
+        <div class="fab-modal-box">
+            <button class="fab-modal-close" onclick="document.getElementById('inquiryModal').classList.remove('open')">×</button>
+            <span class="fab-modal-emoji">✉️</span>
+            <h2>Inquiry Sent!</h2>
+            <p>We'll review your project and get back to you within 24 hours at <strong>contact@sphiri.art</strong></p>
         </div>
     </div>
 
@@ -763,187 +883,139 @@
 
     <script src="script/global.js"></script>
     <script>
-    // ============================================================
-    //  3D STUDIO — calculator + portfolio modals
-    // ============================================================
+    /* ============================================================
+       3D Studio — Configurator
+    ============================================================ */
+    const S = { type:'upload', quality:'standard', size:'medium', colour:'white', qty:'1', step:1, total:4 };
 
-    // Pricing tables
-    const PRICING = {
+    const P = {
         base: 150,
-        quality: { draft: 0.8, standard: 1.0, fine: 1.6 },
-        size:    { small: 0.7, medium: 1.0, large: 1.6, xlarge: 2.2 },
-        colour:  { white: 0, black: 0, grey: 0, silk: 30, custom: 50 },
-        qty:     { '1': [1, 0], '2': [2, 0.05], '5': [5, 0.10], '10': [10, 0.15] }
+        quality: { draft:0.8, standard:1.0, fine:1.6 },
+        size:    { small:0.7, medium:1.0, large:1.6, xlarge:2.2 },
+        colour:  { white:0, black:0, grey:0, silk:30, custom:50 },
+        qty:     { '1':[1,0], '2':[2,0.05], '5':[5,0.10], '10':[10,0.15] }
     };
+    const QL = { draft:'Draft (0.28mm)', standard:'Standard (0.20mm)', fine:'Fine (0.12mm)' };
+    const SL = { small:'Small', medium:'Medium', large:'Large', xlarge:'XL' };
+    const CL = { white:'Matte White', black:'Matte Black', grey:'Cool Grey', silk:'Silk Silver', custom:'Custom' };
+    const CN = { white:'Included — no surcharge', black:'Included — no surcharge', grey:'Included — no surcharge', silk:'Premium finish · +R30', custom:'Special order · +R50' };
+    const CB = { white:'#f0f0f0', black:'#1c1c1e', grey:'#8e8e93', silk:'linear-gradient(135deg,#b8b8b8,#e8e8e8,#a0a0a0)', custom:'conic-gradient(from 0deg,#ff6b6b,#ffa552,#ffd93d,#6bcb77,#4d96ff,#c77dff,#ff6b6b)' };
 
-    const qualityLabels = { draft: 'Draft (0.28mm)', standard: 'Standard (0.20mm)', fine: 'Fine (0.12mm)' };
-    const sizeLabels    = { small: 'Small', medium: 'Medium', large: 'Large', xlarge: 'XL' };
-    const colourLabels  = { white: 'Matte White', black: 'Matte Black', grey: 'Cool Grey', silk: 'Silk Silver', custom: 'Custom' };
+    function recalc() {
+        const [n, disc] = P.qty[S.qty];
+        let sub = (P.base * P.quality[S.quality] * P.size[S.size] + P.colour[S.colour]) * n;
+        sub *= (1 - disc);
+        const total = Math.ceil(sub / 10) * 10;
+        const el = document.getElementById('priceNum');
+        el.classList.add('flash');
+        setTimeout(() => { el.textContent = 'R ' + total; el.classList.remove('flash'); }, 120);
+        document.getElementById('rxBase').textContent    = 'R ' + P.base;
+        document.getElementById('rxQuality').textContent = QL[S.quality];
+        document.getElementById('rxSize').textContent    = SL[S.size];
+        document.getElementById('rxColour').textContent  = CL[S.colour];
+        document.getElementById('rxQty').textContent     = '× ' + n + (disc > 0 ? ' (−'+(disc*100)+'%)' : '');
+        document.getElementById('rxTotal').textContent   = 'R ' + total;
+    }
+    window.updateCalculator = recalc;
 
-    function recalculate() {
-        const q   = document.getElementById('quality').value;
-        const s   = document.getElementById('sizeEst').value;
-        const c   = document.getElementById('colour').value;
-        const qty = document.getElementById('quantity').value;
+    function pickTile(group, el) {
+        el.parentNode.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
+        el.classList.add('selected');
+        const v = el.dataset.value;
+        if (group === 'type') {
+            S.type = v;
+            document.getElementById('uploadZone').style.display  = v === 'upload' ? 'block' : 'none';
+            document.getElementById('urlField').style.display    = v === 'link'   ? 'block' : 'none';
+            document.getElementById('customField').style.display = v === 'custom' ? 'block' : 'none';
+        } else if (group === 'quality') { S.quality = v; }
+          else if (group === 'size')    { S.size    = v; }
+          else if (group === 'qty')     { S.qty     = v; }
+        recalc();
+    }
 
-        const [qtyCount, discount] = PRICING.qty[qty];
-        const colourAdd = PRICING.colour[c];
+    function pickSwatch(item, key, name, note) {
+        document.querySelectorAll('#colourSwatches .swatch-circle').forEach(c => c.classList.remove('selected'));
+        item.querySelector('.swatch-circle').classList.add('selected');
+        S.colour = key;
+        document.getElementById('colourDot').style.background = CB[key];
+        document.getElementById('colourName').textContent = name;
+        document.getElementById('colourNote').textContent = note === 'Included' ? CN[key] : note === '+R30' ? 'Premium finish · +R30' : 'Special order · +R50';
+        recalc();
+    }
 
-        let subtotal = (PRICING.base * PRICING.quality[q] * PRICING.size[s] + colourAdd) * qtyCount;
-        subtotal = subtotal * (1 - discount);
-        const total = Math.ceil(subtotal / 10) * 10; // round to nearest 10
+    function wizNav(dir) {
+        const next = S.step + dir;
+        if (next < 1) return;
+        if (next > S.total) {
+            const total = document.getElementById('rxTotal').textContent;
+            const sel = document.querySelector('#typeTiles .selected .tile-label');
+            window.addToBag({ name: '3D Print — ' + (sel ? sel.textContent : 'Custom'), price: total });
+            return;
+        }
+        if (dir > 0) {
+            const t = document.querySelector(`.wizard-tab[data-step="${S.step}"]`);
+            if (t) { t.classList.remove('active'); t.classList.add('done'); t.querySelector('.step-badge').textContent = '✓'; }
+        }
+        goTo(next);
+    }
 
-        document.getElementById('priceDisplay').textContent = 'R ' + total;
-        document.getElementById('breakBase').textContent    = 'R ' + PRICING.base;
-        document.getElementById('breakQuality').textContent = qualityLabels[q];
-        document.getElementById('breakSize').textContent    = sizeLabels[s];
-        document.getElementById('breakColour').textContent  = colourLabels[c];
-        document.getElementById('breakQty').textContent     = '×' + qtyCount + (discount > 0 ? ' (−' + (discount*100) + '%)' : '');
-        document.getElementById('breakTotal').textContent   = 'R ' + total;
-
-        // Keep global.js calculator in sync
-        if (document.getElementById('totalDisplay')) {
-            document.getElementById('totalDisplay').textContent = 'R ' + total + '.00';
+    function goTo(n) {
+        document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('step'+n).classList.add('active');
+        document.querySelectorAll('.wizard-tab').forEach(t => t.classList.remove('active'));
+        const tab = document.querySelector(`.wizard-tab[data-step="${n}"]`);
+        if (tab) { tab.classList.add('active'); tab.classList.remove('done'); tab.querySelector('.step-badge').textContent = n; }
+        S.step = n;
+        document.getElementById('wizProgress').style.width = (n / S.total * 100) + '%';
+        const back = document.getElementById('btnBack');
+        const next = document.getElementById('btnNext');
+        back.style.display = n > 1 ? 'flex' : 'none';
+        if (n === S.total) {
+            next.innerHTML = '<span>Add to Bag</span><span style="font-size:17px">→</span>';
+            next.classList.add('final');
+        } else {
+            next.innerHTML = 'Continue <span style="font-size:17px;line-height:1">→</span>';
+            next.classList.remove('final');
         }
     }
 
-    // Expose as updateCalculator so global.js can call it on load
-    window.updateCalculator = recalculate;
+    // Tab click — back-navigation
+    document.querySelectorAll('.wizard-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const s = parseInt(this.dataset.step);
+            if (s < S.step) goTo(s);
+        });
+    });
 
-    function handleTypeChange() {
-        const type = document.getElementById('projectType').value;
-        document.getElementById('upload-zone').style.display  = type === 'upload' ? 'block' : 'none';
-        document.getElementById('urlGroup').classList.toggle('visible', type === 'link');
-        document.getElementById('customGroup').style.display  = type === 'custom' ? 'block' : 'none';
-    }
-
-    // File input
     document.addEventListener('DOMContentLoaded', function() {
-        recalculate();
-        handleTypeChange();
+        recalc();
+        document.getElementById('colourDot').style.background = CB['white'];
 
-        const zone  = document.getElementById('upload-zone');
+        // File drag & drop
+        const zone  = document.getElementById('uploadZone');
         const input = document.getElementById('fileInput');
-        const name  = document.getElementById('fileName');
-
-        input.addEventListener('change', function() {
-            if (input.files.length) {
-                name.textContent = '✓ ' + input.files[0].name;
-                name.style.display = 'block';
-                zone.style.borderColor = 'var(--accent)';
-            }
+        const fname = document.getElementById('uploadFilename');
+        input.addEventListener('change', () => {
+            if (input.files.length) { fname.textContent = '✓ '+input.files[0].name; fname.style.display = 'block'; zone.style.borderColor = 'var(--blue)'; }
         });
-
-        ['dragover','dragenter'].forEach(e => zone.addEventListener(e, function(ev) {
-            ev.preventDefault(); zone.classList.add('active');
-        }));
-        ['dragleave','drop'].forEach(e => zone.addEventListener(e, function(ev) {
+        ['dragover','dragenter'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('active'); }));
+        ['dragleave','drop'].forEach(e => zone.addEventListener(e, ev => {
             ev.preventDefault(); zone.classList.remove('active');
-            if (ev.dataTransfer && ev.dataTransfer.files.length) {
-                input.files = ev.dataTransfer.files;
-                name.textContent = '✓ ' + ev.dataTransfer.files[0].name;
-                name.style.display = 'block';
-            }
+            if (ev.dataTransfer?.files.length) { input.files = ev.dataTransfer.files; fname.textContent = '✓ '+ev.dataTransfer.files[0].name; fname.style.display='block'; }
         }));
 
-        // Add to bag
-        document.getElementById('addToBagBtn').addEventListener('click', function() {
-            const total = document.getElementById('priceDisplay').textContent;
-            const type  = document.getElementById('projectType');
-            const label = type.options[type.selectedIndex].text;
-            window.addToBag({ name: '3D Print — ' + label, price: total });
+        document.getElementById('btnAddBag').addEventListener('click', () => {
+            const total = document.getElementById('rxTotal').textContent;
+            const sel = document.querySelector('#typeTiles .selected .tile-label');
+            window.addToBag({ name: '3D Print — ' + (sel ? sel.textContent : 'Custom'), price: total });
         });
-
-        // Inquiry button
-        document.getElementById('sendInquiryBtn').addEventListener('click', function() {
+        document.getElementById('btnInquiry').addEventListener('click', () => {
             document.getElementById('inquiryModal').classList.add('open');
         });
     });
 
-    // Portfolio modal data
-    const PROJECTS = {
-        planter: {
-            title: 'Geometric Planter',
-            sub: 'Architectural interior piece optimised for the Ender 6.',
-            specs: [
-                ['Material', 'Matte White PLA'],
-                ['Dimensions', '120 × 120 × 110mm'],
-                ['Print time', '~5 hours'],
-                ['Price', 'R 250']
-            ],
-            price: 'R 250.00'
-        },
-        gear: {
-            title: 'Mechanical Assembly',
-            sub: 'Industrial gear set for display or functional prototyping.',
-            specs: [
-                ['Material', 'Standard PLA'],
-                ['Dimensions', '85mm diameter'],
-                ['Print time', '~4 hours'],
-                ['Price', 'R 200']
-            ],
-            price: 'R 200.00'
-        },
-        vase: {
-            title: 'Spiral Vase',
-            sub: 'Single-wall vase mode print. Elegant and lightweight.',
-            specs: [
-                ['Material', 'Silk PLA'],
-                ['Dimensions', '80 × 80 × 200mm'],
-                ['Print time', '~3.5 hours'],
-                ['Price', 'R 180']
-            ],
-            price: 'R 180.00'
-        },
-        cable: {
-            title: 'Cable Management Clip',
-            sub: 'Functional desk organiser. Set of 6 clips, fits cables 4–12mm.',
-            specs: [
-                ['Material', 'Black PLA'],
-                ['Set size', '6 clips'],
-                ['Print time', '~2 hours'],
-                ['Price', 'R 120']
-            ],
-            price: 'R 120.00'
-        },
-        phone: {
-            title: 'Adjustable Phone Stand',
-            sub: 'Universal fit desk stand. Works for phones and small tablets.',
-            specs: [
-                ['Material', 'Matte Black PLA'],
-                ['Compatibility', 'Universal'],
-                ['Print time', '~3 hours'],
-                ['Price', 'R 150']
-            ],
-            price: 'R 150.00'
-        }
-    };
-
-    function openProjectModal(id) {
-        const p = PROJECTS[id];
-        if (!p) return;
-        document.getElementById('modalContent').innerHTML = `
-            <h2 style="font-size:24px;font-weight:900;letter-spacing:-0.5px;margin-bottom:6px;">${p.title}</h2>
-            <p class="modal-sub" style="font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5;">${p.sub}</p>
-            <div class="modal-specs">
-                ${p.specs.map(([k,v]) => `<div class="modal-spec"><span>${k}</span><strong>${v}</strong></div>`).join('')}
-            </div>
-            <div class="modal-actions">
-                <button class="add-to-bag-btn" onclick="window.addToBag({name:'${p.title}',price:'${p.price}'}); closeProjectModal();">Add to Bag — ${p.price}</button>
-                <button class="inquiry-btn" onclick="closeProjectModal()">Close</button>
-            </div>`;
-        document.getElementById('projectModal').classList.add('open');
-    }
-
-    function closeProjectModal() {
-        document.getElementById('projectModal').classList.remove('open');
-    }
-
-    // Close modals on backdrop click
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('studio-modal')) {
-            e.target.classList.remove('open');
-        }
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('fab-modal')) e.target.classList.remove('open');
     });
     </script>
 </body>

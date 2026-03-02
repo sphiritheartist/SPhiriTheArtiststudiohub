@@ -4,13 +4,511 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Dashboard — SPhiriTheArtist</title>
-    <link rel="stylesheet" href="style/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+/* ═══════════════════════════════════════════════
+   ROOT — Apple-meets-McD Kiosk: clean white + black 
+   with warm amber accent (McD gold softened)
+═══════════════════════════════════════════════ */
+:root {
+    --bg:       #f5f5f7;
+    --bg2:      #ffffff;
+    --bg3:      #e8e8ed;
+    --text:     #1d1d1f;
+    --muted:    #6e6e73;
+    --border:   #d2d2d7;
+    --accent:   #da9f00;      /* warm amber — McD gold, Apple-refined */
+    --accent2:  #1d1d1f;      /* secondary CTA */
+    --green:    #28c76f;
+    --red:      #ff3b30;
+    --blue:     #007aff;
+    --purple:   #af52de;
+    --orange:   #ff9500;
+    --nav-h:    60px;
+    --sidebar-w:240px;
+    --radius:   14px;
+    --radius-sm:9px;
+    --shadow:   0 2px 16px rgba(0,0,0,.07);
+    --shadow-md:0 8px 32px rgba(0,0,0,.12);
+    --font:     'DM Sans', system-ui, sans-serif;
+    --font-disp:'DM Sans', system-ui, sans-serif;
+    --mono:     'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV STUB ─────────────────────────────── */
+.top-nav {
+    height: var(--nav-h);
+    background: rgba(255,255,255,.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    gap: 12px;
+}
+.top-nav .brand {
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    flex: 1;
+}
+.top-nav .brand span { color: var(--accent); }
+
+/* ══════════════════════════════════════════
+   GATE (sign-in wall)
+══════════════════════════════════════════ */
+#dashGate {
+    display: none;
+    min-height: calc(100vh - var(--nav-h));
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px;
+}
+.gate-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 56px 48px;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+}
+.gate-icon {
+    width: 64px; height: 64px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+}
+.gate-title {
+    font-family: var(--font-disp);
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+.gate-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+.gate-btn {
+    background: var(--text);
+    color: #fff;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 980px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity .2s, transform .2s;
+    width: 100%;
+}
+.gate-btn:hover { opacity: .85; transform: translateY(-1px); }
+
+/* ══════════════════════════════════════════
+   SHELL LAYOUT
+══════════════════════════════════════════ */
+#dashShell { display: none; }
+.ds-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: calc(100vh - var(--nav-h));
+}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.ds-sidebar {
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    position: sticky;
+    top: var(--nav-h);
+    height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+}
+.ds-user-block {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 8px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+}
+.ds-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 13px; font-weight: 900; flex-shrink: 0;
+}
+.ds-uname { font-size: 13px; font-weight: 700; line-height: 1.2; }
+.ds-role-badge {
+    font-size: 9px; font-weight: 900; letter-spacing: .8px;
+    padding: 2px 7px; border-radius: 20px; display: inline-block; margin-top: 2px;
+}
+.ds-role-admin   { background: rgba(218,159,0,.15);  color: var(--accent); }
+.ds-role-partner { background: rgba(40,199,111,.15);  color: var(--green); }
+.ds-role-client  { background: rgba(0,122,255,.12);   color: var(--blue); }
+
+.ds-nav-section { font-size: 9px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted); padding: 12px 12px 4px; }
+.ds-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: var(--radius-sm); border: none;
+    background: none; color: var(--muted); font-size: 13px; font-weight: 600;
+    font-family: inherit; cursor: pointer; width: 100%; text-align: left;
+    transition: all .18s; position: relative;
+}
+.ds-nav-item:hover { background: var(--bg3); color: var(--text); }
+.ds-nav-item.active { background: var(--accent); color: #fff; }
+.ds-nav-item .ni-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+.ds-nav-badge {
+    margin-left: auto; background: var(--red); color: #fff;
+    font-size: 9px; font-weight: 900; padding: 1px 6px; border-radius: 20px;
+}
+.ds-signout {
+    margin-top: auto; padding: 10px 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); background: none; color: var(--muted);
+    font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer;
+    transition: all .2s;
+}
+.ds-signout:hover { border-color: var(--text); color: var(--text); }
+
+/* ── MAIN ────────────────────────────────── */
+.ds-main { padding: 32px 40px; }
+#dsContent { transition: opacity .15s, transform .15s; max-width: 1060px; }
+
+/* ── HEADER ROW ──────────────────────────── */
+.ds-hdr {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 24px; gap: 14px; flex-wrap: wrap;
+}
+.ds-eyebrow {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 2.5px; color: var(--accent); margin-bottom: 5px;
+}
+.ds-title {
+    font-family: var(--font-disp); font-size: clamp(22px, 4vw, 32px);
+    font-weight: 900; letter-spacing: -1.5px; line-height: 1;
+}
+.ds-hdr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── STAT CARDS ──────────────────────────── */
+.ds-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+}
+.ds-stat {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 16px;
+    transition: box-shadow .2s, transform .2s;
+}
+.ds-stat:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.ds-stat-n { font-size: 24px; font-weight: 900; letter-spacing: -.5px; }
+.ds-stat-l {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--muted); margin-top: 4px;
+}
+.ds-stat-icon { font-size: 18px; margin-bottom: 8px; }
+
+/* ── SECTION ─────────────────────────────── */
+.ds-section { margin-bottom: 28px; }
+.ds-shdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ds-shdr h2 { font-size: 16px; font-weight: 800; }
+.ds-link { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.ds-empty {
+    text-align: center; padding: 60px 20px; color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    background: var(--bg2); border: 1px dashed var(--border); border-radius: var(--radius);
+}
+.ds-empty-icon { font-size: 36px; }
+.ds-empty p { font-size: 13px; font-weight: 600; }
+.ds-empty small { font-size: 12px; color: var(--muted); }
+
+/* ── KIOSK GRID — product/content cards ─── */
+.ds-kgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.ds-kcard {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow .2s, transform .2s;
+    cursor: pointer;
+}
+.ds-kcard:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.ds-kcard-img {
+    width: 100%; aspect-ratio: 1;
+    background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    overflow: hidden;
+}
+.ds-kcard-img img { width: 100%; height: 100%; object-fit: cover; }
+.ds-kcard-body { padding: 12px 14px 14px; }
+.ds-kcard-type {
+    font-size: 9px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-bottom: 4px;
+}
+.ds-kcard-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+.ds-kcard-meta { font-size: 11px; color: var(--muted); }
+.ds-kcard-price { font-size: 15px; font-weight: 900; color: var(--text); margin-top: 6px; }
+.ds-kcard-actions { display: flex; gap: 6px; margin-top: 10px; }
+
+/* ── ORDER ROWS ──────────────────────────── */
+.ds-orow {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 14px 18px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 8px; flex-wrap: wrap; transition: border-color .2s, box-shadow .2s;
+}
+.ds-orow:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.ds-omn { flex: 1; min-width: 0; cursor: pointer; }
+.ds-oid { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+.ds-oitems { font-size: 14px; font-weight: 600; margin: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-oclient { font-size: 11px; color: var(--muted); }
+.ds-ometa { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ds-ototal { font-size: 14px; font-weight: 900; }
+.ds-odate { font-size: 11px; color: var(--muted); }
+.ds-pill {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px;
+    padding: 3px 9px; border-radius: 20px; border: 1px solid; white-space: nowrap;
+}
+
+/* ── TABLE ───────────────────────────────── */
+.ds-twrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg2); }
+.ds-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ds-table th {
+    padding: 11px 16px; text-align: left; font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .5px; color: var(--muted);
+    border-bottom: 1px solid var(--border); background: var(--bg);
+}
+.ds-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.ds-table tr:last-child td { border-bottom: none; }
+.ds-table tr:hover td { background: var(--bg3); }
+.ds-tact { display: flex; gap: 6px; flex-wrap: wrap; }
+.ds-te { text-align: center; color: var(--muted); padding: 40px!important; }
+.mono { font-family: var(--mono); font-size: 12px; }
+.text-warn { color: var(--red); font-weight: 700; }
+.ds-tag {
+    font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+    padding: 3px 8px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border);
+}
+
+/* content type tags */
+.tag-poem     { background: rgba(175,82,222,.12); color: var(--purple); border-color: rgba(175,82,222,.3); }
+.tag-graphic  { background: rgba(0,122,255,.12);  color: var(--blue);   border-color: rgba(0,122,255,.3); }
+.tag-3d       { background: rgba(40,199,111,.12); color: var(--green);  border-color: rgba(40,199,111,.3); }
+.tag-product  { background: rgba(218,159,0,.12);  color: var(--accent); border-color: rgba(218,159,0,.3); }
+.tag-project  { background: rgba(255,149,0,.12);  color: var(--orange); border-color: rgba(255,149,0,.3); }
+
+/* ── BUTTONS ─────────────────────────────── */
+.ds-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 9px 18px; border-radius: 980px;
+    border: 1.5px solid var(--border); background: none; color: var(--text);
+    font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer;
+    transition: all .2s; white-space: nowrap;
+}
+.ds-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ds-btn-primary { background: var(--text); color: #fff; border-color: var(--text); }
+.ds-btn-primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; opacity: 1; }
+.ds-btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.ds-btn-accent:hover { opacity: .85; color: #fff; }
+.ds-btn-ghost { color: var(--muted); border-color: transparent; }
+.ds-btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+.ds-btn-sm { padding: 5px 13px; font-size: 11px; }
+.ds-btn-danger { background: var(--red); color: #fff; border-color: var(--red); }
+.ds-btn-danger:hover { opacity: .85; }
+.ds-btn-outline-danger { border-color: var(--red); color: var(--red); }
+.ds-btn-outline-danger:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.ds-sel {
+    padding: 8px 12px; border-radius: 980px; border: 1.5px solid var(--border);
+    background: var(--bg2); color: var(--text); font-size: 12px;
+    font-family: inherit; cursor: pointer; outline: none;
+}
+
+/* ── FILTER CHIPS ────────────────────────── */
+.ds-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.ds-chip {
+    padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--border);
+    background: none; color: var(--muted); font-size: 10px; font-weight: 700;
+    font-family: inherit; cursor: pointer; opacity: .5; transition: all .2s;
+}
+.ds-chip.active { opacity: 1; color: var(--text); border-color: var(--text); }
+
+/* ── MODALS ──────────────────────────────── */
+.ds-modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 6000; display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.ds-modal-backdrop.open { opacity: 1; pointer-events: all; }
+.ds-modal {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 24px; width: 100%; max-width: 580px;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(14px) scale(.97);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    box-shadow: var(--shadow-md);
+}
+.ds-modal-backdrop.open .ds-modal { transform: none; }
+.ds-modal-sm { max-width: 400px; }
+.ds-modal-lg { max-width: 720px; }
+.ds-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+}
+.ds-modal-header h3 { font-size: 17px; font-weight: 800; letter-spacing: -.3px; }
+.ds-modal-close {
+    background: var(--bg3); border: none; width: 28px; height: 28px;
+    border-radius: 50%; font-size: 11px; cursor: pointer; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+}
+.ds-modal-close:hover { background: var(--border); color: var(--text); }
+.ds-modal-body { padding: 20px 24px; }
+.ds-modal-footer {
+    display: flex; justify-content: flex-end; align-items: center;
+    padding: 16px 24px; border-top: 1px solid var(--border); gap: 8px; flex-wrap: wrap;
+}
+.ds-modal-footer .left { margin-right: auto; }
+
+/* ── FORMS ───────────────────────────────── */
+.ds-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ds-field { display: flex; flex-direction: column; gap: 5px; }
+.ds-field-full { grid-column: 1 / -1; }
+.ds-field label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+.req { color: var(--red); }
+.ds-input {
+    padding: 11px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+    background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit;
+    outline: none; transition: border-color .2s; width: 100%;
+}
+.ds-input:focus { border-color: var(--accent); }
+.ds-input[readonly] { opacity: .5; cursor: default; }
+.ds-textarea { min-height: 80px; resize: vertical; }
+.ds-upload-box {
+    border: 2px dashed var(--border); border-radius: var(--radius);
+    padding: 28px; text-align: center; cursor: pointer; transition: all .2s;
+    background: var(--bg);
+}
+.ds-upload-box:hover { border-color: var(--accent); background: rgba(218,159,0,.04); }
+.ds-upload-box .ub-icon { font-size: 28px; margin-bottom: 8px; }
+.ds-upload-box p { font-size: 13px; font-weight: 600; color: var(--muted); }
+.ds-upload-box small { font-size: 11px; color: var(--muted); }
+.ds-upload-preview {
+    width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-sm);
+    background: var(--bg3); display: flex; align-items: center; justify-content: center;
+    font-size: 40px; border: 1px solid var(--border); overflow: hidden;
+}
+.ds-upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+/* tab selector in modal */
+.ds-tabs { display: flex; gap: 2px; background: var(--bg3); padding: 3px; border-radius: 10px; margin-bottom: 18px; }
+.ds-tab { flex: 1; padding: 8px; border: none; background: none; border-radius: 8px; font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer; color: var(--muted); transition: all .2s; }
+.ds-tab.active { background: var(--bg2); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+/* ── ACCOUNT ─────────────────────────────── */
+.ds-acct { max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── PROJECT CARD ────────────────────────── */
+.ds-projgrid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+.ds-projcard {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px;
+    transition: box-shadow .2s, transform .2s;
+}
+.ds-projcard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.ds-projcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.ds-projcard-title { font-size: 15px; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
+.ds-projcard-type { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.ds-projcard-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+.ds-projcard-meta { font-size: 11px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+.ds-projcard-actions { display: flex; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+/* ── CONTENT ROW (poems / graphics / 3D) ── */
+.ds-content-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 8px; transition: border-color .2s;
+}
+.ds-content-row:hover { border-color: var(--accent); }
+.ds-content-thumb {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: var(--bg3); display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0; overflow: hidden;
+}
+.ds-content-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ds-content-info { flex: 1; min-width: 0; }
+.ds-content-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-content-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.ds-content-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+
+/* ── TOAST ───────────────────────────────── */
+#dsToast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    padding: 11px 22px; border-radius: 980px; font-size: 13px; font-weight: 700;
+    opacity: 0; transition: all .3s; z-index: 9999; white-space: nowrap;
+    pointer-events: none; box-shadow: var(--shadow-md);
+}
+#dsToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media(max-width:700px) {
+    .ds-layout { grid-template-columns: 1fr; }
+    .ds-sidebar { display: none; }
+    .ds-main { padding: 18px 16px; }
+    .ds-form-grid { grid-template-columns: 1fr; }
+    .ds-stats { grid-template-columns: repeat(2, 1fr); }
+    .ds-kgrid { grid-template-columns: repeat(2, 1fr); }
+}
+    </style>
 </head>
 <body>
 
-<div id="nav-placeholder"></div>
+<nav class="top-nav">
+    <div class="brand">SPhiri<span>.</span>Studio</div>
+    <span style="font-size:12px;color:var(--muted)">Dashboard</span>
+</nav>
 
-<div id="dashShell" style="display:none">
+<!-- ══ GATE ══ -->
+<div id="dashGate">
+    <div class="gate-card">
+        <div class="gate-icon">✦</div>
+        <h1 class="gate-title">Studio Access</h1>
+        <p class="gate-sub">Your orders, uploads, products, and projects — all in one place.</p>
+        <button class="gate-btn" id="gateSignIn">Sign In / Create Account</button>
+    </div>
+</div>
+
+<!-- ══ SHELL ══ -->
+<div id="dashShell">
     <div class="ds-layout">
         <aside class="ds-sidebar">
             <div class="ds-user-block" id="dsUserBlock"></div>
@@ -23,38 +521,96 @@
     </div>
 </div>
 
-<div id="dashGate" style="display:none">
-    <div class="gate-inner">
-        <p class="gate-eyebrow">Studio Access</p>
-        <h1 class="gate-title">Sign in to<br>your Studio</h1>
-        <p class="gate-sub">Your orders, products, and studio tools — all in one place.</p>
-        <button class="gate-btn" id="gateSignIn">Sign In / Create Account</button>
-    </div>
-</div>
+<!-- ══════════════════════════
+     MODALS
+══════════════════════════ -->
 
-<!-- Product Modal -->
-<div class="ds-modal-backdrop" id="productModalBackdrop">
-    <div class="ds-modal">
+<!-- Product / Content Upload Modal -->
+<div class="ds-modal-backdrop" id="uploadModalBackdrop">
+    <div class="ds-modal ds-modal-lg">
         <div class="ds-modal-header">
-            <h3 id="productModalTitle">Add Product</h3>
-            <button class="ds-modal-close" id="productModalClose">✕</button>
+            <h3 id="uploadModalTitle">Add Item</h3>
+            <button class="ds-modal-close" id="uploadModalClose">✕</button>
         </div>
         <div class="ds-modal-body">
-            <input type="hidden" id="pmProductId" />
+            <!-- Type Selector Tabs -->
+            <div class="ds-tabs" id="uploadTypeTabs">
+                <button class="ds-tab active" data-type="product" onclick="setUploadType('product')">🛍 Product</button>
+                <button class="ds-tab" data-type="poem" onclick="setUploadType('poem')">✍️ Poem</button>
+                <button class="ds-tab" data-type="graphic" onclick="setUploadType('graphic')">🎨 Graphic</button>
+                <button class="ds-tab" data-type="3d" onclick="setUploadType('3d')">🖨 3D Model</button>
+            </div>
+
+            <input type="hidden" id="umItemId" />
+            <input type="hidden" id="umType" value="product" />
+
             <div class="ds-form-grid">
-                <div class="ds-field"><label>Product ID <span class="req">*</span></label><input class="ds-input" id="pmId" placeholder="e.g. SKT-003" /></div>
-                <div class="ds-field"><label>Name <span class="req">*</span></label><input class="ds-input" id="pmName" placeholder="Product name" /></div>
-                <div class="ds-field"><label>Price (R) <span class="req">*</span></label><input class="ds-input" id="pmPrice" type="number" placeholder="0" /></div>
-                <div class="ds-field"><label>Category</label><select class="ds-input" id="pmCategory"><option value="skate">Skate</option><option value="apparel">Apparel</option><option value="accessories">Accessories</option><option value="tech">Tech</option><option value="3d">3D Studio</option></select></div>
-                <div class="ds-field"><label>Stock</label><input class="ds-input" id="pmStock" type="number" placeholder="0" /></div>
-                <div class="ds-field"><label>Partner / Owner</label><select class="ds-input" id="pmPartner"></select></div>
-                <div class="ds-field ds-field-full"><label>Image URL</label><input class="ds-input" id="pmImg" placeholder="https://..." /></div>
-                <div class="ds-field ds-field-full"><label>Description</label><textarea class="ds-input ds-textarea" id="pmDesc" placeholder="Short description…"></textarea></div>
+                <div class="ds-field"><label>Title / Name <span class="req">*</span></label><input class="ds-input" id="umName" placeholder="Name…" /></div>
+                
+                <!-- Product-specific -->
+                <div class="ds-field um-product-field"><label>Price (R) <span class="req">*</span></label><input class="ds-input" id="umPrice" type="number" placeholder="0" /></div>
+                <div class="ds-field um-product-field"><label>Category</label>
+                    <select class="ds-input" id="umCategory">
+                        <option value="skate">Skate</option>
+                        <option value="apparel">Apparel</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="tech">Tech</option>
+                    </select>
+                </div>
+                <div class="ds-field um-product-field"><label>Stock</label><input class="ds-input" id="umStock" type="number" placeholder="0" /></div>
+                <div class="ds-field um-admin-field"><label>Partner / Owner</label><select class="ds-input" id="umPartner"></select></div>
+
+                <!-- 3D specific -->
+                <div class="ds-field um-3d-field" style="display:none"><label>Material</label>
+                    <select class="ds-input" id="um3dMaterial">
+                        <option value="PLA">PLA</option><option value="PETG">PETG</option>
+                        <option value="ABS">ABS</option><option value="Resin">Resin</option>
+                        <option value="Flexible TPU">Flexible TPU</option>
+                    </select>
+                </div>
+                <div class="ds-field um-3d-field" style="display:none"><label>Print Price (R / 50g)</label><input class="ds-input" id="um3dPrice" type="number" placeholder="0" /></div>
+                <div class="ds-field um-3d-field" style="display:none"><label>File Type</label><input class="ds-input" id="um3dFile" placeholder=".stl, .obj, .gcode" /></div>
+
+                <!-- Poem specific -->
+                <div class="ds-field ds-field-full um-poem-field" style="display:none">
+                    <label>Poem Text <span class="req">*</span></label>
+                    <textarea class="ds-input ds-textarea" id="umPoemText" style="min-height:140px" placeholder="Paste your poem here…"></textarea>
+                </div>
+                <div class="ds-field um-poem-field" style="display:none"><label>Theme / Genre</label><input class="ds-input" id="umPoemTheme" placeholder="e.g. Urban, Love, Spoken Word" /></div>
+
+                <!-- Graphic specific -->
+                <div class="ds-field um-graphic-field" style="display:none"><label>Format</label>
+                    <select class="ds-input" id="umGraphicFormat">
+                        <option value="PNG">PNG</option><option value="SVG">SVG</option>
+                        <option value="PDF">PDF</option><option value="AI">Adobe Illustrator</option>
+                    </select>
+                </div>
+                <div class="ds-field um-graphic-field" style="display:none"><label>License</label>
+                    <select class="ds-input" id="umGraphicLicense">
+                        <option value="All Rights Reserved">All Rights Reserved</option>
+                        <option value="CC BY">CC BY</option>
+                        <option value="Commercial">Commercial Use Allowed</option>
+                    </select>
+                </div>
+
+                <!-- Shared fields -->
+                <div class="ds-field ds-field-full"><label>Description</label>
+                    <textarea class="ds-input ds-textarea" id="umDesc" placeholder="Short description…"></textarea>
+                </div>
+                <div class="ds-field ds-field-full um-notpoem">
+                    <label>Image / Preview URL</label>
+                    <input class="ds-input" id="umImg" placeholder="https://…" />
+                </div>
+                <div class="ds-field ds-field-full um-notpoem">
+                    <label>Tags</label>
+                    <input class="ds-input" id="umTags" placeholder="tag1, tag2, tag3" />
+                </div>
             </div>
         </div>
         <div class="ds-modal-footer">
-            <button class="ds-btn ds-btn-ghost" id="productModalCancel">Cancel</button>
-            <button class="ds-btn ds-btn-primary" id="productModalSave">Save Product</button>
+            <span class="left" id="umStatusMsg" style="font-size:12px;color:var(--muted)"></span>
+            <button class="ds-btn ds-btn-ghost" id="uploadModalCancel">Cancel</button>
+            <button class="ds-btn ds-btn-primary" id="uploadModalSave">Save</button>
         </div>
     </div>
 </div>
@@ -71,12 +627,59 @@
             <div class="ds-form-grid">
                 <div class="ds-field"><label>Name <span class="req">*</span></label><input class="ds-input" id="paName" placeholder="Partner / brand name" /></div>
                 <div class="ds-field"><label>Email <span class="req">*</span></label><input class="ds-input" id="paEmail" type="email" placeholder="partner@brand.com" /></div>
+                <div class="ds-field"><label>Category Focus</label>
+                    <select class="ds-input" id="paCategory">
+                        <option value="skate">Skate</option>
+                        <option value="apparel">Apparel</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="tech">Tech</option>
+                        <option value="all">All Categories</option>
+                    </select>
+                </div>
+                <div class="ds-field"><label>Commission %</label><input class="ds-input" id="paCommission" type="number" placeholder="e.g. 15" /></div>
                 <div class="ds-field ds-field-full"><label>Brand / Notes</label><input class="ds-input" id="paBrand" placeholder="e.g. Handles decks and footwear" /></div>
             </div>
         </div>
         <div class="ds-modal-footer">
             <button class="ds-btn ds-btn-ghost" id="partnerModalCancel">Cancel</button>
             <button class="ds-btn ds-btn-primary" id="partnerModalSave">Save Partner</button>
+        </div>
+    </div>
+</div>
+
+<!-- Client Project Modal -->
+<div class="ds-modal-backdrop" id="projectModalBackdrop">
+    <div class="ds-modal">
+        <div class="ds-modal-header">
+            <h3 id="projectModalTitle">Add Project</h3>
+            <button class="ds-modal-close" id="projectModalClose">✕</button>
+        </div>
+        <div class="ds-modal-body">
+            <input type="hidden" id="prjId" />
+            <div class="ds-form-grid">
+                <div class="ds-field ds-field-full"><label>Project Title <span class="req">*</span></label><input class="ds-input" id="prjTitle" placeholder="e.g. Custom deck graphic" /></div>
+                <div class="ds-field"><label>Type</label>
+                    <select class="ds-input" id="prjType">
+                        <option value="commission">Commission</option>
+                        <option value="custom_print">Custom 3D Print</option>
+                        <option value="apparel_design">Apparel Design</option>
+                        <option value="graphic_design">Graphic Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="ds-field"><label>Budget (R)</label><input class="ds-input" id="prjBudget" type="number" placeholder="0" /></div>
+                <div class="ds-field ds-field-full"><label>Brief / Description <span class="req">*</span></label>
+                    <textarea class="ds-input ds-textarea" id="prjDesc" placeholder="Describe what you need in detail…"></textarea>
+                </div>
+                <div class="ds-field ds-field-full"><label>Reference / Mood Board URL</label>
+                    <input class="ds-input" id="prjRef" placeholder="https://… (optional)" />
+                </div>
+                <div class="ds-field"><label>Deadline</label><input class="ds-input" id="prjDeadline" type="date" /></div>
+            </div>
+        </div>
+        <div class="ds-modal-footer">
+            <button class="ds-btn ds-btn-ghost" id="projectModalCancel">Cancel</button>
+            <button class="ds-btn ds-btn-primary" id="projectModalSave">Submit Project</button>
         </div>
     </div>
 </div>
@@ -97,89 +700,164 @@
 <div class="ds-modal-backdrop" id="confirmBackdrop">
     <div class="ds-modal ds-modal-sm">
         <div class="ds-modal-header">
-            <h3>Confirm Delete</h3>
+            <h3>Confirm Remove</h3>
             <button class="ds-modal-close" id="confirmClose">✕</button>
         </div>
         <div class="ds-modal-body"><p id="confirmMsg" style="font-size:14px;line-height:1.6;color:var(--muted)"></p></div>
         <div class="ds-modal-footer">
             <button class="ds-btn ds-btn-ghost" id="confirmCancel">Cancel</button>
-            <button class="ds-btn ds-btn-danger" id="confirmOk">Delete</button>
+            <button class="ds-btn ds-btn-danger" id="confirmOk">Remove</button>
         </div>
     </div>
 </div>
 
 <div id="dsToast"></div>
 
-<script src="script/global.js"></script>
-<script src="script/auth.js"></script>
 <script>
-const ORDER_STATES = ['Placed','Confirmed','Processing','Dispatched','In Transit','Delivered','Disputed'];
-const STATE_COLORS = {Placed:'#86868b',Confirmed:'#0071e3',Processing:'#ff9f0a',Dispatched:'#30d158','In Transit':'#32ade6',Delivered:'#34c759',Disputed:'#ff453a'};
-
-const NAV_CFG = {
-    admin:   [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'All Orders'},{id:'products',icon:'▣',label:'Products'},{id:'partners',icon:'◉',label:'Partners'},{id:'users',icon:'⊙',label:'Users'}],
-    partner: [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'Order Manifest'},{id:'products',icon:'▣',label:'My Products'}],
-    client:  [{id:'overview',icon:'◈',label:'Overview'},{id:'orders',icon:'◎',label:'My Orders'},{id:'account',icon:'◐',label:'Account'}],
+/* ═══════════════════════════════════════════
+   MOCK AUTH
+═══════════════════════════════════════════ */
+const MOCK_USERS = [
+    {uid:'u_admin',   name:'Studio Admin', email:'admin@sphiri.com',   role:'admin'},
+    {uid:'u_partner', name:'SK8 Partner',  email:'partner@sphiri.com', role:'partner'},
+    {uid:'u_client',  name:'Alex Client',  email:'client@sphiri.com',  role:'client'},
+];
+let _authUser = null;
+let _authCbs  = [];
+const studioAuth = {
+    get user() { return _authUser; },
+    onChange(cb) { _authCbs.push(cb); cb(_authUser); },
+    openSignIn(hint) {
+        const roles = ['admin','partner','client'];
+        const pick  = prompt(`${hint||'Sign In'}\n\nEnter role to demo:\nadmin | partner | client`, 'client');
+        const role  = roles.includes(pick?.toLowerCase()) ? pick.toLowerCase() : 'client';
+        _authUser   = MOCK_USERS.find(u=>u.role===role) || MOCK_USERS[2];
+        _authCbs.forEach(cb=>cb(_authUser));
+    },
+    signOut() { _authUser=null; _authCbs.forEach(cb=>cb(null)); }
 };
+window.studioAuth = studioAuth;
+
+/* ═══════════════════════════════════════════
+   DATA STORE
+═══════════════════════════════════════════ */
+const ORDER_STATES  = ['Placed','Confirmed','Processing','Dispatched','In Transit','Delivered','Disputed'];
+const STATE_COLORS  = {Placed:'#8e8e93',Confirmed:'#007aff',Processing:'#ff9500',Dispatched:'#28c76f','In Transit':'#30b0c7',Delivered:'#34c759',Disputed:'#ff3b30'};
 
 let PARTNERS = [
-    {id:'p_sk8',   name:'SK8 Partner',  email:'partner@sphiri.com', brand:'Decks, griptape & apparel'},
-    {id:'p_studio',name:'Studio',        email:'admin@sphiri.com',   brand:'In-house 3D & prints'},
+    {id:'p_sk8',   name:'SK8 Partner', email:'partner@sphiri.com', brand:'Decks, griptape & apparel', category:'skate', commission:12},
+    {id:'p_studio',name:'SPhiri Studio',email:'admin@sphiri.com',  brand:'In-house art & prints',     category:'all',   commission:0},
 ];
+
+// PRODUCTS
 let PRODUCTS = [
-    {id:'SKT-001',name:'Pro Deck 8.25"',price:850, category:'skate',  stock:12, partnerId:'p_sk8',    img:'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=400',desc:'Street-ready 8.25" maple deck.'},
-    {id:'SKT-002',name:'Griptape Set',  price:120, category:'skate',  stock:34, partnerId:'p_sk8',    img:'',desc:'Full sheet black griptape.'},
-    {id:'APP-001',name:'Studio Hoodie', price:1200,category:'apparel',stock:8,  partnerId:'p_sk8',    img:'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',desc:'Studio-branded heavyweight hoodie.'},
-    {id:'3D-001', name:'3D Print — PLA',price:150, category:'3d',     stock:999,partnerId:'p_studio', img:'',desc:'Custom PLA print, per 50g.'},
+    {id:'SKT-001',type:'product',name:'Pro Deck 8.25"',price:850, category:'skate',   stock:12,partnerId:'p_sk8',   img:'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=400',desc:'Street-ready 8.25" maple deck.',tags:'deck,street'},
+    {id:'SKT-002',type:'product',name:'Griptape Set',  price:120, category:'skate',   stock:34,partnerId:'p_sk8',   img:'',desc:'Full sheet black griptape.',tags:'grip'},
+    {id:'APP-001',type:'product',name:'Studio Hoodie', price:1200,category:'apparel', stock:8, partnerId:'p_sk8',   img:'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',desc:'Studio-branded heavyweight hoodie.',tags:'hoodie,apparel'},
 ];
+
+// CONTENT: poems, graphics, 3D models
+let CONTENT = [
+    {id:'POE-001',type:'poem', name:'Concrete Roots',desc:'An urban meditation on identity.',theme:'Urban / Spoken Word',poemText:'Roots deep in concrete…',img:'',tags:'urban,identity',partnerId:'p_studio',createdAt:'2026-02-10'},
+    {id:'GFX-001',type:'graphic',name:'Ollie Vector Set',desc:'12 skateboarding vector illustrations.',format:'SVG',license:'Commercial Use Allowed',img:'https://images.unsplash.com/photo-1531259683007-016a7b628fc3?w=400',tags:'skate,vector',partnerId:'p_studio',createdAt:'2026-02-14'},
+    {id:'3D-001', type:'3d',    name:'Deck Truck Mount v2',desc:'Printable truck riser / mount.',material:'PETG',price3d:280,fileType:'.stl',img:'',tags:'truck,hardware',partnerId:'p_studio',createdAt:'2026-02-18'},
+];
+
+// CLIENT PROJECTS (submitted by clients, managed by admin)
+let PROJECTS = [
+    {id:'PRJ-001',clientId:'u_client',clientName:'Alex Client',title:'Custom Deck Graphic',type:'graphic_design',budget:1500,desc:'Full deck graphic with retro-urban theme.',ref:'',deadline:'2026-03-15',status:'In Review',createdAt:'2026-02-22'},
+];
+
+// ORDERS
 let ORDERS = [
-    {id:'ORD-001',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],  total:850, status:'In Transit', history:[{s:'Placed',d:'2026-02-20'},{s:'Confirmed',d:'2026-02-21'},{s:'Processing',d:'2026-02-22'},{s:'Dispatched',d:'2026-02-23'},{s:'In Transit',d:'2026-02-24'}],createdAt:'2026-02-20',updatedAt:'2026-02-24'},
-    {id:'ORD-002',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'APP-001',name:'Studio Hoodie', price:1200,qty:1}],total:1200,status:'Processing', history:[{s:'Placed',d:'2026-02-25'},{s:'Confirmed',d:'2026-02-25'},{s:'Processing',d:'2026-02-26'}],createdAt:'2026-02-25',updatedAt:'2026-02-26'},
-    {id:'ORD-003',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'SKT-002',name:'Griptape Set',price:120,qty:2},{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],total:1090,status:'Placed',history:[{s:'Placed',d:'2026-02-27'}],createdAt:'2026-02-27',updatedAt:'2026-02-27'},
-    {id:'ORD-004',clientId:'u_other', clientName:'Jordan M.',  clientEmail:'jordan@test.com',  items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],  total:850, status:'Delivered',  history:[{s:'Placed',d:'2026-02-15'},{s:'Confirmed',d:'2026-02-16'},{s:'Processing',d:'2026-02-17'},{s:'Dispatched',d:'2026-02-19'},{s:'In Transit',d:'2026-02-20'},{s:'Delivered',d:'2026-02-22'}],createdAt:'2026-02-15',updatedAt:'2026-02-22'},
-    {id:'ORD-005',clientId:'u_other', clientName:'Sam T.',     clientEmail:'sam@test.com',      items:[{id:'APP-001',name:'Studio Hoodie',price:1200,qty:1}], total:1200,status:'Disputed',   history:[{s:'Placed',d:'2026-02-18'},{s:'Confirmed',d:'2026-02-19'},{s:'Disputed',d:'2026-02-26'}],createdAt:'2026-02-18',updatedAt:'2026-02-26'},
+    {id:'ORD-001',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],total:850,status:'In Transit',history:[{s:'Placed',d:'2026-02-20'},{s:'In Transit',d:'2026-02-24'}],createdAt:'2026-02-20',updatedAt:'2026-02-24'},
+    {id:'ORD-002',clientId:'u_client',clientName:'Alex Client',clientEmail:'client@sphiri.com',items:[{id:'APP-001',name:'Studio Hoodie',price:1200,qty:1}],total:1200,status:'Processing',history:[{s:'Placed',d:'2026-02-25'},{s:'Processing',d:'2026-02-26'}],createdAt:'2026-02-25',updatedAt:'2026-02-26'},
+    {id:'ORD-003',clientId:'u_other', clientName:'Jordan M.',  clientEmail:'jordan@test.com',  items:[{id:'SKT-001',name:'Pro Deck 8.25"',price:850,qty:1}],total:850,status:'Delivered',history:[{s:'Placed',d:'2026-02-15'},{s:'Delivered',d:'2026-02-22'}],createdAt:'2026-02-15',updatedAt:'2026-02-22'},
 ];
+
+/* ═══════════════════════════════════════════
+   NAV CONFIG per role
+═══════════════════════════════════════════ */
+const NAV_CFG = {
+    admin: [
+        {sec:'Overview'},
+        {id:'overview',icon:'◈',label:'Dashboard'},
+        {sec:'Content'},
+        {id:'products',icon:'🛍',label:'Products'},
+        {id:'poems',   icon:'✍️',label:'Poems'},
+        {id:'graphics',icon:'🎨',label:'Graphics'},
+        {id:'prints',  icon:'🖨',label:'3D Models'},
+        {sec:'Management'},
+        {id:'projects',icon:'📂',label:'Client Projects'},
+        {id:'orders',  icon:'◎',label:'All Orders'},
+        {id:'partners',icon:'◉',label:'Partners'},
+        {id:'users',   icon:'⊙',label:'Users'},
+    ],
+    partner: [
+        {sec:'Overview'},
+        {id:'overview',icon:'◈',label:'Dashboard'},
+        {sec:'My Content'},
+        {id:'products',icon:'🛍',label:'My Products'},
+        {id:'poems',   icon:'✍️',label:'My Poems'},
+        {id:'graphics',icon:'🎨',label:'My Graphics'},
+        {id:'prints',  icon:'🖨',label:'My 3D Models'},
+        {sec:'Orders'},
+        {id:'orders',  icon:'◎',label:'Order Manifest'},
+    ],
+    client: [
+        {sec:'Overview'},
+        {id:'overview',icon:'◈',label:'My Studio'},
+        {sec:'Projects'},
+        {id:'projects',icon:'📂',label:'My Projects'},
+        {sec:'Shopping'},
+        {id:'orders',  icon:'◎',label:'My Orders'},
+        {sec:'Account'},
+        {id:'account', icon:'◐',label:'Account'},
+    ],
+};
 
 let _mod = 'overview';
 
-// BOOT
+/* ═══════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-    window.studioAuth.onChange(user => {
-        if (user) {
-            document.getElementById('dashGate').style.display  = 'none';
-            document.getElementById('dashShell').style.display = 'block';
-            buildSidebar(user);
-            navigate('overview');
-        } else {
-            document.getElementById('dashShell').style.display = 'none';
-            document.getElementById('dashGate').style.display  = 'flex';
-        }
+    studioAuth.onChange(user => {
+        document.getElementById('dashGate').style.display  = user ? 'none'  : 'flex';
+        document.getElementById('dashShell').style.display = user ? 'block' : 'none';
+        if (user) { buildSidebar(user); navigate('overview'); }
     });
-    document.getElementById('gateSignIn').addEventListener('click', () => window.studioAuth.openSignIn('Sign in to access your Studio'));
-    document.getElementById('dsSignOut').addEventListener('click', () => window.studioAuth.signOut());
+    document.getElementById('gateSignIn').onclick = () => studioAuth.openSignIn('Sign in to your Studio');
+    document.getElementById('dsSignOut').onclick   = () => studioAuth.signOut();
 
-    // Modal close wiring
-    ['productModal','partnerModal','orderModal'].forEach(id => {
-        const bd = document.getElementById(id + 'Backdrop');
-        bd.addEventListener('click', e => { if (e.target === bd) closeModal(id+'Backdrop'); });
-        document.getElementById(id + 'Close').addEventListener('click',  () => closeModal(id+'Backdrop'));
-        const cancel = document.getElementById(id + 'Cancel');
-        if (cancel) cancel.addEventListener('click', () => closeModal(id+'Backdrop'));
+    // Modal closes
+    const modals = ['uploadModal','partnerModal','projectModal','orderModal'];
+    modals.forEach(id => {
+        const bd = document.getElementById(id+'Backdrop');
+        bd.addEventListener('click', e => { if (e.target===bd) closeModal(id+'Backdrop'); });
+        document.getElementById(id+'Close').onclick  = () => closeModal(id+'Backdrop');
+        const cancel = document.getElementById(id+'Cancel');
+        if (cancel) cancel.onclick = () => closeModal(id+'Backdrop');
     });
-    document.getElementById('confirmClose').addEventListener('click',  () => closeModal('confirmBackdrop'));
-    document.getElementById('confirmCancel').addEventListener('click', () => closeModal('confirmBackdrop'));
-    document.getElementById('confirmBackdrop').addEventListener('click', e => { if (e.target.id === 'confirmBackdrop') closeModal('confirmBackdrop'); });
+    document.getElementById('confirmClose').onclick  = () => closeModal('confirmBackdrop');
+    document.getElementById('confirmCancel').onclick = () => closeModal('confirmBackdrop');
+    document.getElementById('confirmBackdrop').addEventListener('click', e => { if (e.target.id==='confirmBackdrop') closeModal('confirmBackdrop'); });
 });
 
 function buildSidebar(user) {
-    const colors = {admin:'#ff9500',partner:'#30d158',client:'#0071e3'};
+    const colors = {admin:getComputedStyle(document.documentElement).getPropertyValue('--accent'), partner:'#28c76f', client:'#007aff'};
     document.getElementById('dsUserBlock').innerHTML = `
         <div class="ds-avatar" style="background:${colors[user.role]}">${user.name[0].toUpperCase()}</div>
-        <div><div class="ds-uname">${user.name}</div><span class="ds-role-badge ds-role-${user.role}">${user.role.toUpperCase()}</span></div>
+        <div>
+            <div class="ds-uname">${user.name}</div>
+            <span class="ds-role-badge ds-role-${user.role}">${user.role.toUpperCase()}</span>
+        </div>
     `;
-    document.getElementById('dsNav').innerHTML = (NAV_CFG[user.role]||NAV_CFG.client).map(n=>`
-        <button class="ds-nav-item" data-id="${n.id}" onclick="navigate('${n.id}')"><span>${n.icon}</span><span>${n.label}</span></button>
-    `).join('');
+    const cfg = NAV_CFG[user.role] || NAV_CFG.client;
+    document.getElementById('dsNav').innerHTML = cfg.map(n => n.sec
+        ? `<div class="ds-nav-section">${n.sec}</div>`
+        : `<button class="ds-nav-item" data-id="${n.id}" onclick="navigate('${n.id}')"><span class="ni-icon">${n.icon}</span><span>${n.label}</span></button>`
+    ).join('');
 }
 
 window.navigate = function(id) {
@@ -191,62 +869,295 @@ window.navigate = function(id) {
 };
 
 function buildModule(id) {
-    const u = window.studioAuth.user;
+    const u = studioAuth.user;
     if (!u) return '';
     switch(id) {
         case 'overview': return modOverview(u);
         case 'orders':   return modOrders(u);
-        case 'products': return modProducts(u);
+        case 'products': return modContentList(u,'product');
+        case 'poems':    return modContentList(u,'poem');
+        case 'graphics': return modContentList(u,'graphic');
+        case 'prints':   return modContentList(u,'3d');
+        case 'projects': return modProjects(u);
         case 'partners': return modPartners();
         case 'users':    return modUsers();
         case 'account':  return modAccount(u);
-        default:         return modOverview(u);
+        default: return modOverview(u);
     }
 }
 
-// OVERVIEW
+/* ═══════════════════════════════════════════
+   OVERVIEW
+═══════════════════════════════════════════ */
 function modOverview(u) {
-    const my  = myOrders(u);
-    const active = my.filter(o=>!['Delivered','Disputed'].includes(o.status)).length;
+    const myOrd = myOrders(u);
+    const active = myOrd.filter(o=>!['Delivered','Disputed'].includes(o.status)).length;
     const h = new Date().getHours();
     const greet = h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-    const roleLabel = {admin:'Studio Control',partner:'Partner Dashboard',client:'Your Studio'}[u.role];
-    const stats = u.role==='admin' ? [
-        {n:ORDERS.length,l:'Total Orders'},{n:PRODUCTS.length,l:'Products'},{n:PARTNERS.length,l:'Partners'},{n:ORDERS.filter(o=>o.status==='Disputed').length,l:'Disputes'}
-    ] : u.role==='partner' ? [
-        {n:my.length,l:'Orders w/ my items'},{n:active,l:'Pending action'},{n:myProducts(u).length,l:'My Products'}
-    ] : [
-        {n:my.length,l:'Total Orders'},{n:active,l:'Active'},{n:'R '+my.reduce((s,o)=>s+o.total,0).toLocaleString(),l:'Lifetime Spend'}
-    ];
-    return `
-        <div class="ds-hdr"><p class="ds-eyebrow">${greet}, ${u.name.split(' ')[0]}</p><h1 class="ds-title">${roleLabel}</h1></div>
-        <div class="ds-stats">${stats.map(s=>`<div class="ds-stat"><div class="ds-stat-n">${s.n}</div><div class="ds-stat-l">${s.l}</div></div>`).join('')}</div>
-        ${my.slice(0,3).length ? `
+
+    let stats, sections='';
+    if (u.role==='admin') {
+        stats = [
+            {n:ORDERS.length,l:'Total Orders',icon:'◎'},
+            {n:PRODUCTS.length,l:'Products',icon:'🛍'},
+            {n:CONTENT.filter(c=>c.type==='poem').length,l:'Poems',icon:'✍️'},
+            {n:CONTENT.filter(c=>c.type==='graphic').length,l:'Graphics',icon:'🎨'},
+            {n:CONTENT.filter(c=>c.type==='3d').length,l:'3D Models',icon:'🖨'},
+            {n:PROJECTS.length,l:'Client Projects',icon:'📂'},
+            {n:PARTNERS.length,l:'Partners',icon:'◉'},
+            {n:ORDERS.filter(o=>o.status==='Disputed').length,l:'Disputes',icon:'⚠️'},
+        ];
+        sections = `
             <div class="ds-section">
                 <div class="ds-shdr"><h2>Recent Orders</h2><button class="ds-link" onclick="navigate('orders')">View all →</button></div>
-                ${my.slice(0,3).map(o=>oRow(o,u)).join('')}
-            </div>` : `<div class="ds-empty">◎<p>No orders yet.</p></div>`}
+                ${ORDERS.slice(0,3).map(o=>oRow(o,u,true)).join('')}
+            </div>
+            <div class="ds-section">
+                <div class="ds-shdr"><h2>Pending Client Projects</h2><button class="ds-link" onclick="navigate('projects')">View all →</button></div>
+                ${PROJECTS.filter(p=>p.status==='In Review').slice(0,3).map(p=>projRow(p,u)).join('') || '<div class="ds-empty"><div class="ds-empty-icon">📂</div><p>No pending projects</p></div>'}
+            </div>
+        `;
+    } else if (u.role==='partner') {
+        const mine = myProducts(u);
+        stats = [
+            {n:myOrd.length,l:'Orders w/ My Items',icon:'◎'},
+            {n:active,l:'Active',icon:'🟡'},
+            {n:mine.length,l:'My Products',icon:'🛍'},
+            {n:myContent(u,'poem').length,l:'Poems',icon:'✍️'},
+            {n:myContent(u,'graphic').length,l:'Graphics',icon:'🎨'},
+            {n:myContent(u,'3d').length,l:'3D Models',icon:'🖨'},
+        ];
+        sections = `
+            <div class="ds-section">
+                <div class="ds-shdr"><h2>My Active Orders</h2><button class="ds-link" onclick="navigate('orders')">View all →</button></div>
+                ${myOrd.slice(0,3).map(o=>oRow(o,u,true)).join('') || '<div class="ds-empty"><div class="ds-empty-icon">◎</div><p>No orders yet</p></div>'}
+            </div>
+        `;
+    } else {
+        const spend = myOrd.reduce((s,o)=>s+o.total,0);
+        const myProj = PROJECTS.filter(p=>p.clientId===u.uid);
+        stats = [
+            {n:myOrd.length,l:'Total Orders',icon:'◎'},
+            {n:active,l:'Active',icon:'🟡'},
+            {n:'R '+spend.toLocaleString(),l:'Lifetime Spend',icon:'💳'},
+            {n:myProj.length,l:'My Projects',icon:'📂'},
+        ];
+        sections = `
+            <div class="ds-section">
+                <div class="ds-shdr"><h2>Active Orders</h2><button class="ds-link" onclick="navigate('orders')">View all →</button></div>
+                ${myOrd.filter(o=>!['Delivered','Disputed'].includes(o.status)).slice(0,3).map(o=>oRow(o,u)).join('') || '<div class="ds-empty"><div class="ds-empty-icon">◎</div><p>No active orders</p></div>'}
+            </div>
+            <div class="ds-section">
+                <div class="ds-shdr"><h2>My Projects</h2><button class="ds-link" onclick="navigate('projects')">Manage →</button></div>
+                ${myProj.slice(0,3).map(p=>projRow(p,u)).join('') || '<div class="ds-empty"><div class="ds-empty-icon">📂</div><p>No projects yet</p><small>Submit a custom project brief</small></div>'}
+            </div>
+        `;
+    }
+    return `
+        <div class="ds-hdr">
+            <div><p class="ds-eyebrow">${greet}, ${u.name.split(' ')[0]}</p><h1 class="ds-title">${{admin:'Studio Control',partner:'Partner Hub',client:'My Studio'}[u.role]}</h1></div>
+            ${{admin:'',partner:'',client:`<button class="ds-btn ds-btn-primary" onclick="navigate('projects');setTimeout(()=>openProjectModal(),150)">+ New Project</button>`}[u.role]}
+        </div>
+        <div class="ds-stats">${stats.map(s=>`
+            <div class="ds-stat">
+                <div class="ds-stat-icon">${s.icon}</div>
+                <div class="ds-stat-n">${s.n}</div>
+                <div class="ds-stat-l">${s.l}</div>
+            </div>`).join('')}
+        </div>
+        ${sections}
     `;
 }
 
-// ORDERS
+/* ═══════════════════════════════════════════
+   CONTENT LIST (products, poems, graphics, 3D)
+═══════════════════════════════════════════ */
+function modContentList(u, type) {
+    const typeLabels = {product:'Products',poem:'Poems',graphic:'Graphics','3d':'3D Models'};
+    const typeIcons  = {product:'🛍',poem:'✍️',graphic:'🎨','3d':'🖨'};
+    const isAdmin    = u.role==='admin';
+    const isPartner  = u.role==='partner';
+
+    let items;
+    if (type==='product') {
+        items = isAdmin ? PRODUCTS : myProducts(u);
+    } else {
+        items = isAdmin ? CONTENT.filter(c=>c.type===type) : myContent(u,type);
+    }
+
+    const canAdd = isAdmin || isPartner;
+
+    return `
+        <div class="ds-hdr">
+            <div>
+                <p class="ds-eyebrow">${isAdmin?'All platform':'My'} ${typeLabels[type]}</p>
+                <h1 class="ds-title">${typeIcons[type]} ${typeLabels[type]}</h1>
+            </div>
+            ${canAdd ? `<button class="ds-btn ds-btn-primary" onclick="openUploadModal(null,'${type}')">+ Add ${typeLabels[type].slice(0,-1)}</button>` : ''}
+        </div>
+        ${items.length===0 ? `
+            <div class="ds-empty">
+                <div class="ds-empty-icon">${typeIcons[type]}</div>
+                <p>No ${typeLabels[type].toLowerCase()} yet</p>
+                ${canAdd?`<small>Click "+ Add" to upload your first ${typeLabels[type].slice(0,-1).toLowerCase()}</small>`:''}
+                ${canAdd?`<button class="ds-btn ds-btn-accent" style="margin-top:12px" onclick="openUploadModal(null,'${type}')">+ Add ${typeLabels[type].slice(0,-1)}</button>`:''}
+            </div>
+        ` : items.map(item => contentRow(item, u)).join('')}
+    `;
+}
+
+function contentRow(item, u) {
+    const isAdmin  = u.role==='admin';
+    const isPartner= u.role==='partner';
+    const canEdit  = isAdmin || isPartner;
+    const partner  = PARTNERS.find(p=>p.id===item.partnerId);
+    const icons = {product:'🛍',poem:'✍️',graphic:'🎨','3d':'🖨'};
+    const tagClass = {product:'tag-product',poem:'tag-poem',graphic:'tag-graphic','3d':'tag-3d'};
+
+    let meta = '';
+    if (item.type==='product') meta = `R ${item.price?.toLocaleString()} · Stock: ${item.stock}${isAdmin?' · '+partner?.name:''}`;
+    else if (item.type==='poem') meta = `${item.theme||''}${isAdmin?' · '+partner?.name:''}`;
+    else if (item.type==='graphic') meta = `${item.format||''} · ${item.license||''}${isAdmin?' · '+partner?.name:''}`;
+    else if (item.type==='3d') meta = `${item.material||''} · R ${item.price3d||0}/50g · ${item.fileType||''}${isAdmin?' · '+partner?.name:''}`;
+
+    return `
+        <div class="ds-content-row">
+            <div class="ds-content-thumb">${item.img ? `<img src="${item.img}" alt="">` : icons[item.type]}</div>
+            <div class="ds-content-info">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                    <span class="ds-content-name">${item.name}</span>
+                    <span class="ds-tag ${tagClass[item.type]}">${item.type==='3d'?'3D':item.type}</span>
+                </div>
+                <div class="ds-content-meta">${item.desc||''}</div>
+                <div class="ds-content-meta" style="margin-top:2px">${meta}</div>
+            </div>
+            ${canEdit ? `
+            <div class="ds-content-actions">
+                <button class="ds-btn ds-btn-sm" onclick="openUploadModal('${item.id}','${item.type}')">Edit</button>
+                <button class="ds-btn ds-btn-sm ds-btn-outline-danger" onclick="confirmDelete('content','${item.id}','${item.name}')">Remove</button>
+            </div>` : ''}
+        </div>
+    `;
+}
+
+/* ═══════════════════════════════════════════
+   CLIENT PROJECTS
+═══════════════════════════════════════════ */
+const PROJECT_STATUS_COLORS = {
+    'In Review':'#ff9500','Accepted':'#007aff','In Progress':'#28c76f','Completed':'#34c759','Declined':'#ff3b30'
+};
+const PROJECT_TYPES = {
+    commission:'Commission',custom_print:'Custom 3D Print',apparel_design:'Apparel Design',
+    graphic_design:'Graphic Design',other:'Other'
+};
+
+function modProjects(u) {
+    const isAdmin  = u.role==='admin';
+    const isClient = u.role==='client';
+    const projs    = isAdmin ? PROJECTS : PROJECTS.filter(p=>p.clientId===u.uid);
+    const statuses = ['In Review','Accepted','In Progress','Completed','Declined'];
+
+    return `
+        <div class="ds-hdr">
+            <div>
+                <p class="ds-eyebrow">${isAdmin?'Platform-wide':'Your custom work'}</p>
+                <h1 class="ds-title">📂 ${isAdmin?'Client Projects':'My Projects'}</h1>
+            </div>
+            <div class="ds-hdr-actions">
+                ${isClient ? `<button class="ds-btn ds-btn-primary" onclick="openProjectModal()">+ Submit Project</button>` : ''}
+            </div>
+        </div>
+        <div class="ds-chips">
+            ${statuses.map(s=>`<button class="ds-chip active" data-pstatus="${s}" onclick="toggleProjFilter(this)">${s}</button>`).join('')}
+        </div>
+        <div id="projList">
+        ${projs.length===0 ? `
+            <div class="ds-empty">
+                <div class="ds-empty-icon">📂</div>
+                <p>${isClient?'No projects yet':'No projects submitted yet'}</p>
+                ${isClient?`<small>Tell us what you need — commissions, custom prints, designs and more</small><button class="ds-btn ds-btn-accent" style="margin-top:12px" onclick="openProjectModal()">+ Submit Project</button>`:''}
+            </div>
+        ` : projs.map(p=>projRow(p,u)).join('')}
+        </div>
+    `;
+}
+
+function projRow(p, u) {
+    const col     = PROJECT_STATUS_COLORS[p.status] || '#8e8e93';
+    const isAdmin = u.role==='admin';
+    const isClient= u.role==='client';
+    const statuses= ['In Review','Accepted','In Progress','Completed','Declined'];
+    return `
+        <div class="ds-projcard" data-pid="${p.id}" data-pstatus="${p.status}">
+            <div class="ds-projcard-header">
+                <div>
+                    <div class="ds-projcard-title">${p.title}</div>
+                    <div class="ds-projcard-type" style="color:var(--muted);margin-top:3px">${PROJECT_TYPES[p.type]||p.type}</div>
+                </div>
+                <span class="ds-pill" style="background:${col}18;color:${col};border-color:${col}35">${p.status}</span>
+            </div>
+            <div class="ds-projcard-desc">${p.desc}</div>
+            <div class="ds-projcard-meta">
+                ${p.budget?`<span>Budget: R ${Number(p.budget).toLocaleString()}</span>`:''}
+                ${p.deadline?`<span>Due: ${p.deadline}</span>`:''}
+                ${isAdmin?`<span>Client: ${p.clientName}</span>`:''}
+                <span>Submitted: ${p.createdAt}</span>
+            </div>
+            <div class="ds-projcard-actions">
+                ${isClient && ['In Review'].includes(p.status) ? `
+                    <button class="ds-btn ds-btn-sm" onclick="openProjectModal('${p.id}')">Edit</button>
+                    <button class="ds-btn ds-btn-sm ds-btn-outline-danger" onclick="confirmDelete('project','${p.id}','${p.title}')">Remove</button>
+                ` : ''}
+                ${isAdmin ? `
+                    <select class="ds-sel" onchange="updateProjectStatus('${p.id}',this.value);this.value=''">
+                        <option value="">Update status…</option>
+                        ${statuses.filter(s=>s!==p.status).map(s=>`<option value="${s}">${s}</option>`).join('')}
+                    </select>
+                    <button class="ds-btn ds-btn-sm ds-btn-outline-danger" onclick="confirmDelete('project','${p.id}','${p.title}')">Remove</button>
+                ` : ''}
+                ${isClient && !['In Review'].includes(p.status) ? `<span style="font-size:12px;color:var(--muted)">Being processed — contact studio to amend</span>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+window.toggleProjFilter = function(btn) {
+    btn.classList.toggle('active');
+    const active = [...document.querySelectorAll('.ds-chip.active')].map(b=>b.dataset.pstatus);
+    document.querySelectorAll('[data-pstatus]').forEach(r => {
+        r.style.display = active.includes(r.dataset.pstatus) ? '' : 'none';
+    });
+};
+
+window.updateProjectStatus = function(id, status) {
+    if (!status) return;
+    const p = PROJECTS.find(x=>x.id===id);
+    if (p) { p.status=status; showToast(`Project → ${status}`); navigate('projects'); }
+};
+
+/* ═══════════════════════════════════════════
+   ORDERS
+═══════════════════════════════════════════ */
 function modOrders(u) {
     const orders = myOrders(u);
-    const canUpd = u.role !== 'client';
+    const canUpd  = u.role!=='client';
     return `
-        <div class="ds-hdr" style="flex-wrap:wrap;gap:12px">
-            <div><p class="ds-eyebrow">${{admin:'Platform-wide',partner:'Orders containing your products',client:'Your purchase history'}[u.role]}</p><h1 class="ds-title">${{admin:'All Orders',partner:'Order Manifest',client:'My Orders'}[u.role]}</h1></div>
-            <div class="ds-chips">${ORDER_STATES.map(s=>`<button class="ds-chip active" data-status="${s}" onclick="toggleFilter(this)">${s}</button>`).join('')}</div>
+        <div class="ds-hdr">
+            <div>
+                <p class="ds-eyebrow">${{admin:'Platform-wide',partner:'Orders containing your products',client:'Your purchase history'}[u.role]}</p>
+                <h1 class="ds-title">◎ ${{admin:'All Orders',partner:'Order Manifest',client:'My Orders'}[u.role]}</h1>
+            </div>
         </div>
-        <div id="oList">${orders.length ? orders.map(o=>oRow(o,u,canUpd)).join('') : '<div class="ds-empty">◎<p>No orders.</p></div>'}</div>
+        <div class="ds-chips">${ORDER_STATES.map(s=>`<button class="ds-chip active" data-status="${s}" onclick="toggleFilter(this)">${s}</button>`).join('')}</div>
+        <div id="oList">${orders.length ? orders.map(o=>oRow(o,u,canUpd)).join('') : '<div class="ds-empty"><div class="ds-empty-icon">◎</div><p>No orders</p></div>'}</div>
     `;
 }
 
 function oRow(o, u, canUpd=false) {
-    const col = STATE_COLORS[o.status]||'#86868b';
+    const col   = STATE_COLORS[o.status]||'#8e8e93';
     const nexts = canUpd ? ORDER_STATES.filter(s=>s!==o.status) : [];
     return `
-        <div class="ds-orow" data-id="${o.id}">
+        <div class="ds-orow" data-id="${o.id}" data-status="${o.status}">
             <div class="ds-omn" onclick="openOrderDetail('${o.id}')">
                 <div class="ds-oid">${o.id}</div>
                 <div class="ds-oitems">${o.items.map(i=>i.name).join(', ')}</div>
@@ -266,23 +1177,27 @@ window.toggleFilter = function(btn) {
     btn.classList.toggle('active');
     const active = [...document.querySelectorAll('.ds-chip.active')].map(b=>b.dataset.status);
     document.querySelectorAll('.ds-orow').forEach(r => {
-        const p = r.querySelector('.ds-pill');
-        r.style.display = active.includes(p?.textContent.trim()) ? '' : 'none';
+        r.style.display = active.includes(r.dataset.status) ? '' : 'none';
     });
 };
 
 window.openOrderDetail = function(orderId) {
     const o = ORDERS.find(x=>x.id===orderId); if (!o) return;
-    const col = STATE_COLORS[o.status];
-    const u   = window.studioAuth.user;
-    const canUpd = u.role !== 'client';
+    const col   = STATE_COLORS[o.status];
+    const u     = studioAuth.user;
+    const canUpd= u.role!=='client';
     document.getElementById('orderModalTitle').textContent = o.id;
     document.getElementById('orderModalBody').innerHTML = `
         <div class="od-items">
             ${o.items.map(i=>`<div class="od-item"><span>${i.name}</span><span style="color:var(--muted);font-size:12px">×${i.qty}</span><span class="od-ip">R ${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
             <div class="od-tot">Total <strong>R ${o.total.toLocaleString()}</strong></div>
         </div>
-        <div class="od-tl"><h4>Timeline</h4>${o.history.map((h,i,a)=>`<div class="od-tli ${i===a.length-1?'cur':''}"><div class="od-dot" style="background:${i===a.length-1?STATE_COLORS[h.s]:'var(--border)'}"></div><div class="od-tli-info"><span>${h.s}</span><span style="color:var(--muted);font-size:11px">${h.d}</span></div></div>`).join('')}</div>
+        <div class="od-tl"><h4>Timeline</h4>${o.history.map((h,i,a)=>`
+            <div class="od-tli ${i===a.length-1?'cur':''}">
+                <div class="od-dot" style="background:${i===a.length-1?STATE_COLORS[h.s]:'var(--border)'}"></div>
+                <div class="od-tli-info"><span>${h.s}</span><span style="color:var(--muted);font-size:11px">${h.d}</span></div>
+            </div>`).join('')}
+        </div>
         ${u.role!=='client'?`<div class="od-cli"><strong>Client:</strong> ${o.clientName} · ${o.clientEmail}</div>`:''}
     `;
     document.getElementById('orderModalFooter').innerHTML = canUpd ? `
@@ -297,91 +1212,32 @@ window.openOrderDetail = function(orderId) {
 window.updateStatus = function(orderId, newStatus) {
     if (!newStatus) return;
     const o = ORDERS.find(x=>x.id===orderId); if (!o) return;
-    o.status = newStatus; o.updatedAt = new Date().toISOString().split('T')[0];
-    o.history.push({s:newStatus, d:o.updatedAt});
+    o.status=newStatus; o.updatedAt=new Date().toISOString().split('T')[0];
+    o.history.push({s:newStatus,d:o.updatedAt});
     showToast(`${orderId} → ${newStatus}`);
     navigate(_mod);
 };
 
-// PRODUCTS
-function modProducts(u) {
-    const prods = myProducts(u);
-    const isAdmin = u.role==='admin';
-    return `
-        <div class="ds-hdr"><div><p class="ds-eyebrow">${isAdmin?'All platform products':'Products you manage'}</p><h1 class="ds-title">${isAdmin?'Products':'My Products'}</h1></div><button class="ds-btn ds-btn-primary" onclick="openProductModal()">+ Add Product</button></div>
-        <div class="ds-twrap"><table class="ds-table">
-            <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th>${isAdmin?'<th>Partner</th>':''}<th>Actions</th></tr></thead>
-            <tbody>${prods.map(p=>{
-                const pa = PARTNERS.find(x=>x.id===p.partnerId);
-                return `<tr>
-                    <td class="mono">${p.id}</td><td><strong>${p.name}</strong></td>
-                    <td><span class="ds-tag">${p.category}</span></td>
-                    <td>R ${p.price.toLocaleString()}</td>
-                    <td class="${p.stock<10?'text-warn':''}">${p.stock}</td>
-                    ${isAdmin?`<td>${pa?.name||'—'}</td>`:''}
-                    <td class="ds-tact">
-                        <button class="ds-btn ds-btn-sm" onclick="openProductModal('${p.id}')">Edit</button>
-                        <button class="ds-btn ds-btn-sm ds-btn-do" onclick="confirmDelete('product','${p.id}','${p.name}')">Delete</button>
-                    </td>
-                </tr>`;
-            }).join('')}${prods.length===0?`<tr><td colspan="7" class="ds-te">No products yet.</td></tr>`:''}</tbody>
-        </table></div>
-    `;
-}
-
-window.openProductModal = function(pid) {
-    const p = pid ? PRODUCTS.find(x=>x.id===pid) : null;
-    const u = window.studioAuth.user;
-    document.getElementById('productModalTitle').textContent = p ? 'Edit Product' : 'Add Product';
-    document.getElementById('pmProductId').value = pid||'';
-    document.getElementById('pmId').value        = p?.id||''; document.getElementById('pmId').disabled = !!pid;
-    document.getElementById('pmName').value      = p?.name||'';
-    document.getElementById('pmPrice').value     = p?.price||'';
-    document.getElementById('pmCategory').value  = p?.category||'skate';
-    document.getElementById('pmImg').value       = p?.img||'';
-    document.getElementById('pmDesc').value      = p?.desc||'';
-    document.getElementById('pmStock').value     = p?.stock||'';
-    const pSel = document.getElementById('pmPartner');
-    pSel.innerHTML = u.role==='admin'
-        ? PARTNERS.map(pa=>`<option value="${pa.id}" ${p?.partnerId===pa.id?'selected':''}>${pa.name}</option>`).join('')
-        : `<option value="${PARTNERS.find(pa=>pa.email===u.email)?.id||''}">Me (${u.name})</option>`;
-    document.getElementById('productModalSave').onclick = saveProduct;
-    openModal('productModalBackdrop');
-};
-
-function saveProduct() {
-    const pid   = document.getElementById('pmProductId').value;
-    const id    = document.getElementById('pmId').value.trim();
-    const name  = document.getElementById('pmName').value.trim();
-    const price = parseFloat(document.getElementById('pmPrice').value);
-    if (!id||!name||isNaN(price)) { showToast('ID, name & price required.', true); return; }
-    const data = { id, name, price, category:document.getElementById('pmCategory').value, img:document.getElementById('pmImg').value.trim(), desc:document.getElementById('pmDesc').value.trim(), stock:parseInt(document.getElementById('pmStock').value)||0, partnerId:document.getElementById('pmPartner').value };
-    if (pid) {
-        const idx = PRODUCTS.findIndex(x=>x.id===pid);
-        if (idx>-1) PRODUCTS[idx] = {...PRODUCTS[idx],...data};
-        showToast(`${name} updated.`);
-    } else {
-        if (PRODUCTS.find(x=>x.id===id)) { showToast('Product ID already exists.', true); return; }
-        PRODUCTS.push(data);
-        showToast(`${name} added.`);
-    }
-    closeModal('productModalBackdrop');
-    navigate('products');
-}
-
-// PARTNERS
+/* ═══════════════════════════════════════════
+   PARTNERS (admin only)
+═══════════════════════════════════════════ */
 function modPartners() {
     return `
-        <div class="ds-hdr"><div><p class="ds-eyebrow">Studio partner network</p><h1 class="ds-title">Partners</h1></div><button class="ds-btn ds-btn-primary" onclick="openPartnerModal()">+ Add Partner</button></div>
+        <div class="ds-hdr">
+            <div><p class="ds-eyebrow">Collaborators & resellers</p><h1 class="ds-title">◉ Partners</h1></div>
+            <button class="ds-btn ds-btn-primary" onclick="openPartnerModal()">+ Add Partner</button>
+        </div>
         <div class="ds-twrap"><table class="ds-table">
-            <thead><tr><th>Name</th><th>Email</th><th>Brand / Notes</th><th>Products</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Name</th><th>Email</th><th>Category</th><th>Commission</th><th>Brand Notes</th><th>Actions</th></tr></thead>
             <tbody>${PARTNERS.map(pa=>`<tr>
-                <td><strong>${pa.name}</strong></td><td class="mono">${pa.email}</td>
-                <td style="color:var(--muted);font-size:13px">${pa.brand}</td>
-                <td>${PRODUCTS.filter(p=>p.partnerId===pa.id).length}</td>
+                <td><strong>${pa.name}</strong></td>
+                <td class="mono">${pa.email}</td>
+                <td><span class="ds-tag">${pa.category||'all'}</span></td>
+                <td>${pa.commission||0}%</td>
+                <td style="color:var(--muted)">${pa.brand||'—'}</td>
                 <td class="ds-tact">
                     <button class="ds-btn ds-btn-sm" onclick="openPartnerModal('${pa.id}')">Edit</button>
-                    <button class="ds-btn ds-btn-sm ds-btn-do" onclick="confirmDelete('partner','${pa.id}','${pa.name}')">Delete</button>
+                    <button class="ds-btn ds-btn-sm ds-btn-outline-danger" onclick="confirmDelete('partner','${pa.id}','${pa.name}')">Remove</button>
                 </td>
             </tr>`).join('')}</tbody>
         </table></div>
@@ -390,38 +1246,48 @@ function modPartners() {
 
 window.openPartnerModal = function(paid) {
     const pa = paid ? PARTNERS.find(x=>x.id===paid) : null;
-    document.getElementById('partnerModalTitle').textContent = pa ? 'Edit Partner' : 'Add Partner';
+    document.getElementById('partnerModalTitle').textContent = pa?'Edit Partner':'Add Partner';
     document.getElementById('paPartnerId').value = paid||'';
-    document.getElementById('paName').value      = pa?.name||'';
-    document.getElementById('paEmail').value     = pa?.email||'';
-    document.getElementById('paBrand').value     = pa?.brand||'';
+    document.getElementById('paName').value       = pa?.name||'';
+    document.getElementById('paEmail').value      = pa?.email||'';
+    document.getElementById('paBrand').value      = pa?.brand||'';
+    document.getElementById('paCategory').value   = pa?.category||'all';
+    document.getElementById('paCommission').value = pa?.commission||'';
     document.getElementById('partnerModalSave').onclick = savePartner;
     openModal('partnerModalBackdrop');
 };
 
 function savePartner() {
-    const paid  = document.getElementById('paPartnerId').value;
-    const name  = document.getElementById('paName').value.trim();
-    const email = document.getElementById('paEmail').value.trim();
-    const brand = document.getElementById('paBrand').value.trim();
+    const paid       = document.getElementById('paPartnerId').value;
+    const name       = document.getElementById('paName').value.trim();
+    const email      = document.getElementById('paEmail').value.trim();
+    const brand      = document.getElementById('paBrand').value.trim();
+    const category   = document.getElementById('paCategory').value;
+    const commission = parseFloat(document.getElementById('paCommission').value)||0;
     if (!name||!email) { showToast('Name and email required.', true); return; }
     if (paid) {
         const pa = PARTNERS.find(x=>x.id===paid);
-        if (pa) Object.assign(pa, {name,email,brand});
+        if (pa) Object.assign(pa,{name,email,brand,category,commission});
         showToast(`${name} updated.`);
     } else {
-        PARTNERS.push({id:'p_'+Date.now().toString(36), name, email, brand, productIds:[]});
+        PARTNERS.push({id:'p_'+Date.now().toString(36),name,email,brand,category,commission});
         showToast(`${name} added as Partner.`);
     }
     closeModal('partnerModalBackdrop');
     navigate('partners');
 }
 
-// USERS
+/* ═══════════════════════════════════════════
+   USERS (admin only)
+═══════════════════════════════════════════ */
 function modUsers() {
-    const users = [{uid:'u_admin',name:'Studio Admin',email:'admin@sphiri.com',role:'admin'},{uid:'u_partner',name:'SK8 Partner',email:'partner@sphiri.com',role:'partner'},{uid:'u_client',name:'Alex Client',email:'client@sphiri.com',role:'client'}];
+    const users = [
+        {uid:'u_admin',  name:'Studio Admin', email:'admin@sphiri.com',   role:'admin'},
+        {uid:'u_partner',name:'SK8 Partner',  email:'partner@sphiri.com', role:'partner'},
+        {uid:'u_client', name:'Alex Client',  email:'client@sphiri.com',  role:'client'},
+    ];
     return `
-        <div class="ds-hdr"><div><p class="ds-eyebrow">Identity & access</p><h1 class="ds-title">Users</h1></div></div>
+        <div class="ds-hdr"><div><p class="ds-eyebrow">Identity & access</p><h1 class="ds-title">⊙ Users</h1></div></div>
         <div class="ds-twrap"><table class="ds-table">
             <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Change Role</th></tr></thead>
             <tbody>${users.map(u=>`<tr>
@@ -435,36 +1301,211 @@ function modUsers() {
     `;
 }
 
-// ACCOUNT
+/* ═══════════════════════════════════════════
+   ACCOUNT
+═══════════════════════════════════════════ */
 function modAccount(u) {
     return `
-        <div class="ds-hdr"><p class="ds-eyebrow">Your identity</p><h1 class="ds-title">Account</h1></div>
+        <div class="ds-hdr"><p class="ds-eyebrow">Your identity</p><h1 class="ds-title">◐ Account</h1></div>
         <div class="ds-acct">
             <div class="ds-field"><label>Display Name</label><input class="ds-input" value="${u.name}" readonly /></div>
             <div class="ds-field"><label>Email</label><input class="ds-input" value="${u.email}" readonly /></div>
             <div class="ds-field"><label>Role</label><input class="ds-input" value="${u.role.toUpperCase()}" readonly /></div>
-            <button class="ds-btn ds-btn-do" style="margin-top:8px" onclick="window.studioAuth.signOut()">Sign Out</button>
+            <button class="ds-btn ds-btn-outline-danger" style="margin-top:8px" onclick="studioAuth.signOut()">Sign Out</button>
         </div>
     `;
 }
 
-// CONFIRM DELETE
+/* ═══════════════════════════════════════════
+   UPLOAD MODAL (Products, Poems, Graphics, 3D)
+═══════════════════════════════════════════ */
+window.openUploadModal = function(itemId, forceType) {
+    const u = studioAuth.user;
+
+    // Populate partner selector
+    const sel = document.getElementById('umPartner');
+    sel.innerHTML = PARTNERS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+
+    // Show/hide admin fields
+    document.querySelectorAll('.um-admin-field').forEach(el => {
+        el.style.display = u.role==='admin' ? '' : 'none';
+    });
+    // Hide type tabs if forceType given (partner upload always knows type)
+    const tabs = document.getElementById('uploadTypeTabs');
+    tabs.style.display = (u.role!=='admin' && forceType) ? 'none' : '';
+
+    const type = forceType||'product';
+    setUploadType(type);
+
+    let item = null;
+    document.getElementById('uploadModalTitle').textContent = itemId ? 'Edit Item' : 'Add Item';
+    document.getElementById('umItemId').value = itemId||'';
+
+    if (itemId) {
+        item = PRODUCTS.find(x=>x.id===itemId) || CONTENT.find(x=>x.id===itemId);
+        if (!item) return;
+        setUploadType(item.type);
+        document.getElementById('umName').value   = item.name||'';
+        document.getElementById('umDesc').value   = item.desc||'';
+        document.getElementById('umImg').value    = item.img||'';
+        document.getElementById('umTags').value   = item.tags||'';
+        if (item.type==='product') {
+            document.getElementById('umPrice').value    = item.price||0;
+            document.getElementById('umCategory').value = item.category||'skate';
+            document.getElementById('umStock').value    = item.stock||0;
+            document.getElementById('umPartner').value  = item.partnerId||'';
+        } else if (item.type==='poem') {
+            document.getElementById('umPoemText').value  = item.poemText||'';
+            document.getElementById('umPoemTheme').value = item.theme||'';
+        } else if (item.type==='graphic') {
+            document.getElementById('umGraphicFormat').value  = item.format||'PNG';
+            document.getElementById('umGraphicLicense').value = item.license||'All Rights Reserved';
+        } else if (item.type==='3d') {
+            document.getElementById('um3dMaterial').value = item.material||'PLA';
+            document.getElementById('um3dPrice').value    = item.price3d||0;
+            document.getElementById('um3dFile').value     = item.fileType||'.stl';
+        }
+    } else {
+        ['umName','umDesc','umImg','umTags','umPrice','umStock','umPoemText','umPoemTheme','um3dPrice','um3dFile'].forEach(id => {
+            const el = document.getElementById(id); if(el) el.value='';
+        });
+        document.getElementById('umStock').value = 0;
+    }
+
+    document.getElementById('uploadModalSave').onclick = saveUploadItem;
+    openModal('uploadModalBackdrop');
+};
+
+window.setUploadType = function(type) {
+    document.getElementById('umType').value = type;
+    // Update tab appearance
+    document.querySelectorAll('.ds-tab').forEach(t => t.classList.toggle('active', t.dataset.type===type));
+    // Field visibility
+    const show = (cls, visible) => document.querySelectorAll('.'+cls).forEach(el => el.style.display = visible?'':'none');
+    show('um-product-field', type==='product');
+    show('um-poem-field',    type==='poem');
+    show('um-graphic-field', type==='graphic');
+    show('um-3d-field',      type==='3d');
+    show('um-notpoem',       type!=='poem');
+};
+
+function saveUploadItem() {
+    const itemId   = document.getElementById('umItemId').value;
+    const type     = document.getElementById('umType').value;
+    const name     = document.getElementById('umName').value.trim();
+    const desc     = document.getElementById('umDesc').value.trim();
+    const img      = document.getElementById('umImg').value.trim();
+    const tags     = document.getElementById('umTags').value.trim();
+    const u        = studioAuth.user;
+
+    if (!name) { showToast('Name is required.', true); return; }
+
+    const partnerId = u.role==='admin'
+        ? document.getElementById('umPartner').value
+        : PARTNERS.find(p=>p.email===u.email)?.id||'p_studio';
+
+    if (type==='product') {
+        const price    = parseFloat(document.getElementById('umPrice').value)||0;
+        const category = document.getElementById('umCategory').value;
+        const stock    = parseInt(document.getElementById('umStock').value)||0;
+        if (itemId) {
+            const p = PRODUCTS.find(x=>x.id===itemId);
+            if (p) Object.assign(p,{name,desc,img,tags,price,category,stock,partnerId});
+            showToast(`${name} updated.`);
+        } else {
+            const id = 'PRD-'+Date.now().toString(36).toUpperCase();
+            PRODUCTS.push({id,type:'product',name,desc,img,tags,price,category,stock,partnerId});
+            showToast(`${name} added.`);
+        }
+    } else {
+        let extra = {};
+        if (type==='poem')    { extra.poemText=document.getElementById('umPoemText').value; extra.theme=document.getElementById('umPoemTheme').value; }
+        if (type==='graphic') { extra.format=document.getElementById('umGraphicFormat').value; extra.license=document.getElementById('umGraphicLicense').value; }
+        if (type==='3d')      { extra.material=document.getElementById('um3dMaterial').value; extra.price3d=parseFloat(document.getElementById('um3dPrice').value)||0; extra.fileType=document.getElementById('um3dFile').value; }
+        if (itemId) {
+            const c = CONTENT.find(x=>x.id===itemId);
+            if (c) Object.assign(c,{name,desc,img,tags,partnerId,...extra});
+            showToast(`${name} updated.`);
+        } else {
+            const prefix = {poem:'POE',graphic:'GFX','3d':'3DP'}[type]||'CTN';
+            const id = prefix+'-'+Date.now().toString(36).toUpperCase();
+            CONTENT.push({id,type,name,desc,img,tags,partnerId,createdAt:new Date().toISOString().split('T')[0],...extra});
+            showToast(`${name} added.`);
+        }
+    }
+    closeModal('uploadModalBackdrop');
+    navigate(_mod);
+}
+
+/* ═══════════════════════════════════════════
+   PROJECT MODAL (client submit / edit)
+═══════════════════════════════════════════ */
+window.openProjectModal = function(projId) {
+    const p = projId ? PROJECTS.find(x=>x.id===projId) : null;
+    document.getElementById('projectModalTitle').textContent = p?'Edit Project':'Submit Project';
+    document.getElementById('prjId').value       = projId||'';
+    document.getElementById('prjTitle').value    = p?.title||'';
+    document.getElementById('prjType').value     = p?.type||'commission';
+    document.getElementById('prjBudget').value   = p?.budget||'';
+    document.getElementById('prjDesc').value     = p?.desc||'';
+    document.getElementById('prjRef').value      = p?.ref||'';
+    document.getElementById('prjDeadline').value = p?.deadline||'';
+    document.getElementById('projectModalSave').onclick = saveProject;
+    openModal('projectModalBackdrop');
+};
+
+function saveProject() {
+    const projId   = document.getElementById('prjId').value;
+    const title    = document.getElementById('prjTitle').value.trim();
+    const type     = document.getElementById('prjType').value;
+    const budget   = parseFloat(document.getElementById('prjBudget').value)||0;
+    const desc     = document.getElementById('prjDesc').value.trim();
+    const ref      = document.getElementById('prjRef').value.trim();
+    const deadline = document.getElementById('prjDeadline').value;
+    const u        = studioAuth.user;
+    if (!title||!desc) { showToast('Title and brief required.', true); return; }
+    if (projId) {
+        const p = PROJECTS.find(x=>x.id===projId);
+        if (p) Object.assign(p,{title,type,budget,desc,ref,deadline});
+        showToast('Project updated.');
+    } else {
+        PROJECTS.push({
+            id:'PRJ-'+Date.now().toString(36).toUpperCase(),
+            clientId:u.uid, clientName:u.name,
+            title,type,budget,desc,ref,deadline,
+            status:'In Review',
+            createdAt:new Date().toISOString().split('T')[0]
+        });
+        showToast('Project submitted! Studio will review shortly.');
+    }
+    closeModal('projectModalBackdrop');
+    navigate('projects');
+}
+
+/* ═══════════════════════════════════════════
+   DELETE CONFIRM
+═══════════════════════════════════════════ */
 window.confirmDelete = function(type, id, name) {
-    document.getElementById('confirmMsg').textContent = `Delete "${name}"? This cannot be undone.`;
+    document.getElementById('confirmMsg').textContent = `Remove "${name}"? This cannot be undone.`;
     document.getElementById('confirmOk').onclick = () => {
-        if (type==='product') { const i=PRODUCTS.findIndex(p=>p.id===id); if(i>-1) PRODUCTS.splice(i,1); navigate('products'); }
-        if (type==='partner') { const i=PARTNERS.findIndex(p=>p.id===id); if(i>-1) PARTNERS.splice(i,1); navigate('partners'); }
-        showToast(`${name} deleted.`);
+        if (type==='content') { const i=CONTENT.findIndex(c=>c.id===id); if(i>-1) CONTENT.splice(i,1); }
+        if (type==='product') { const i=PRODUCTS.findIndex(p=>p.id===id); if(i>-1) PRODUCTS.splice(i,1); }
+        if (type==='partner') { const i=PARTNERS.findIndex(p=>p.id===id); if(i>-1) PARTNERS.splice(i,1); }
+        if (type==='project') { const i=PROJECTS.findIndex(p=>p.id===id); if(i>-1) PROJECTS.splice(i,1); }
+        showToast(`"${name}" removed.`);
         closeModal('confirmBackdrop');
+        navigate(_mod);
     };
     openModal('confirmBackdrop');
 };
 
-// HELPERS
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
 function myOrders(u) {
     if (u.role==='admin') return ORDERS;
     if (u.role==='partner') {
-        const pa = PARTNERS.find(x=>x.email===u.email);
+        const pa  = PARTNERS.find(x=>x.email===u.email);
         const ids = pa ? PRODUCTS.filter(p=>p.partnerId===pa.id).map(p=>p.id) : [];
         return ORDERS.filter(o=>o.items.some(i=>ids.includes(i.id)));
     }
@@ -475,143 +1516,40 @@ function myProducts(u) {
     const pa = PARTNERS.find(x=>x.email===u.email);
     return pa ? PRODUCTS.filter(p=>p.partnerId===pa.id) : [];
 }
-function openModal(id) { const el=document.getElementById(id); if(!el) return; el.classList.add('open'); document.body.style.overflow='hidden'; }
-function closeModal(id) { const el=document.getElementById(id); if(!el) return; el.classList.remove('open'); document.body.style.overflow=''; }
+function myContent(u, type) {
+    if (u.role==='admin') return CONTENT.filter(c=>c.type===type);
+    const pa = PARTNERS.find(x=>x.email===u.email);
+    return pa ? CONTENT.filter(c=>c.type===type && c.partnerId===pa.id) : [];
+}
+function openModal(id)  { const el=document.getElementById(id); if(!el)return; el.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { const el=document.getElementById(id); if(!el)return; el.classList.remove('open'); document.body.style.overflow=''; }
 window.closeModal = closeModal;
 function showToast(msg, err=false) {
     const t=document.getElementById('dsToast');
-    t.textContent=msg; t.style.background=err?'#ff453a':'var(--text)'; t.style.color=err?'#fff':'var(--bg)';
-    t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3000);
+    t.textContent=msg; t.style.background=err?'var(--red)':'var(--text)'; t.style.color=err?'#fff':'var(--bg)';
+    t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200);
 }
-window.showToast = showToast;
+window.showToast=showToast;
+
+/* ── ORDER DETAIL CSS helpers ── */
 </script>
 
 <style>
-#dashGate { min-height:calc(100vh - var(--nav-h,64px)); align-items:center; justify-content:center; padding:40px 20px; flex-direction:column; }
-.gate-inner { text-align:center; max-width:400px; }
-.gate-eyebrow { font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:12px; }
-.gate-title { font-size:clamp(2rem,6vw,3.5rem);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:16px; }
-.gate-sub { font-size:15px;color:var(--muted);margin-bottom:28px;line-height:1.6; }
-.gate-btn { background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:980px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;transition:opacity 0.2s,transform 0.2s; }
-.gate-btn:hover { opacity:.85;transform:translateY(-1px); }
-
-.ds-layout { display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - var(--nav-h,64px)); }
-.ds-sidebar { background:var(--bg2);border-right:1px solid var(--border);padding:16px 10px;display:flex;flex-direction:column;gap:4px;position:sticky;top:var(--nav-h,64px);height:calc(100vh - var(--nav-h,64px));overflow-y:auto; }
-.ds-user-block { display:flex;align-items:center;gap:10px;padding:10px 8px 14px;border-bottom:1px solid var(--border);margin-bottom:8px; }
-.ds-avatar { width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:900;flex-shrink:0; }
-.ds-uname { font-size:13px;font-weight:700; }
-.ds-role-badge { font-size:9px;font-weight:900;letter-spacing:.8px;padding:2px 7px;border-radius:20px;display:inline-block;margin-top:2px; }
-.ds-role-admin   { background:rgba(255,149,0,.15);color:#ff9500; }
-.ds-role-partner { background:rgba(48,209,88,.15);color:#30d158; }
-.ds-role-client  { background:rgba(0,113,227,.12);color:#0071e3; }
-.ds-nav-item { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;border:none;background:none;color:var(--muted);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;width:100%;text-align:left;transition:all .2s; }
-.ds-nav-item:hover { background:var(--border);color:var(--text); }
-.ds-nav-item.active { background:var(--accent);color:#fff; }
-.ds-signout { margin-top:auto;padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s; }
-.ds-signout:hover { border-color:var(--text);color:var(--text); }
-
-.ds-main { padding:32px 40px; }
-#dsContent { transition:opacity .15s,transform .15s;max-width:960px; }
-
-.ds-hdr { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;gap:14px;flex-wrap:wrap; }
-.ds-eyebrow { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:var(--accent);margin-bottom:5px; }
-.ds-title { font-size:clamp(20px,4vw,30px);font-weight:900;letter-spacing:-1px;line-height:1; }
-.ds-stats { display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:28px; }
-.ds-stat { background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:16px 14px; }
-.ds-stat-n { font-size:22px;font-weight:900;letter-spacing:-.5px; }
-.ds-stat-l { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-top:3px; }
-.ds-section { margin-bottom:24px; }
-.ds-shdr { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
-.ds-shdr h2 { font-size:14px;font-weight:800; }
-.ds-link { background:none;border:none;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit; }
-.ds-empty { text-align:center;padding:50px 20px;color:var(--muted);font-size:26px;display:flex;flex-direction:column;align-items:center;gap:8px; }
-.ds-empty p { font-size:13px;font-weight:600; }
-
-.ds-orow { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;flex-wrap:wrap;transition:border-color .2s; }
-.ds-orow:hover { border-color:var(--accent); }
-.ds-omn { flex:1;min-width:0;cursor:pointer; }
-.ds-oid { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted); }
-.ds-oitems { font-size:14px;font-weight:600;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-.ds-oclient { font-size:11px;color:var(--muted); }
-.ds-ometa { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
-.ds-ototal { font-size:14px;font-weight:800; }
-.ds-odate { font-size:11px;color:var(--muted); }
-.ds-pill { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 8px;border-radius:20px;border:1px solid;white-space:nowrap; }
-.ds-chips { display:flex;flex-wrap:wrap;gap:5px; }
-.ds-chip { padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:none;color:var(--muted);font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;opacity:.4;transition:all .2s; }
-.ds-chip.active { opacity:1;color:var(--text);border-color:var(--text); }
-
-.ds-twrap { overflow-x:auto;border-radius:13px;border:1px solid var(--border); }
-.ds-table { width:100%;border-collapse:collapse;font-size:13px; }
-.ds-table th { padding:10px 14px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg2); }
-.ds-table td { padding:11px 14px;border-bottom:1px solid var(--border); }
-.ds-table tr:last-child td { border-bottom:none; }
-.ds-table tr:hover td { background:var(--bg2); }
-.ds-tact { display:flex;gap:6px;flex-wrap:wrap; }
-.ds-te { text-align:center;color:var(--muted);padding:40px!important; }
-.mono { font-family:monospace;font-size:12px; }
-.text-warn { color:#ff453a;font-weight:700; }
-.ds-tag { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;background:var(--border);border-radius:6px; }
-
-.ds-btn { display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap; }
-.ds-btn:hover { border-color:var(--accent);color:var(--accent); }
-.ds-btn-primary { background:var(--accent);color:#fff;border-color:var(--accent); }
-.ds-btn-primary:hover { opacity:.85;color:#fff; }
-.ds-btn-ghost { color:var(--muted); }
-.ds-btn-sm { padding:5px 11px;font-size:11px; }
-.ds-btn-do { border-color:#ff453a;color:#ff453a; }
-.ds-btn-do:hover { background:#ff453a;color:#fff;border-color:#ff453a; }
-.ds-btn-danger { background:#ff453a;color:#fff;border-color:#ff453a; }
-.ds-btn-danger:hover { opacity:.85; }
-.ds-sel { padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;outline:none; }
-
-.ds-modal-backdrop { position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:6000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s; }
-.ds-modal-backdrop.open { opacity:1;pointer-events:all; }
-.ds-modal { background:var(--bg);border:1px solid var(--border);border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(12px) scale(.97);transition:transform .3s cubic-bezier(.2,.8,.2,1); }
-.ds-modal-backdrop.open .ds-modal { transform:none; }
-.ds-modal-sm { max-width:400px; }
-.ds-modal-header { display:flex;justify-content:space-between;align-items:center;padding:18px 22px 14px;border-bottom:1px solid var(--border); }
-.ds-modal-header h3 { font-size:16px;font-weight:800; }
-.ds-modal-close { background:var(--bg2);border:none;width:26px;height:26px;border-radius:50%;font-size:11px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center; }
-.ds-modal-close:hover { background:var(--border); }
-.ds-modal-body { padding:18px 22px; }
-.ds-modal-footer { display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap; }
-.ds-form-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
-.ds-field { display:flex;flex-direction:column;gap:4px; }
-.ds-field-full { grid-column:1/-1; }
-.ds-field label { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted); }
-.req { color:#ff453a; }
-.ds-input { padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;width:100%; }
-.ds-input:focus { border-color:var(--accent); }
-.ds-input[readonly] { opacity:.6;cursor:default; }
-.ds-textarea { min-height:68px;resize:vertical; }
-.ds-acct { max-width:380px;display:flex;flex-direction:column;gap:12px; }
-
 .od-items { margin-bottom:18px; }
-.od-item { display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px; }
+.od-item { display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px; }
 .od-item:last-child { border-bottom:none; }
 .od-item span:first-child { flex:1; }
-.od-ip { font-weight:800; }
-.od-tot { display:flex;justify-content:space-between;padding:8px 0 0;font-size:13px;color:var(--muted); }
+.od-ip { font-weight:900; }
+.od-tot { display:flex;justify-content:space-between;padding:10px 0 0;font-size:13px;color:var(--muted); }
 .od-tot strong { color:var(--text);font-size:15px; }
-.od-tl h4 { font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px; }
+.od-tl h4 { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px; }
 .od-tli { display:flex;align-items:center;gap:10px;padding:5px 0; }
 .od-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
 .od-tli-info { display:flex;gap:12px;align-items:center;font-size:13px;font-weight:600; }
 .od-tli.cur .od-tli-info span:first-child { font-weight:900; }
 .od-cli { margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted); }
 .od-cli strong { color:var(--text); }
-
-#dsToast { position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;z-index:9999;white-space:nowrap;pointer-events:none; }
-#dsToast.show { opacity:1;transform:translateX(-50%) translateY(0); }
-
-@media(max-width:700px) {
-    .ds-layout { grid-template-columns:1fr; }
-    .ds-sidebar { display:none; }
-    .ds-main { padding:18px 14px; }
-    .ds-form-grid { grid-template-columns:1fr; }
-    .ds-stats { grid-template-columns:repeat(2,1fr); }
-}
 </style>
+
 </body>
 </html>
