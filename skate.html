@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style/main.css">
     <link rel="stylesheet" href="style/menu-system.css">
     <link rel="stylesheet" href="style/skate.css">
+    <link rel="stylesheet" href="style/checkout.css">
 </head>
 <body>
 <div id="nav-placeholder"></div>
@@ -32,7 +33,8 @@
                   <span class="hero-tagline" style="margin-bottom:8px;display:block;">Studio Session 004</span>
                   <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;letter-spacing:-1px;line-height:1.05;margin-bottom:12px;">OPEN MIC &amp;<br>STREET SKATE</h2>
                   <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px;">An evening of hardware testing and local street culture. Come through.</p>
-                  <button class="btn-outline">RSVP for Entry</button>
+                  <button class="btn-outline" id="rsvpOpenBtn">RSVP for Entry</button>
+                  <p class="rsvp-seat-counter" id="rsvpSeatCounter"></p>
               </div>
           </div>
           <div class="skate-event-map">
@@ -467,6 +469,16 @@
           <div id="media-preview-container"></div>
       </div>
 
+      <!-- Feed Controls -->
+      <div class="feed-controls">
+          <div class="feed-sort-btns">
+              <button class="feed-sort-btn active" data-sort="recent">🕒 Recent</button>
+              <button class="feed-sort-btn" data-sort="top">🔥 Top</button>
+              <button class="feed-sort-btn" data-sort="oldest">📅 Oldest</button>
+          </div>
+          <span class="feed-count" id="feedCount"></span>
+      </div>
+
       <!-- Feed -->
       <div id="comment-list-container"></div>
   </section>
@@ -555,129 +567,69 @@
     </div>
 </div>
 
+<!-- RSVP Modal -->
+<div class="rsvp-backdrop" id="rsvpBackdrop">
+  <div class="rsvp-modal" id="rsvpModal" role="dialog" aria-modal="true" aria-labelledby="rsvpModalTitle">
+    <button class="rsvp-close" id="rsvpClose" aria-label="Close">✕</button>
+
+    <!-- Form view -->
+    <div id="rsvpFormView">
+      <div class="rsvp-event-badge">Studio Session 004 · 24 OCT</div>
+      <h2 class="rsvp-title" id="rsvpModalTitle">RSVP for Entry</h2>
+      <p class="rsvp-sub">Limited spots. Fill in your details and we will confirm via WhatsApp or email before the event.</p>
+
+      <div class="rsvp-fields">
+        <div class="rsvp-field">
+          <label>Full Name <span class="rsvp-req">*</span></label>
+          <input class="rsvp-input" id="rsvpName" type="text" placeholder="Your name" autocomplete="name" />
+        </div>
+        <div class="rsvp-field">
+          <label>WhatsApp or Email <span class="rsvp-req">*</span></label>
+          <input class="rsvp-input" id="rsvpContact" type="text" placeholder="+27 or your@email.com" autocomplete="email" />
+        </div>
+        <div class="rsvp-field">
+          <label>How many people? <span class="rsvp-req">*</span></label>
+          <div class="rsvp-stepper">
+            <button class="rsvp-step-btn" id="rsvpMinus">−</button>
+            <span class="rsvp-step-num" id="rsvpGuestCount">1</span>
+            <button class="rsvp-step-btn" id="rsvpPlus">+</button>
+          </div>
+        </div>
+        <div class="rsvp-field">
+          <label>Skate or Spectate?</label>
+          <div class="rsvp-toggle">
+            <button class="rsvp-toggle-btn active" data-val="skate">🛹 Skating</button>
+            <button class="rsvp-toggle-btn" data-val="spectate">👀 Spectating</button>
+          </div>
+          <input type="hidden" id="rsvpRole" value="skate" />
+        </div>
+        <div class="rsvp-field">
+          <label>Anything to tell us? <span style="opacity:.5;font-size:11px">(optional)</span></label>
+          <textarea class="rsvp-input rsvp-textarea" id="rsvpNote" placeholder="Dietary needs, accessibility, questions…"></textarea>
+        </div>
+      </div>
+
+      <p class="rsvp-error" id="rsvpError"></p>
+      <button class="rsvp-submit-btn" id="rsvpSubmit">Confirm RSVP →</button>
+      <p class="rsvp-privacy">Your details are only used for this event. No spam, ever.</p>
+    </div>
+
+    <!-- Confirmation view -->
+    <div id="rsvpConfirmView" style="display:none;text-align:center;padding:20px 0;">
+      <div class="rsvp-confirm-icon">🛹</div>
+      <h2 class="rsvp-title" style="margin-bottom:12px;">You are in!</h2>
+      <p class="rsvp-sub">We have got your RSVP for <strong>Studio Session 004</strong>. We will hit you on WhatsApp or email a day before with all the details.</p>
+      <p class="rsvp-confirm-ref" id="rsvpRef"></p>
+      <button class="rsvp-submit-btn" id="rsvpDoneBtn" style="margin-top:28px;">Done</button>
+    </div>
+  </div>
+</div>
+
 <script src="script/global.js"></script>
 <script src="script/menu-system.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    window.initMenuSystem({
-        searchId: 'skateSearch',
-        upsells: {
-            decks:       ['bones-reds', 'mob-grip', 'ws-hardware'],
-            completes:   ['bones-reds', 'mob-grip'],
-            trucks:      ['ws-hardware', 'bones-reds'],
-            footwear:    ['mob-grip', 'ws-logo-tee'],
-            apparel:     ['ws-logo-tee', 'ws-hood'],
-            accessories: ['bones-reds', 'mob-grip'],
-        }
-    });
-
-    /* ── COMMUNITY FEED ── */
-    var postBtn      = document.getElementById('submit-post-btn');
-    var commentInput = document.getElementById('user-comment-input');
-    var previewEl    = document.getElementById('media-preview-container');
-    var feed         = document.getElementById('comment-list-container');
-    var imageIn      = document.getElementById('image-input');
-    var videoIn      = document.getElementById('video-input');
-    var recordBtn    = document.getElementById('vn-record-btn');
-    var recStatus    = document.getElementById('recording-status');
-
-    // Seed posts
-    var seedPosts = [
-        { user: 'skate_za',    initials: 'SZ', time: '2h ago',  text: 'New Primitive just dropped at WeSorted. Steep concave is proper — exactly what I needed for switch heels.' },
-        { user: 'maboneng_sk', initials: 'MB', time: '5h ago',  text: 'Session 004 RSVP is open. Last one was packed. Come early.' },
-        { user: 'boardhub_jb', initials: 'BJ', time: '1d ago',  text: 'Bones Reds on a fresh setup. Night and day difference from stock bearings. Worth every rand.' },
-    ];
-    seedPosts.forEach(function(p) { appendPost(p.user, p.initials, p.time, p.text, ''); });
-
-    // Media preview
-    [imageIn, videoIn].forEach(function(input) {
-        if (!input) return;
-        input.addEventListener('change', function() {
-            var file = input.files[0];
-            if (!file || !previewEl) return;
-            var url = URL.createObjectURL(file);
-            previewEl.innerHTML = '';
-            var el = file.type.startsWith('image/') ? document.createElement('img') : document.createElement('video');
-            if (!file.type.startsWith('image/')) el.controls = true;
-            el.src = url;
-            el.className = 'skate-post-media';
-            previewEl.appendChild(el);
-        });
-    });
-
-    // Voice note
-    var mediaRecorder, audioChunks = [];
-    if (recordBtn) {
-        recordBtn.addEventListener('click', async function() {
-            if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-                try {
-                    var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-                    mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
-                    mediaRecorder.onstop = function() {
-                        var blob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                        var url  = URL.createObjectURL(blob);
-                        if (previewEl) previewEl.innerHTML = '<audio controls src="' + url + '" class="skate-post-media"></audio>';
-                    };
-                    mediaRecorder.start();
-                    if (recStatus) recStatus.style.display = 'inline';
-                    recordBtn.textContent = '🛑';
-                } catch(e) { console.warn('Mic denied', e); }
-            } else {
-                mediaRecorder.stop();
-                if (recStatus) recStatus.style.display = 'none';
-                recordBtn.textContent = '🎤';
-            }
-        });
-    }
-
-    // Submit post
-    if (postBtn && feed) {
-        postBtn.addEventListener('click', function() {
-            var text      = commentInput ? commentInput.value.trim() : '';
-            var mediaHtml = previewEl ? previewEl.innerHTML : '';
-            if (!text && !mediaHtml) return;
-            appendPost('@You', 'U', 'Just now', text, mediaHtml);
-            if (commentInput) commentInput.value = '';
-            if (previewEl)    previewEl.innerHTML = '';
-        });
-    }
-
-    function appendPost(user, initials, time, text, mediaHtml) {
-        if (!feed) return;
-        var post = document.createElement('div');
-        post.className = 'skate-thread-post';
-        post.innerHTML =
-            '<div class="skate-avatar">' + initials + '</div>' +
-            '<div class="skate-post-body">' +
-                '<div class="skate-post-meta"><strong>' + user + '</strong><span>' + time + '</span></div>' +
-                (text ? '<p class="skate-post-text">' + text + '</p>' : '') +
-                (mediaHtml ? '<div class="skate-post-media-wrap">' + mediaHtml + '</div>' : '') +
-                '<div class="skate-post-actions">' +
-                    '<button class="skate-action-btn like-btn">▲ <span>0</span></button>' +
-                    '<button class="skate-action-btn dislike-btn">▼ <span>0</span></button>' +
-                    '<button class="skate-action-btn">Reply</button>' +
-                '</div>' +
-            '</div>';
-
-        var lBtn = post.querySelector('.like-btn');
-        var dBtn = post.querySelector('.dislike-btn');
-        lBtn.onclick = function() {
-            lBtn.classList.toggle('active-like');
-            dBtn.classList.remove('active-dislike');
-            lBtn.querySelector('span').textContent = lBtn.classList.contains('active-like') ? '1' : '0';
-            dBtn.querySelector('span').textContent = '0';
-        };
-        dBtn.onclick = function() {
-            dBtn.classList.toggle('active-dislike');
-            lBtn.classList.remove('active-like');
-            dBtn.querySelector('span').textContent = dBtn.classList.contains('active-dislike') ? '1' : '0';
-            lBtn.querySelector('span').textContent = '0';
-        };
-        feed.prepend(post);
-    }
-});
-</script>
+<script src="script/skate.js"></script>
+    <script src="script/auth.js"></script>
+    <script src="script/cart.js"></script>
+    <script src="script/checkout.js"></script>
 </body>
 </html>

@@ -859,3 +859,67 @@
 @media (max-width: 380px) {
     .menu-grid { grid-template-columns: 1fr; }
 }
+/* ── EMPTY CART STATE ── */
+.empty-cart-msg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+.empty-cart-icon { font-size: 36px; margin-bottom: 4px; opacity: 0.6; }
+.empty-cart-sub  { font-size: 12px; opacity: 0.7; }
+
+/* ── VARIANT SELECTOR (in product modal) ── */
+.modal-variants {
+    margin-bottom: 18px;
+}
+.modal-variant-group { margin-bottom: 14px; }
+.modal-variant-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.modal-variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    border-radius: 8px;
+    transition: outline 0.2s;
+}
+.modal-variant-options.needs-selection {
+    outline: 2px solid #ff3b30;
+    outline-offset: 4px;
+}
+.modal-variant-btn {
+    padding: 7px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg2);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.15s;
+    font-family: inherit;
+}
+.modal-variant-btn:hover  { border-color: var(--accent); color: var(--accent); }
+.modal-variant-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+/* ── CART TAG (source page indicator) ── */
+.cart-line-source {
+    font-size: 9px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}

@@ -792,6 +792,7 @@ const NAV_CFG = {
         {id:'orders',  icon:'◎',label:'All Orders'},
         {id:'partners',icon:'◉',label:'Partners'},
         {id:'users',   icon:'⊙',label:'Users'},
+        {id:'rsvps',   icon:'🎟️',label:'RSVPs'},
     ],
     partner: [
         {sec:'Overview'},
@@ -881,6 +882,7 @@ function buildModule(id) {
         case 'projects': return modProjects(u);
         case 'partners': return modPartners();
         case 'users':    return modUsers();
+        case 'rsvps':    return modRsvps(u);
         case 'account':  return modAccount(u);
         default: return modOverview(u);
     }
@@ -1304,6 +1306,137 @@ function modUsers() {
 /* ═══════════════════════════════════════════
    ACCOUNT
 ═══════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════
+   RSVPs (admin only)
+═══════════════════════════════════════════ */
+function modRsvps(u) {
+    if (u.role !== 'admin') return '<div class="ds-empty"><p>Admin only.</p></div>';
+
+    // Read from localStorage (same key skate.js uses)
+    let rsvps = [];
+    try { rsvps = JSON.parse(localStorage.getItem('sphiri_rsvps') || '[]'); } catch(e) {}
+
+    const STATUS_COLORS = { Confirmed:'#30d158', Cancelled:'#ff3b30', Waitlisted:'#ff9500' };
+    const totalGuests = rsvps.reduce(function(s,r){ return s + (r.guests||1); }, 0);
+    const capacity = 60;
+
+    return `
+        <div class="ds-hdr">
+            <div>
+                <p class="ds-eyebrow">Event management</p>
+                <h1 class="ds-title">🎟️ RSVPs</h1>
+            </div>
+            <div class="ds-hdr-actions">
+                <button class="ds-btn ds-btn-ghost" onclick="exportRsvpsCsv()">⬇ Export CSV</button>
+            </div>
+        </div>
+
+        <div class="ds-stat-row" style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
+            <div class="ds-stat-card" style="flex:1;min-width:140px">
+                <div class="ds-stat-num">${rsvps.length}</div>
+                <div class="ds-stat-lbl">RSVPs</div>
+            </div>
+            <div class="ds-stat-card" style="flex:1;min-width:140px">
+                <div class="ds-stat-num">${totalGuests}</div>
+                <div class="ds-stat-lbl">Total Guests</div>
+            </div>
+            <div class="ds-stat-card" style="flex:1;min-width:140px">
+                <div class="ds-stat-num" style="color:${(capacity-totalGuests)<=10?'var(--orange)':'var(--green)'}">${capacity - totalGuests}</div>
+                <div class="ds-stat-lbl">Spots Left</div>
+            </div>
+            <div class="ds-stat-card" style="flex:1;min-width:140px">
+                <div class="ds-stat-num">${rsvps.filter(r=>r.role==='skate').length}</div>
+                <div class="ds-stat-lbl">Skating</div>
+            </div>
+        </div>
+
+        ${rsvps.length === 0 ? `
+            <div class="ds-empty">
+                <div class="ds-empty-icon">🎟️</div>
+                <p>No RSVPs yet</p>
+                <small>RSVPs from the Skate Hub will appear here</small>
+            </div>
+        ` : `
+        <div class="ds-twrap">
+        <table class="ds-table">
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Guests</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Note</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            ${rsvps.map(function(r, idx) {
+                const col = STATUS_COLORS[r.status] || '#8e8e93';
+                const date = r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-ZA',{day:'numeric',month:'short'}) : '—';
+                return `<tr>
+                    <td class="mono" style="font-size:11px;color:var(--accent)">${r.ref||'—'}</td>
+                    <td><strong>${r.name}</strong></td>
+                    <td class="mono" style="font-size:12px">${r.contact}</td>
+                    <td style="text-align:center;font-weight:900">${r.guests||1}</td>
+                    <td>${r.role==='skate'?'🛹 Skate':'👀 Watch'}</td>
+                    <td><span class="ds-pill" style="background:${col}18;color:${col};border:1px solid ${col}35">${r.status}</span></td>
+                    <td style="font-size:12px;color:var(--muted);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.note||'—'}</td>
+                    <td style="font-size:12px;color:var(--muted)">${date}</td>
+                    <td>
+                        <select class="ds-sel" onchange="updateRsvpStatus(${idx}, this.value); this.value=''">
+                            <option value="">Update…</option>
+                            ${['Confirmed','Waitlisted','Cancelled'].filter(s=>s!==r.status).map(s=>`<option value="${s}">${s}</option>`).join('')}
+                        </select>
+                    </td>
+                </tr>`;
+            }).join('')}
+            </tbody>
+        </table>
+        </div>`}
+    `;
+}
+
+window.updateRsvpStatus = function(idx, status) {
+    if (!status) return;
+    try {
+        const list = JSON.parse(localStorage.getItem('sphiri_rsvps') || '[]');
+        if (list[idx]) {
+            list[idx].status = status;
+            localStorage.setItem('sphiri_rsvps', JSON.stringify(list));
+            showToast('RSVP → ' + status);
+            navigate('rsvps');
+        }
+    } catch(e) { showToast('Update failed', true); }
+};
+
+window.exportRsvpsCsv = function() {
+    try {
+        const list = JSON.parse(localStorage.getItem('sphiri_rsvps') || '[]');
+        if (!list.length) { showToast('No RSVPs to export', true); return; }
+        const headers = ['Ref','Event','Name','Contact','Guests','Role','Status','Note','Date'];
+        const rows = list.map(function(r) {
+            return [
+                r.ref||'', r.eventName||'', r.name, r.contact,
+                r.guests||1, r.role, r.status, (r.note||'').replace(/,/g,' '),
+                r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-ZA') : ''
+            ].join(',');
+        });
+        const csv  = [headers.join(','), ...rows].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'rsvps-session-004.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('CSV exported ✓');
+    } catch(e) { showToast('Export failed', true); }
+};
+
 function modAccount(u) {
     return `
         <div class="ds-hdr"><p class="ds-eyebrow">Your identity</p><h1 class="ds-title">◐ Account</h1></div>
