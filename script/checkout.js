@@ -182,9 +182,39 @@
             '</div>';
         }).join('');
 
+        // Buyer Protection info based on selected payment method
+        var buyerProtection = '';
+        if (state.paymentId === 'paypal') {
+            buyerProtection = '<div class="co-buyer-protection protected-paypal">' +
+                '<div class="co-bp-icon">🛡️</div>' +
+                '<div class="co-bp-text"><strong>PayPal Buyer Protection</strong><span>Your purchase is covered. Get a full refund if it\'s not as described.</span></div>' +
+            '</div>';
+        } else if (state.paymentId === 'payfast' || state.paymentId === 'yoco') {
+            buyerProtection = '<div class="co-buyer-protection protected-secure">' +
+                '<div class="co-bp-icon">🔒</div>' +
+                '<div class="co-bp-text"><strong>Secure Card Payment</strong><span>Bank-grade encryption & fraud protection. Your card details are safe.</span></div>' +
+            '</div>';
+        } else if (state.paymentId === 'cash') {
+            buyerProtection = '<div class="co-buyer-protection protected-cash">' +
+                '<div class="co-bp-icon">✓</div>' +
+                '<div class="co-bp-text"><strong>Pay on Collection</strong><span>Inspect your items before paying. Pay only when you\'re satisfied.</span></div>' +
+            '</div>';
+        } else if (state.paymentId === 'eft') {
+            buyerProtection = '<div class="co-buyer-protection protected-eft">' +
+                '<div class="co-bp-icon">🏦</div>' +
+                '<div class="co-bp-text"><strong>EFT Verified First</strong><span>Order held until payment is verified. Your items are reserved.</span></div>' +
+            '</div>';
+        } else {
+            buyerProtection = '<div class="co-buyer-protection">' +
+                '<div class="co-bp-icon">🛡️</div>' +
+                '<div class="co-bp-text"><strong>Buyer Protection</strong><span>All orders are protected. <a href="terms.html#buyer-protection" target="_blank">Learn more →</a></span></div>' +
+            '</div>';
+        }
+
         return '<div class="co-step" data-step="3">' +
             '<div class="co-section-title">Payment Method</div>' +
             '<div class="co-payment-opts">' + methods + '</div>' +
+            buyerProtection +
             '<div class="co-order-total-preview">' +
                 '<span>Total to pay</span><span>' + total + '</span>' +
             '</div>' +
@@ -405,7 +435,7 @@
         }, 500);
     }
 
-    /* ── PLACE ORDER ─────────────────────────────────────────── */
+/* ── PLACE ORDER ─────────────────────────────────────────── */
     function placeOrder() {
         var cart   = SCart.getAll();
         var orderNum = 'STA-' + Date.now().toString(36).toUpperCase().slice(-6);
@@ -434,11 +464,45 @@
         SCart.saveOrder(order);
         SCart.clear();
 
+        // Send order confirmations
+        sendOrderConfirmation(order);
+
         state.orderNum = orderNum;
         state.step = 4;
         renderBody();
         scrollBody();
         updateAllBadges();
+    }
+
+    /* ── ORDER CONFIRMATION (Email & WhatsApp) ────────────────── */
+    function sendOrderConfirmation(order) {
+        var itemsList = order.items.map(function(item) {
+            return item.qty + 'x ' + item.name + ' - R ' + item.price.toLocaleString();
+        }).join('\n');
+
+        var message = '🛒 New Order #' + order.id + '\n\n' +
+            '👤 ' + order.name + '\n' +
+            '📧 ' + order.email + '\n' +
+            '📦 ' + (order.method === 'pickup' ? 'Pickup' : order.address + ', ' + order.city) + '\n' +
+            '💳 ' + order.paymentLabel + '\n\n' +
+            'Items:\n' + itemsList + '\n\n' +
+            'Total: R ' + order.total.toLocaleString();
+
+        // WhatsApp to customer (if phone provided)
+        var customerWaLink = '';
+        // Note: In production, you'd use a proper WhatsApp Business API
+        // This creates a pre-filled message link
+        
+        // Log for admin notification (in production, send to your backend)
+        console.log('New Order:', order.id, order);
+        
+        // Store order for admin dashboard
+        try {
+            var adminOrders = JSON.parse(localStorage.getItem('sphiri_admin_orders') || '[]');
+            adminOrders.unshift(order);
+            if (adminOrders.length > 100) adminOrders = adminOrders.slice(0, 100);
+            localStorage.setItem('sphiri_admin_orders', JSON.stringify(adminOrders));
+        } catch(e) {}
     }
 
     /* ── OPEN / CLOSE ─────────────────────────────────────────── */

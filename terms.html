@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Policies | SPhiri The Artist</title>
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/index.css">
+    <style>
+        /* Terms Page Specific Styles */
+        .terms-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        
+        .terms-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .terms-header h1 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        
+        .terms-header p {
+            font-size: 16px;
+            color: var(--muted);
+        }
+        
+        .terms-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .terms-nav a {
+            padding: 10px 18px;
+            border-radius: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        
+        .terms-nav a:hover,
+        .terms-nav a.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        
+        .terms-section {
+            margin-bottom: 48px;
+        }
+        
+        .terms-section h2 {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .terms-section h2 .icon {
+            font-size: 24px;
+        }
+        
+        .terms-section h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 24px 0 12px;
+            color: var(--text);
+        }
+        
+        .terms-section p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+        
+        .terms-section ul {
+            margin: 14px 0;
+            padding-left: 24px;
+        }
+        
+        .terms-section li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        
+        .terms-section strong {
+            color: var(--text);
+        }
+        
+        .highlight-box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box.buyer-protection {
+            background: rgba(0, 113, 227, 0.08);
+            border-color: rgba(0, 113, 227, 0.2);
+        }
+        
+        .highlight-box.secure {
+            background: rgba(52, 199, 89, 0.08);
+            border-color: rgba(52, 199, 89, 0.2);
+        }
+        
+        .highlight-box.warning {
+            background: rgba(255, 149, 0, 0.08);
+            border-color: rgba(255, 149, 0, 0.2);
+        }
+        
+        .highlight-box h4 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .highlight-box.buyer-protection h4 { color: var(--accent); }
+        .highlight-box.secure h4 { color: #34c759; }
+        .highlight-box.warning h4 { color: #ff9500; }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .payment-method-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+        
+        .payment-method-card .method-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .payment-method-card h4 {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .payment-method-card p {
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+        
+        .last-updated {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        @media (max-width: 600px) {
+            .terms-page {
+                padding: 24px 16px 60px;
+            }
+            .terms-header h1 {
+                font-size: 28px;
+            }
+            .terms-nav {
+                gap: 6px;
+            }
+            .terms-nav a {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div id="nav-placeholder"></div>
+    
+    <main class="terms-page">
+        <header class="terms-header">
+            <h1>Terms & Policies</h1>
+            <p>Your trust and protection matter to us. Learn how we keep your purchases safe.</p>
+        </header>
+        
+        <nav class="terms-nav">
+            <a href="#buyer-protection" class="active">Buyer Protection</a>
+            <a href="#payment-methods">Payment Safety</a>
+            <a href="#refunds">Refunds</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#privacy">Privacy</a>
+        </nav>
+        
+        <!-- BUYER PROTECTION SECTION -->
+        <section class="terms-section" id="buyer-protection">
+            <h2><span class="icon">🛡️</span> Buyer Protection Policy</h2>
+            
+            <div class="highlight-box buyer-protection">
+                <h4>🔒 Your Purchases Are Protected</h4>
+                <p>At SPhiri The Artist, we are committed to ensuring every customer has a safe and secure shopping experience. All orders are protected through our Buyer Protection guarantee.</p>
+            </div>
+            
+            <h3>What is Buyer Protection?</h3>
+            <p>Buyer Protection is our commitment to safeguarding your purchases from the moment you place an order until you receive and approve your items. It covers:</p>
+            <ul>
+                <li><strong>Verified Orders:</strong> All orders are confirmed via email and WhatsApp</li>
+                <li><strong>Secure Payments:</strong> All payment methods are processed through secure, encrypted channels</li>
+                <li><strong>Order Tracking:</strong> Real-time updates on your order status</li>
+                <li><strong>Dispute Resolution:</strong> We work to resolve any issues fairly and promptly</li>
+            </ul>
+            
+            <h3>How It Works</h3>
+            <p>When you complete a purchase on SPhiri The Artist:</p>
+            <ol>
+                <li><strong>Order Confirmation:</strong> You receive immediate confirmation via email/WhatsApp</li>
+                <li><strong>Payment Verification:</strong> For EFT payments, we verify proof of payment before processing</li>
+                <li><strong>Order Processing:</strong> Your order is prepared with care</li>
+                <li><strong>Delivery/Collection:</strong> You receive tracking info or pickup instructions</li>
+                <li><strong>Satisfaction:</strong> Inspect your order before completing the transaction</li>
+            </ol>
+        </section>
+        
+        <!-- ESCROW SECTION -->
+        <section class="terms-section" id="escrow">
+            <h2><span class="icon">💰</span> Escrow & Payment Protection</h2>
+            
+            <div class="highlight-box secure">
+                <h4>✓ Escrow-Like Protection for All Orders</h4>
+                <p>While we don't use traditional escrow services, we provide equivalent protection through our payment verification process.</p>
+            </div>
+            
+            <h3>Payment Protection by Method</h3>
+            
+            <div class="payment-methods-grid">
+                <div class="payment-method-card">
+                    <div class="method-icon">🅿️</div>
+                    <h4>PayPal</h4>
+                    <p><strong>Full Buyer Protection</strong> — PayPal's own buyer protection program covers your purchase. You're protected for items not received or significantly not as described.</p>
+                </div>
+                
+                <div class="payment-method-card">
+                    <div class="method-icon">⚡</div>
+                    <h4>PayFast</h4>
+                    <p><strong>Secure Payments</strong> — PayFast uses bank-grade security with 3D Secure authentication. Transactions are encrypted and monitored for fraud.</p>
+                </div>
+                
+                <div class="payment-method-card">
+                    <div class="method-icon">💳</div>
+                    <h4>Yoco Card</h4>
+                    <p><strong>Fraud Protection</strong> — Yoco provides secure card processing with real-time fraud detection. Your card details are never stored on our servers.</p>
+                </div>
+                
+                <div class="payment-method-card">
+                    <div class="method-icon">🏦</div>
+                    <h4>EFT / Bank Transfer</h4>
+                    <p><strong>Verified First</strong> — Orders are only processed after proof of payment is verified. We hold your order until funds clear.</p>
+                </div>
+                
+                <div class="payment-method-card">
+                    <div class="method-icon">💵</div>
+                    <h4>Cash on Pickup</h4>
+                    <p><strong>Inspect Before Pay</strong> — Pay in person when collecting. Inspect your items thoroughly before making payment.</p>
+                </div>
+            </div>
+            
+            <h3>For EFT Payments</h3>
+            <div class="highlight-box">
+                <h4>🏦 EFT Verification Process</h4>
+                <p>When you pay via EFT:</p>
+                <ul>
+                    <li>Your order is reserved for 48 hours</li>
+                    <li>Send proof of payment to contact@sphiri.art or WhatsApp us</li>
+                    <li>We verify the payment with our bank</li>
+                    <li>Once confirmed, your order is processed</li>
+                    <li>If payment isn't received within 48 hours, the order is automatically cancelled</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- REFUNDS SECTION -->
+        <section class="terms-section" id="refunds">
+            <h2><span class="icon">↩️</span> Refund & Returns Policy</h2>
+            
+            <h3>Cancellation Policy</h3>
+            <p>You may cancel your order under the following conditions:</p>
+            <ul>
+                <li><strong>Before Payment:</strong> Orders not yet paid can be cancelled anytime</li>
+                <li><strong>After Payment (EFT):</strong> Cancellation requested before verification receives full refund</li>
+                <li><strong>Custom Items:</strong> Cancellation may incur a 20% handling fee for materials already procured</li>
+            </ul>
+            
+            <h3>Refund Eligibility</h3>
+            <div class="highlight-box">
+                <h4>When Refunds Are Available</h4>
+                <ul>
+                    <li>Item is significantly different from description</li>
+                    <li>Item is damaged or defective upon receipt</li>
+                    <li>Wrong item was sent</li>
+                    <li>Order couldn't be fulfilled due to stock issues</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box warning">
+                <h4>When Refunds May Not Apply</h4>
+                <ul>
+                    <li>Change of mind after purchase</li>
+                    <li>Custom or personalized items (unless defective)</li>
+                    <li>Items damaged after receipt (not due to our handling)</li>
+                    <li>Items not in original condition or tags removed</li>
+                </ul>
+            </div>
+            
+            <h3</h3>
+           >Refund Process <ol>
+                <li>Contact us within 7 days of receiving your order</li>
+                <li>Provide your order number and description of the issue</li>
+                <li>We review your request within 2-3 business days</li>
+                <li>Approved refunds are processed to your original payment method</li>
+                <li>Refund typically reflects within 5-10 business days</li>
+            </ol>
+        </section>
+        
+        <!-- PAYMENT METHODS SECTION -->
+        <section class="terms-section" id="payment-methods">
+            <h2><span class="icon">💳</span> Payment Methods & Security</h2>
+            
+            <h3>Accepted Payment Methods</h3>
+            <ul>
+                <li><strong>PayPal</strong> — International payments with buyer protection</li>
+                <li><strong>PayFast</strong> — Instant EFT, credit/debit cards, SnapScan</li>
+                <li><strong>Yoco</strong> — Debit and credit card payments</li>
+                <li><strong>EFT / Bank Transfer</strong> — Direct FNB transfers</li>
+                <li><strong>Cash on Pickup</strong> — Pay when you collect</li>
+            </ul>
+            
+            <h3>Security Measures</h3>
+            <div class="highlight-box secure">
+                <h4>🔐 Your Payment Security</h4>
+                <ul>
+                    <li>All payments processed through PCI-DSS compliant gateways</li>
+                    <li>256-bit SSL encryption for all transactions</li>
+                    <li>No card details stored on our servers</li>
+                    <li>Real-time fraud monitoring</li>
+                    <li>Verified payment verification for EFT</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- TERMS OF SERVICE -->
+        <section class="terms-section" id="terms">
+            <h2><span class="icon">📋</span> Terms of Service</h2>
+            
+            <h3>1. Acceptance of Terms</h3>
+            <p>By accessing and using the SPhiri The Artist website (sphiri.art), you accept and agree to be bound by the terms and provision of this agreement.</p>
+            
+            <h3>2. Use License</h3>
+            <p>Permission is granted to temporarily use the SPhiri website for personal, non-commercial transacting only. This is the grant of a license, not a transfer of title.</p>
+            
+            <h3>3. Product Information</h3>
+            <p>We strive to accurately display our products. However, we cannot guarantee that your monitor's display of any color will be accurate. Products may vary slightly from photographs.</p>
+            
+            <h3>4. Pricing & Availability</h3>
+            <p>All prices are in South African Rand (ZAR). Prices are subject to change without notice. We reserve the right to modify or discontinue any product at any time.</p>
+            
+            <h3>5. Account Responsibilities</h3>
+            <p>You are responsible for your account and password. You agree to maintaining the confidentiality of accept responsibility for all activities that occur under your account.</p>
+            
+            <h3>6. User Conduct</h3>
+            <p>You agree not to use the website for any unlawful purpose or any purpose that could damage, disable, or impair the website.</p>
+            
+            <h3>7. Governing Law</h3>
+            <p>These terms and conditions are governed by the laws of South Africa. Any disputes shall be subject to the jurisdiction of South African courts.</p>
+        </section>
+        
+        <!-- PRIVACY SECTION -->
+        <section class="terms-section" id="privacy">
+            <h2><span class="icon">🔒</span> Privacy Policy</h2>
+            
+            <h3>Information We Collect</h3>
+            <ul>
+                <li><strong>Personal Information:</strong> Name, email, phone number, shipping address</li>
+                <li><strong>Payment Information:</strong> Processed securely through third-party providers</li>
+                <li><strong>Order History:</strong> Items purchased, order dates, transaction amounts</li>
+                <li><strong>Usage Data:</strong> Browser type, pages visited, time spent on site</li>
+            </ul>
+            
+            <h3>How We Use Your Information</h3>
+            <ul>
+                <li>To process and fulfill your orders</li>
+                <li>To communicate order updates via email and WhatsApp</li>
+                <li>To improve our products and services</li>
+                <li>To send promotional materials (opt-out available)</li>
+                <li>To comply with legal obligations</li>
+            </ul>
+            
+            <h3>Data Protection</h3>
+            <div class="highlight-box secure">
+                <h4>✓ Your Data is Secure</h4>
+                <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
+            </div>
+            
+            <h3>Your Rights</h3>
+            <ul>
+                <li>Right to access your personal data</li>
+                <li>Right to rectification of inaccurate data</li>
+                <li>Right to erasure ("right to be forgotten")</li>
+                <li>Right to restrict processing</li>
+                <li>Right to data portability</li>
+                <li>Right to opt-out of marketing communications</li>
+            </ul>
+            
+            <h3>Contact Us</h3>
+            <p>For any privacy concerns or data requests, contact us at:</p>
+            <p><strong>Email:</strong> contact@sphiri.art<br>
+            <strong>WhatsApp:</strong> Available on our website</p>
+        </section>
+        
+        <p class="last-updated">Last updated: <span id="current-date"></span></p>
+    </main>
+    
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+    
+    <script>
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-ZA', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Load navigation
+        fetch('nav.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('nav-placeholder').innerHTML = html;
+            });
+        
+        // Load footer
+        fetch('footer.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            });
+        
+        // Smooth scroll for nav links
+        document.querySelectorAll('.terms-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Update active state
+                    document.querySelectorAll('.terms-nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // Highlight active section on scroll
+        const sections = document.querySelectorAll('.terms-section');
+        const navLinks = document.querySelectorAll('.terms-nav a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -881,6 +881,7 @@
         </div>
     </aside>
 
+    <script src="script/auth.js"></script>
     <script src="script/global.js"></script>
     <script>
     /* ============================================================
@@ -947,9 +948,7 @@
         const next = S.step + dir;
         if (next < 1) return;
         if (next > S.total) {
-            const total = document.getElementById('rxTotal').textContent;
-            const sel = document.querySelector('#typeTiles .selected .tile-label');
-            window.addToBag({ name: '3D Print — ' + (sel ? sel.textContent : 'Custom'), price: total });
+            gatedAddToBag();
             return;
         }
         if (dir > 0) {
@@ -987,6 +986,22 @@
         });
     });
 
+    function gatedAddToBag() {
+        function doAdd() {
+            const total = document.getElementById('rxTotal').textContent;
+            const sel   = document.querySelector('#typeTiles .selected .tile-label');
+            window.addToBag({ name: '3D Print — ' + (sel ? sel.textContent : 'Custom'), price: total });
+        }
+        if (window.studioAuth && !studioAuth.isSignedIn) {
+            studioAuth.requireAuth(
+                { icon: '🖨', text: 'Sign in to add this print to your bag and track your order.' },
+                doAdd
+            );
+        } else {
+            doAdd();
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         recalc();
         document.getElementById('colourDot').style.background = CB['white'];
@@ -1004,11 +1019,7 @@
             if (ev.dataTransfer?.files.length) { input.files = ev.dataTransfer.files; fname.textContent = '✓ '+ev.dataTransfer.files[0].name; fname.style.display='block'; }
         }));
 
-        document.getElementById('btnAddBag').addEventListener('click', () => {
-            const total = document.getElementById('rxTotal').textContent;
-            const sel = document.querySelector('#typeTiles .selected .tile-label');
-            window.addToBag({ name: '3D Print — ' + (sel ? sel.textContent : 'Custom'), price: total });
-        });
+        document.getElementById('btnAddBag').addEventListener('click', gatedAddToBag);
         document.getElementById('btnInquiry').addEventListener('click', () => {
             document.getElementById('inquiryModal').classList.add('open');
         });

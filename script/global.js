@@ -1,9 +1,17 @@
 /* =============================================================
    SPHIRITHEARTIST — global.js
-   Handles: theme, nav load, cart engine, lightbox, reveal
+   Handles: theme, nav load, lightbox, reveal
+   Cart is now handled by SCart (cart.js)
    ============================================================= */
 
-window.cart = window.cart || [];
+// Wait for cart.js to load first
+function waitForSCart(callback) {
+    if (window.SCart) {
+        callback();
+    } else {
+        setTimeout(function() { waitForSCart(callback); }, 50);
+    }
+}
 
 // ---------- THEME ----------
 function initTheme() {
@@ -18,11 +26,16 @@ window.toggleTheme = function() {
 
 // ---------- COMPONENT LOADER ----------
 async function loadComponents() {
+    // Determine which nav to load based on current page
+    const page = window.location.pathname.split('/').pop() || 'index.html';
+    const isSkatePage = page === 'skate.html';
+    const navFile = isSkatePage ? 'skate-nav.html' : 'nav.html';
+    
     // Nav
     const navEl = document.getElementById('nav-placeholder');
     if (navEl) {
         try {
-            const html = await fetch('nav.html').then(r => r.text());
+            const html = await fetch(navFile).then(r => r.text());
             navEl.innerHTML = html;
             initNav();
             initBagBtn();
@@ -129,68 +142,100 @@ function closeCartUI() {
     if (overlay) overlay.classList.remove('active');
 }
 
-// ---------- CART ENGINE ----------
+// ---------- CART ENGINE (using SCart) ----------
 function updateBagCount() {
-    const count = window.cart.length;
+    if (!window.SCart) return;
+    const count = window.SCart.itemCount();
     // Shared nav count badge
     const badge = document.getElementById('navBagCount');
     if (badge) {
         badge.textContent = count;
         badge.classList.toggle('visible', count > 0);
+        badge.style.display = count > 0 ? 'flex' : 'none';
     }
     // Legacy text button (some pages)
     const legacyBtn = document.querySelector('.bag-btn');
-    if (legacyBtn) legacyBtn.innerText = `Bag (${count})`;
+    if (legacyBtn) legacyBtn.innerText = 'Bag (' + count + ')';
 }
 
 function renderCart() {
     const list  = document.getElementById('cartItems');
     const total = document.getElementById('cartTotal');
-    if (!list) return;
+    if (!list || !window.SCart) return;
 
-    if (window.cart.length === 0) {
+    const cart = window.SCart.getAll();
+    const entries = Object.entries(cart);
+
+    if (entries.length === 0) {
         list.innerHTML = '<li style="color:var(--muted);font-size:13px;text-align:center;padding:40px 0;">Your bag is empty.</li>';
     } else {
-        list.innerHTML = window.cart.map((item, i) => `
-            <li class="cart-item">
-                <div class="cart-item-info">
-                    <h4>${item.name}</h4>
-                    <span>${item.price}</span>
-                </div>
-                <button class="remove-item" onclick="window.removeFromCart(${i})">×</button>
-            </li>`).join('');
+        list.innerHTML = entries.map(function(e, i) {
+            var item = e[1];
+            return '<li class="cart-item">' +
+                '<div class="cart-item-info">' +
+                    '<h4>' + item.name + '</h4>' +
+                    '<span>R ' + item.price.toLocaleString() + '</span>' +
+                '</div>' +
+                '<button class="remove-item" data-key="' + e[0] + '">×</button>' +
+            '</li>';
+        }).join('');
+
+        // Wire remove buttons
+        list.querySelectorAll('.remove-item').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                window.SCart.remove(btn.dataset.key);
+            });
+        });
     }
 
-    const sum = window.cart.reduce((acc, item) => {
-        const v = parseFloat(String(item.price).replace(/[^\d.]/g, ''));
-        return acc + (isNaN(v) ? 0 : v);
-    }, 0);
-    if (total) total.innerText = `Total: R ${sum.toFixed(2)}`;
+    const subtotal = window.SCart.subtotal();
+    if (total) total.innerText = 'Total: R ' + subtotal.toLocaleString();
 }
 
+// Unified addToBag that works with SCart
 window.addToBag = function(item) {
+    if (!window.SCart) return false;
+    
     if (!item) {
         // 3D studio configurator fallback
         const typeEl  = document.getElementById('projectType');
         const totalEl = document.getElementById('totalDisplay');
         if (!typeEl || !totalEl) return;
-        item = { name: `3D Print (${typeEl.options[typeEl.selectedIndex].text})`, price: totalEl.innerText };
+        var price = parseFloat(totalEl.innerText.replace(/[^\d.]/g, '')) || 0;
+        item = { 
+            name: '3D Print (' + typeEl.options[typeEl.selectedIndex].text + ')', 
+            price: price,
+            img: ''
+        };
     }
-    if (typeof item.price === 'number') item.price = `R ${item.price.toFixed(2)}`;
-    window.cart.push(item);
-    updateBagCount();
-    renderCart();
-    openCart();
+
+    // Handle both object and legacy formats
+    var id = item.id || 'item_' + Date.now();
+    var name = item.name;
+    var price = typeof item.price === 'number' ? item.price : parseFloat(String(item.price).replace(/[^\d.]/g, '')) || 0;
+    var img = item.img || '';
+
+    var ok = window.SCart.add(id, name, price, img);
+    if (ok) {
+        updateBagCount();
+        renderCart();
+        openCart();
+    }
+    return ok;
 };
 
-window.removeFromCart = function(i) {
-    window.cart.splice(i, 1);
+window.removeFromCart = function(key) {
+    if (!window.SCart) return;
+    window.SCart.remove(key);
     updateBagCount();
     renderCart();
 };
 
-// Alias for shop.js
-window.updateCartUI = function() { updateBagCount(); renderCart(); };
+// Alias for menu-system.js
+window.updateCartUI = function() { 
+    updateBagCount(); 
+    renderCart(); 
+};
 
 // ---------- 3D CALCULATOR ----------
 window.updateCalculator = function() {
@@ -271,4 +316,36 @@ document.addEventListener('DOMContentLoaded', () => {
     initReveal();
     initLightbox();
     if (document.getElementById('calcForm')) window.updateCalculator();
+    
+    // Initialize cart listeners after SCart is ready
+    waitForSCart(function() {
+        window.SCart.onChange(function() {
+            updateBagCount();
+            renderCart();
+        });
+        // Initial badge update
+        updateBagCount();
+    });
 });
+
+// ---------- LOADING OVERLAY ----------
+window.showLoading = function(message) {
+    var existing = document.getElementById('sphiriLoading');
+    if (existing) {
+        existing.remove();
+    }
+    var overlay = document.createElement('div');
+    overlay.id = 'sphiriLoading';
+    overlay.innerHTML = '<div class="sphiri-loading-box"><div class="sphiri-spinner"></div><p>' + (message || 'Loading...') + '</p></div>';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;';
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+};
+
+window.hideLoading = function() {
+    var overlay = document.getElementById('sphiriLoading');
+    if (overlay) {
+        overlay.remove();
+        document.body.style.overflow = '';
+    }
+};

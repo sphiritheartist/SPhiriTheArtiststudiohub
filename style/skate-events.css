@@ -1,0 +1,527 @@
+/* ================================================================
+   SPHIRI SKATE EVENTS - CSS
+   Events, Competitions, Filters, Dashboards
+   ================================================================ */
+
+/* ── EVENTS FILTER BAR ───────────────────────────────────── */
+.events-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.events-filter-bar label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.events-filter-bar select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.events-filter-bar select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.events-filter-bar .filter-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+/* ── EVENTS GRID ────────────────────────────────────────── */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* ── EVENT CARD ─────────────────────────────────────────── */
+.event-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+.event-card-image {
+    height: 140px;
+    background: linear-gradient(135deg, var(--accent) 0%, #667eea 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+}
+
+.event-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-card-type {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-card-type.session { background: rgba(52,199,89,0.9); color: #fff; }
+.event-card-type.competition { background: rgba(255,149,0,0.9); color: #fff; }
+.event-card-type.workshop { background: rgba(0,113,227,0.9); color: #fff; }
+.event-card-type.jam { background: rgba(175,82,222,0.9); color: #fff; }
+
+.event-card-body {
+    padding: 18px;
+}
+
+.event-card-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.event-card-day {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.event-card-month {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+.event-card h3 {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.event-card-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.event-card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.event-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.event-card-rsvp {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.event-card-rsvp strong {
+    color: var(--accent);
+}
+
+.event-card-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border: none;
+    font-family: inherit;
+}
+
+.event-card-btn.primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.event-card-btn.secondary {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+}
+
+.event-card-btn:hover {
+    opacity: 0.85;
+}
+
+/* ── COMPETITION CARD ───────────────────────────────────── */
+.competition-card {
+    border: 2px solid rgba(255,149,0,0.3);
+}
+
+.competition-card .event-card-image {
+    background: linear-gradient(135deg, #ff9500 0%, #ff3b30 100%);
+}
+
+.competition-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,149,0,0.9);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* ── SECTION TABS ───────────────────────────────────────── */
+.events-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.events-tab {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer; 
+    font-size: 13px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.events-tab:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.events-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* ── ORGANIZER DASHBOARD ───────────────────────────────── */
+.organizer-dashboard {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.organizer-dashboard h2 {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.organizer-dashboard h2 .icon {
+    color: #30d158;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.dashboard-stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.dashboard-stat .value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+}
+
+.dashboard-stat .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dashboard-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: opacity 0.2s;
+}
+
+.dashboard-btn.primary {
+    background: #30d158;
+    color: #fff;
+}
+
+.dashboard-btn.secondary {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+}
+
+.dashboard-btn:hover {
+    opacity: 0.85;
+}
+
+/* ── CREATE EVENT FORM ──────────────────────────────────── */
+.create-event-form {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.create-event-form h3 {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.form-field textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* ── EMPTY STATE ────────────────────────────────────────── */
+.events-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.events-empty .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.events-empty h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.events-empty p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .events-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .events-filter-bar select {
+        width: 100%;
+    }
+    
+    .events-filter-bar .filter-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .events-filter-bar .filter-actions button {
+        flex: 1;
+    }
+    
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── FILTER BAR STYLES ───────────────────────────────────── */
+.events-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 140px;
+}
+
+.filter-group label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+
+.filter-group select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.filter-actions {
+    display: flex;
+    align-items: flex-end;
+}
+
+.filter-clear-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.filter-clear-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+

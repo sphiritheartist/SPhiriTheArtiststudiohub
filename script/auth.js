@@ -1,14 +1,14 @@
 /* ================================================================
-   SPHIRITHEARTIST — auth.js  v2
-   Full auth: Sign In / Sign Up / Google / Forgot Password
-   Auth wall: checkout requires account.
-   Exposes: window.studioAuth
+   SPHIRITHEARTIST — auth.js  v3
+   Real localStorage sessions (Firebase-ready swap later)
+   Flows: Choice → Sign In | Sign Up
+   Gate: Checkout requires account
    ================================================================ */
 
 (function () {
     'use strict';
 
-    // ── FIREBASE CONFIG ─────────────────────────────────────────
+    /* ── FIREBASE CONFIG (swap placeholders when ready) ────────── */
     const FIREBASE_CONFIG = {
         apiKey:            "YOUR_API_KEY",
         authDomain:        "YOUR_PROJECT.firebaseapp.com",
@@ -17,423 +17,538 @@
         messagingSenderId: "YOUR_SENDER_ID",
         appId:             "YOUR_APP_ID"
     };
+    const FIREBASE_READY = FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY';
 
-    const DEMO_MODE = FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY';
+    /* ── STORAGE ────────────────────────────────────────────────── */
+    const SESSION_KEY = 'sphiri_session_v1';
+    const ACCOUNTS_KEY = 'sphiri_accounts_v1';
 
-    const DEMO_USERS = {
-        'admin@sphiri.com':   { role: 'admin',   name: 'Studio Admin',  uid: 'u_admin' },
-        'partner@sphiri.com': { role: 'partner', name: 'SK8 Partner',   uid: 'u_partner' },
-        'client@sphiri.com':  { role: 'client',  name: 'Alex Client',   uid: 'u_client' },
-    };
-
-    // ── STATE ────────────────────────────────────────────────────
-    let _user      = null;
-    let _onAuthCbs = [];
-    let _auth      = null;
-    let _db        = null;
-    let _mode      = 'signin'; // 'signin' | 'signup' | 'forgot'
-    let _pendingCb = null;
-    let _pendingReason = null;
-
-    // ── BOOT ─────────────────────────────────────────────────────
-    async function init() {
-        injectStyles();
-        injectModal();
-
-        if (DEMO_MODE) {
-            const saved = sessionStorage.getItem('sphiri_demo_user');
-            if (saved) {
-                try { _user = JSON.parse(saved); } catch(e) {}
-            }
-            updateNavIcon();
-            _onAuthCbs.forEach(cb => cb(_user));
-            return;
-        }
-
-        const { initializeApp }                   = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-        const { getAuth, onAuthStateChanged }      = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-        const { getFirestore, doc, getDoc }        = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-
-        const app = initializeApp(FIREBASE_CONFIG);
-        _auth = getAuth(app);
-        _db   = getFirestore(app);
-
-        onAuthStateChanged(_auth, async fbUser => {
-            if (fbUser) {
-                const snap = await getDoc(doc(_db, 'users', fbUser.uid));
-                const data = snap.exists() ? snap.data() : {};
-                _user = {
-                    uid:   fbUser.uid,
-                    email: fbUser.email,
-                    name:  data.name || fbUser.displayName || fbUser.email.split('@')[0],
-                    role:  data.role || 'client',
-                    productIds: data.productIds || [],
-                    phone: data.phone || '',
-                };
-            } else {
-                _user = null;
-            }
-            updateNavIcon();
-            _onAuthCbs.forEach(cb => cb(_user));
-            // If signed in and there's a pending callback, run it
-            if (_user && _pendingCb) {
-                const cb = _pendingCb; _pendingCb = null;
-                closeModal(); cb(_user);
-            }
-        });
+    function getSession() {
+        try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; }
+    }
+    function setSession(user) {
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); } catch(e) {}
+    }
+    function clearSession() {
+        try { localStorage.removeItem(SESSION_KEY); } catch(e) {}
+    }
+    function getAccounts() {
+        try { return JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || '{}'); } catch(e) { return {}; }
+    }
+    function saveAccount(user, passwordHash) {
+        const accounts = getAccounts();
+        accounts[user.email.toLowerCase()] = { ...user, passwordHash };
+        try { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts)); } catch(e) {}
+    }
+    // Simple hash — not cryptographic, just obfuscation until Firebase
+    function hashPassword(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) { h = (Math.imul(31, h) + str.charCodeAt(i)) | 0; }
+        return 'lh_' + Math.abs(h).toString(36) + str.length.toString(36);
     }
 
-    // ── MODAL INJECT ─────────────────────────────────────────────
+    /* ── STATE ────────────────────────────────────────────────────*/
+    let _user      = getSession();
+    let _onAuthCbs = [];
+    let _pendingCb = null;
+    let _screen    = 'choice'; // 'choice' | 'signin' | 'signup'
+    
+    // User roles
+    const ROLES = {
+        ADMIN: 'admin',
+        ORGANIZER: 'organizer',
+        SUPPLIER: 'supplier',
+        SKATER: 'skater',  // Regular user who can buy, RSVP, comment
+        CLIENT: 'client'    // Legacy role
+    };
+
+    /* ── BOOT ─────────────────────────────────────────────────── */
+    function init() {
+        injectStyles();
+        injectModal();
+        updateNavIcon();
+        _onAuthCbs.forEach(cb => cb(_user));
+
+        if (FIREBASE_READY) bootFirebase();
+    }
+
+    async function bootFirebase() {
+        try {
+            const { initializeApp }               = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+            const { getAuth, onAuthStateChanged }  = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+            const { getFirestore, doc, getDoc }    = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+
+            const app  = initializeApp(FIREBASE_CONFIG);
+            const auth = getAuth(app);
+            const db   = getFirestore(app);
+
+            window._fbAuth = auth;
+            window._fbDb   = db;
+
+            onAuthStateChanged(auth, async fbUser => {
+                if (fbUser) {
+                    const snap = await getDoc(doc(db, 'users', fbUser.uid));
+                    const data = snap.exists() ? snap.data() : {};
+                    _user = {
+                        uid:   fbUser.uid,
+                        email: fbUser.email,
+                        name:  data.name  || fbUser.displayName || fbUser.email.split('@')[0],
+                        phone: data.phone || '',
+                        role:  data.role  || 'client',
+                        avatar: (data.name || fbUser.email)[0].toUpperCase(),
+                        provider: 'firebase',
+                    };
+                    setSession(_user);
+                } else {
+                    _user = null;
+                    clearSession();
+                }
+                updateNavIcon();
+                _onAuthCbs.forEach(cb => cb(_user));
+                if (_user && _pendingCb) { const cb = _pendingCb; _pendingCb = null; closeModal(); cb(_user); }
+            });
+        } catch(e) { console.warn('Firebase boot failed, using local auth', e); }
+    }
+
+    /* ── MODAL HTML ─────────────────────────────────────────────  */
     function injectModal() {
         if (document.getElementById('samModal')) return;
-
         const el = document.createElement('div');
         el.id = 'samModal';
         el.className = 'sam-overlay';
         el.setAttribute('aria-hidden', 'true');
         el.innerHTML = `
-            <div class="sam-card" role="dialog" aria-modal="true" aria-labelledby="samTitle">
+<div class="sam-card" role="dialog" aria-modal="true">
 
-                <!-- Close -->
-                <button class="sam-close" id="samClose" aria-label="Close">
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                </button>
+    <button class="sam-close" id="samClose" aria-label="Close">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+    </button>
 
-                <!-- Logo -->
-                <div class="sam-logo">
-                    <div class="sam-logo-mark">✦</div>
-                    <div class="sam-logo-name">SPhiri<span>Studio</span></div>
+    <!-- Brand -->
+    <div class="sam-brand">
+        <div class="sam-brand-mark">✦</div>
+        <span>SPhiri<strong>Studio</strong></span>
+    </div>
+
+    <!-- Checkout wall context -->
+    <div class="sam-context" id="samContext" style="display:none">
+        <div class="sam-context-icon">🛍</div>
+        <div class="sam-context-body">
+            <strong>Account required to checkout</strong>
+            <span>Track your orders, confirm delivery and keep your purchases safe.</span>
+        </div>
+    </div>
+
+    <!-- SCREEN: CHOICE ─────────────────────────────────────────── -->
+    <div class="sam-screen" id="screenChoice">
+        <h2 class="sam-heading">Welcome back<span class="sam-heading-dot">.</span></h2>
+        <p class="sam-sub">Sign in to your account or create a new one.</p>
+
+        <div class="sam-choice-btns">
+            <button class="sam-choice-btn sam-choice-signin" id="choiceSignIn">
+                <div class="sam-choice-icon">→</div>
+                <div class="sam-choice-label">
+                    <strong>Sign In</strong>
+                    <span>I have an account</span>
                 </div>
-
-                <!-- Auth wall reason (shown when checkout triggers) -->
-                <div class="sam-wall-banner" id="samWallBanner" style="display:none">
-                    <div class="sam-wall-icon" id="samWallIcon">🔒</div>
-                    <div class="sam-wall-text" id="samWallText">Sign in to continue</div>
+            </button>
+            <button class="sam-choice-btn sam-choice-signup" id="choiceSignUp">
+                <div class="sam-choice-icon">✦</div>
+                <div class="sam-choice-label">
+                    <strong>Create Account</strong>
+                    <span>New to SPhiri Studio</span>
                 </div>
+            </button>
+        </div>
 
-                <!-- Tabs: Sign In / Sign Up -->
-                <div class="sam-tabs" id="samTabs">
-                    <button class="sam-tab active" data-mode="signin" id="tabSignin">Sign In</button>
-                    <button class="sam-tab" data-mode="signup" id="tabSignup">Create Account</button>
+        <p class="sam-browse-note">Just browsing? <button class="sam-link-btn" id="choiceBrowse">Continue without account</button></p>
+    </div>
+
+    <!-- SCREEN: SIGN IN ─────────────────────────────────────────── -->
+    <div class="sam-screen" id="screenSignIn" style="display:none">
+        <button class="sam-back-btn" id="backFromSignIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+        </button>
+        <h2 class="sam-heading">Sign In<span class="sam-heading-dot">.</span></h2>
+
+        <div class="sam-fields">
+            <div class="sam-field">
+                <label for="siEmail">Email</label>
+                <input class="sam-input" id="siEmail" type="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="sam-field">
+                <div class="sam-field-header">
+                    <label for="siPassword">Password</label>
+                    <button class="sam-link-btn" id="forgotBtn">Forgot password?</button>
                 </div>
-
-                <!-- Demo notice -->
-                <div class="sam-demo" id="samDemo">
-                    <span>⚡ Demo</span>
-                    <code>client@sphiri.com / demo1234</code>
-                </div>
-
-                <!-- Form -->
-                <div class="sam-form" id="samForm">
-                    <!-- Sign Up only: Name -->
-                    <div class="sam-field" id="fieldName" style="display:none">
-                        <label for="samName">Full Name</label>
-                        <input class="sam-input" id="samName" type="text" placeholder="Your name" autocomplete="name">
-                    </div>
-
-                    <!-- Sign Up only: Phone -->
-                    <div class="sam-field" id="fieldPhone" style="display:none">
-                        <label for="samPhone">WhatsApp / Phone <span class="sam-optional">(optional)</span></label>
-                        <input class="sam-input" id="samPhone" type="tel" placeholder="+27 82 000 0000" autocomplete="tel">
-                    </div>
-
-                    <!-- Always: Email -->
-                    <div class="sam-field">
-                        <label for="samEmail">Email</label>
-                        <input class="sam-input" id="samEmail" type="email" placeholder="you@example.com" autocomplete="email">
-                    </div>
-
-                    <!-- Always: Password -->
-                    <div class="sam-field" id="fieldPassword">
-                        <div class="sam-label-row">
-                            <label for="samPassword">Password</label>
-                            <button class="sam-forgot-link" id="samForgotLink">Forgot?</button>
-                        </div>
-                        <div class="sam-input-wrap">
-                            <input class="sam-input" id="samPassword" type="password" placeholder="••••••••" autocomplete="current-password">
-                            <button class="sam-eye" id="samEye" aria-label="Show password" tabindex="-1">
-                                <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Sign Up only: Confirm Password -->
-                    <div class="sam-field" id="fieldConfirm" style="display:none">
-                        <label for="samConfirm">Confirm Password</label>
-                        <div class="sam-input-wrap">
-                            <input class="sam-input" id="samConfirm" type="password" placeholder="••••••••" autocomplete="new-password">
-                        </div>
-                    </div>
-
-                    <!-- Sign Up only: Terms -->
-                    <label class="sam-terms" id="fieldTerms" style="display:none">
-                        <input type="checkbox" id="samTerms">
-                        <span>I agree to the <a href="#" tabindex="-1">Terms</a> and <a href="#" tabindex="-1">Privacy Policy</a></span>
-                    </label>
-
-                    <!-- Error -->
-                    <div class="sam-error" id="samError" role="alert"></div>
-
-                    <!-- Primary CTA -->
-                    <button class="sam-btn-primary" id="samSubmit">Sign In</button>
-
-                    <!-- Divider -->
-                    <div class="sam-divider"><span>or</span></div>
-
-                    <!-- Google -->
-                    <button class="sam-btn-google" id="samGoogle">
-                        <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                        Continue with Google
+                <div class="sam-input-wrap">
+                    <input class="sam-input" id="siPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+                    <button class="sam-eye" id="siEye" tabindex="-1" aria-label="Show password">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </button>
                 </div>
-
-                <!-- Forgot password form (hidden by default) -->
-                <div class="sam-form" id="samForgotForm" style="display:none">
-                    <p class="sam-forgot-desc">Enter your email and we'll send a reset link.</p>
-                    <div class="sam-field">
-                        <label for="samForgotEmail">Email</label>
-                        <input class="sam-input" id="samForgotEmail" type="email" placeholder="you@example.com" autocomplete="email">
-                    </div>
-                    <div class="sam-error" id="samForgotError" role="alert"></div>
-                    <div class="sam-success" id="samForgotSuccess" style="display:none">✓ Reset link sent — check your inbox.</div>
-                    <button class="sam-btn-primary" id="samForgotSubmit">Send Reset Link</button>
-                    <button class="sam-back-link" id="samBackToSignin">← Back to Sign In</button>
-                </div>
-
             </div>
-        `;
+        </div>
+
+        <div class="sam-error" id="siError"></div>
+        <button class="sam-primary-btn" id="siSubmit">Sign In</button>
+
+        <div class="sam-divider"><span>or</span></div>
+        <button class="sam-google-btn" id="siGoogle">
+            <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Continue with Google
+        </button>
+
+        <p class="sam-switch-note">No account? <button class="sam-link-btn" id="siGoSignUp">Create one →</button></p>
+    </div>
+
+    <!-- SCREEN: SIGN UP ─────────────────────────────────────────── -->
+    <div class="sam-screen" id="screenSignUp" style="display:none">
+        <button class="sam-back-btn" id="backFromSignUp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+        </button>
+        <h2 class="sam-heading">Create Account<span class="sam-heading-dot">.</span></h2>
+
+        <div class="sam-fields">
+            <div class="sam-field">
+                <label for="suName">Full Name</label>
+                <input class="sam-input" id="suName" type="text" placeholder="Your name" autocomplete="name">
+            </div>
+            <div class="sam-field">
+                <label for="suEmail">Email</label>
+                <input class="sam-input" id="suEmail" type="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="sam-field">
+                <label for="suPhone">
+                    WhatsApp Number
+                    <span class="sam-optional-tag">optional</span>
+                </label>
+                <div class="sam-input-wrap">
+                    <span class="sam-input-prefix">🇿🇦</span>
+                    <input class="sam-input sam-input-prefixed" id="suPhone" type="tel" placeholder="+27 82 000 0000" autocomplete="tel">
+                </div>
+                <span class="sam-field-hint">Used for order updates and Pudo delivery notifications</span>
+            </div>
+            <div class="sam-field">
+                <label for="suPassword">Password</label>
+                <div class="sam-input-wrap">
+                    <input class="sam-input" id="suPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+                    <button class="sam-eye" id="suEye" tabindex="-1" aria-label="Show password">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="sam-field">
+                <label for="suConfirm">Confirm Password</label>
+                <input class="sam-input" id="suConfirm" type="password" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <label class="sam-terms">
+                <input type="checkbox" id="suTerms">
+                <span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="terms.html#privacy" target="_blank">Privacy Policy</a></span>
+            </label>
+        </div>
+
+        <div class="sam-error" id="suError"></div>
+        <button class="sam-primary-btn" id="suSubmit">Create Account</button>
+
+        <p class="sam-switch-note">Already have an account? <button class="sam-link-btn" id="suGoSignIn">Sign in →</button></p>
+    </div>
+
+    <!-- SCREEN: FORGOT PASSWORD ──────────────────────────────────── -->
+    <div class="sam-screen" id="screenForgot" style="display:none">
+        <button class="sam-back-btn" id="backFromForgot">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back to Sign In
+        </button>
+        <h2 class="sam-heading">Reset Password<span class="sam-heading-dot">.</span></h2>
+        <p class="sam-sub">Enter your email and we'll send a reset link.</p>
+        <div class="sam-fields">
+            <div class="sam-field">
+                <label for="fpEmail">Email</label>
+                <input class="sam-input" id="fpEmail" type="email" placeholder="you@example.com" autocomplete="email">
+            </div>
+        </div>
+        <div class="sam-error"   id="fpError"></div>
+        <div class="sam-success" id="fpSuccess" style="display:none">✓ Reset link sent — check your inbox.</div>
+        <button class="sam-primary-btn" id="fpSubmit">Send Reset Link</button>
+    </div>
+
+    <!-- SCREEN: WELCOME (after sign up) ─────────────────────────── -->
+    <div class="sam-screen sam-screen-center" id="screenWelcome" style="display:none">
+        <div class="sam-welcome-icon">✦</div>
+        <h2 class="sam-heading" id="welcomeName">Welcome.<span class="sam-heading-dot">.</span></h2>
+        <p class="sam-sub" id="welcomeSub">Your account is ready.</p>
+        <button class="sam-primary-btn" id="welcomeContinue">Continue →</button>
+    </div>
+
+</div>`;
         document.body.appendChild(el);
         wireModal();
     }
 
-    // ── WIRE ──────────────────────────────────────────────────────
+    /* ── WIRE ────────────────────────────────────────────────────  */
     function wireModal() {
         // Close
         document.getElementById('samClose').addEventListener('click', closeModal);
         document.getElementById('samModal').addEventListener('click', e => {
             if (e.target.id === 'samModal') closeModal();
         });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        // Tabs
-        document.querySelectorAll('.sam-tab').forEach(tab => {
-            tab.addEventListener('click', () => setMode(tab.dataset.mode));
-        });
+        // Choice screen
+        document.getElementById('choiceSignIn').addEventListener('click', () => showScreen('signin'));
+        document.getElementById('choiceSignUp').addEventListener('click', () => showScreen('signup'));
+        document.getElementById('choiceBrowse').addEventListener('click', closeModal);
 
-        // Show/hide password
-        const eye = document.getElementById('samEye');
-        const pwd = document.getElementById('samPassword');
-        if (eye && pwd) {
-            eye.addEventListener('click', () => {
-                const shown = pwd.type === 'text';
-                pwd.type = shown ? 'password' : 'text';
-                eye.classList.toggle('active', !shown);
-            });
-        }
+        // Back buttons
+        document.getElementById('backFromSignIn').addEventListener('click', () => showScreen('choice'));
+        document.getElementById('backFromSignUp').addEventListener('click', () => showScreen('choice'));
+        document.getElementById('backFromForgot').addEventListener('click', () => showScreen('signin'));
+
+        // Cross-links
+        document.getElementById('siGoSignUp').addEventListener('click', () => showScreen('signup'));
+        document.getElementById('suGoSignIn').addEventListener('click', () => showScreen('signin'));
 
         // Forgot
-        document.getElementById('samForgotLink').addEventListener('click', e => { e.preventDefault(); showForgot(); });
-        document.getElementById('samBackToSignin').addEventListener('click', () => setMode('signin'));
-        document.getElementById('samForgotSubmit').addEventListener('click', handleForgot);
+        document.getElementById('forgotBtn').addEventListener('click', () => showScreen('forgot'));
+        document.getElementById('fpSubmit').addEventListener('click',  handleForgot);
 
-        // Submit
-        document.getElementById('samSubmit').addEventListener('click', handleSubmit);
-        ['samEmail','samPassword','samConfirm','samName'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); });
+        // Sign in
+        document.getElementById('siSubmit').addEventListener('click', handleSignIn);
+        document.getElementById('siGoogle').addEventListener('click', handleGoogle);
+        ['siEmail','siPassword'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') handleSignIn(); });
         });
 
-        // Google
-        document.getElementById('samGoogle').addEventListener('click', handleGoogle);
+        // Sign up
+        document.getElementById('suSubmit').addEventListener('click', handleSignUp);
+        ['suName','suEmail','suPhone','suPassword','suConfirm'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') handleSignUp(); });
+        });
 
-        // Show demo notice in demo mode
-        if (DEMO_MODE) document.getElementById('samDemo').style.display = 'flex';
+        // Welcome continue
+        document.getElementById('welcomeContinue').addEventListener('click', () => {
+            closeModal();
+            if (_pendingCb) { const cb = _pendingCb; _pendingCb = null; cb(_user); }
+        });
+
+        // Password toggles
+        wireEye('siEye', 'siPassword');
+        wireEye('suEye', 'suPassword');
     }
 
-    // ── MODE ──────────────────────────────────────────────────────
-    function setMode(mode) {
-        _mode = mode;
-
-        // Tabs
-        document.querySelectorAll('.sam-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
-
-        // Show/hide fields
-        const isSignUp = mode === 'signup';
-        document.getElementById('fieldName').style.display    = isSignUp ? 'flex' : 'none';
-        document.getElementById('fieldPhone').style.display   = isSignUp ? 'flex' : 'none';
-        document.getElementById('fieldConfirm').style.display = isSignUp ? 'flex' : 'none';
-        document.getElementById('fieldTerms').style.display   = isSignUp ? 'flex' : 'none';
-        document.getElementById('samForgotLink').style.display = isSignUp ? 'none' : 'inline';
-        document.getElementById('samGoogle').style.display    = isSignUp ? 'none' : 'flex';
-        document.getElementById('samSubmit').textContent      = isSignUp ? 'Create Account' : 'Sign In';
-
-        // Show/hide forgot form
-        document.getElementById('samForm').style.display       = 'flex';
-        document.getElementById('samForgotForm').style.display = 'none';
-        document.getElementById('samTabs').style.display       = 'flex';
-
-        clearError();
-        // Focus email
-        setTimeout(() => document.getElementById('samEmail')?.focus(), 50);
+    function wireEye(eyeId, inputId) {
+        const eye = document.getElementById(eyeId);
+        const inp = document.getElementById(inputId);
+        if (!eye || !inp) return;
+        eye.addEventListener('click', () => {
+            const shown = inp.type === 'text';
+            inp.type = shown ? 'password' : 'text';
+            eye.classList.toggle('active', !shown);
+        });
     }
 
-    function showForgot() {
-        _mode = 'forgot';
-        document.getElementById('samForm').style.display       = 'none';
-        document.getElementById('samForgotForm').style.display = 'flex';
-        document.getElementById('samTabs').style.display       = 'none';
-        clearError();
-        setTimeout(() => document.getElementById('samForgotEmail')?.focus(), 50);
+    /* ── SCREENS ─────────────────────────────────────────────────  */
+    function showScreen(name) {
+        _screen = name;
+        const map = {
+            choice:  'screenChoice',
+            signin:  'screenSignIn',
+            signup:  'screenSignUp',
+            forgot:  'screenForgot',
+            welcome: 'screenWelcome',
+        };
+        Object.values(map).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        const target = map[name];
+        if (target) {
+            const el = document.getElementById(target);
+            if (el) {
+                el.style.display = name === 'welcome' ? 'flex' : 'block';
+                el.style.animation = 'samSlideIn 0.28s cubic-bezier(0.2,0.8,0.2,1)';
+            }
+        }
+        // Focus first input
+        setTimeout(() => {
+            const first = document.querySelector('#' + (target || '') + ' .sam-input');
+            if (first) first.focus();
+        }, 60);
     }
 
-    // ── SUBMIT ────────────────────────────────────────────────────
-    async function handleSubmit() {
-        const email  = document.getElementById('samEmail').value.trim();
-        const pass   = document.getElementById('samPassword').value;
-        const name   = document.getElementById('samName').value.trim();
-        const phone  = document.getElementById('samPhone').value.trim();
-        const conf   = document.getElementById('samConfirm').value;
-        const terms  = document.getElementById('samTerms').checked;
-        const isSignUp = _mode === 'signup';
-
+/* ── SIGN IN ─────────────────────────────────────────────────  */
+    async function handleSignIn() {
+        const email = val('siEmail');
+        const pass  = val('siPassword');
+        
         // Validation
-        if (!email) { return shakeField('samEmail', 'Email is required'); }
-        if (!pass)  { return shakeField('samPassword', 'Password is required'); }
-        if (isSignUp) {
-            if (!name)           return shakeField('samName', 'Please enter your name');
-            if (pass.length < 6) return shakeField('samPassword', 'Password must be at least 6 characters');
-            if (pass !== conf)   return shakeField('samConfirm', 'Passwords don\'t match');
-            if (!terms)          return showError('Please accept the Terms to continue');
+        if (!email) return shake('siEmail', 'siError', 'Email is required');
+        if (!isValidEmail(email)) return shake('siEmail', 'siError', 'Please enter a valid email');
+        if (!pass) return shake('siPassword', 'siError', 'Password is required');
+        if (pass.length < 6) return shake('siPassword', 'siError', 'Password must be at least 6 characters');
+
+        if (FIREBASE_READY && window._fbAuth) {
+            setLoading('siSubmit', true);
+            try {
+                const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+                await signInWithEmailAndPassword(window._fbAuth, email, pass);
+                // onAuthStateChanged handles the rest
+            } catch(e) {
+                showError('siError', friendlyError(e.code));
+            } finally { setLoading('siSubmit', false, 'Sign In'); }
+            return;
         }
 
-        if (DEMO_MODE) {
-            const demo = DEMO_USERS[email];
-            if (demo && pass === 'demo1234') {
-                _user = { uid: demo.uid, email, name: demo.name, role: demo.role, productIds: [] };
-                sessionStorage.setItem('sphiri_demo_user', JSON.stringify(_user));
-                closeModal();
-                updateNavIcon();
-                _onAuthCbs.forEach(cb => cb(_user));
-                if (_pendingCb) { const cb = _pendingCb; _pendingCb = null; cb(_user); }
-            } else if (isSignUp) {
-                // Demo sign-up: create client session
-                _user = { uid: 'u_' + Date.now(), email, name: name || email.split('@')[0], role: 'client', productIds: [] };
-                sessionStorage.setItem('sphiri_demo_user', JSON.stringify(_user));
-                closeModal();
-                updateNavIcon();
-                _onAuthCbs.forEach(cb => cb(_user));
-                if (_pendingCb) { const cb = _pendingCb; _pendingCb = null; cb(_user); }
-            } else {
-                shakeField('samPassword', 'Incorrect credentials. Use demo1234.');
+        // Local auth
+        const accounts = getAccounts();
+        const account  = accounts[email.toLowerCase()];
+        if (!account) return shake('siEmail', 'siError', 'No account found with that email');
+        if (account.passwordHash !== hashPassword(pass)) return shake('siPassword', 'siError', 'Incorrect password');
+
+        _user = { uid: account.uid, email: account.email, name: account.name, phone: account.phone || '', role: account.role || 'client', avatar: account.name[0].toUpperCase(), provider: 'local' };
+        setSession(_user);
+        updateNavIcon();
+        _onAuthCbs.forEach(cb => cb(_user));
+        closeModal();
+        if (_pendingCb) { const cb = _pendingCb; _pendingCb = null; cb(_user); }
+    }
+
+    /* ── SIGN UP ─────────────────────────────────────────────────  */
+    async function handleSignUp() {
+        const name  = val('suName');
+        const email = val('suEmail');
+        const phone = val('suPhone');
+        const pass  = val('suPassword');
+        const conf  = val('suConfirm');
+        const terms = document.getElementById('suTerms').checked;
+
+        // Validation
+        if (!name) return shake('suName', 'suError', 'Please enter your name');
+        if (name.length < 2) return shake('suName', 'suError', 'Name must be at least 2 characters');
+        
+        if (!email) return shake('suEmail', 'suError', 'Email is required');
+        if (!isValidEmail(email)) return shake('suEmail', 'suError', 'Please enter a valid email');
+        
+        if (!pass) return shake('suPassword', 'suError', 'Password is required');
+        if (pass.length < 6) return shake('suPassword', 'suError', 'Password must be at least 6 characters');
+        if (pass.length > 128) return shake('suPassword', 'suError', 'Password must be less than 128 characters');
+        
+        if (pass !== conf) return shake('suConfirm', 'suError', 'Passwords don\'t match');
+        if (!terms) return showError('suError', 'Please accept the Terms to continue');
+
+        if (FIREBASE_READY && window._fbAuth) {
+            setLoading('suSubmit', true);
+            try {
+                const { createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+                const { doc, setDoc, serverTimestamp }   = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+                const cred = await createUserWithEmailAndPassword(window._fbAuth, email, pass);
+                await setDoc(doc(window._fbDb, 'users', cred.user.uid), {
+                    email, name, phone: phone || '', role: 'client',
+                    productIds: [], createdAt: serverTimestamp()
+                });
+                // onAuthStateChanged fires → sets _user → welcome screen below
+            } catch(e) {
+                showError('suError', friendlyError(e.code));
+                setLoading('suSubmit', false, 'Create Account');
             }
             return;
         }
 
-        setLoading(true);
-        try {
-            const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-            const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+        // Local auth
+        const accounts = getAccounts();
+        if (accounts[email.toLowerCase()]) return shake('suEmail', 'suError', 'An account with this email already exists');
 
-            if (isSignUp) {
-                const cred = await createUserWithEmailAndPassword(_auth, email, pass);
-                await setDoc(doc(_db, 'users', cred.user.uid), {
-                    email, name: name || email.split('@')[0],
-                    phone: phone || '', role: 'client',
-                    productIds: [], createdAt: serverTimestamp()
-                });
-            } else {
-                await signInWithEmailAndPassword(_auth, email, pass);
-            }
-            closeModal();
-        } catch(e) {
-            shakeField('samPassword', friendlyError(e.code));
-        } finally {
-            setLoading(false);
-        }
+        const uid = 'u_' + Date.now().toString(36);
+        const user = { uid, email, name, phone: phone || '', role: 'client', avatar: name[0].toUpperCase(), provider: 'local' };
+        saveAccount(user, hashPassword(pass));
+        _user = { ...user };
+        setSession(_user);
+        updateNavIcon();
+        _onAuthCbs.forEach(cb => cb(_user));
+
+        // Welcome screen
+        document.getElementById('welcomeName').innerHTML = 'Welcome, ' + escHtml(name.split(' ')[0]) + '<span class="sam-heading-dot">.</span>';
+        document.getElementById('welcomeSub').textContent = 'Your account is ready. Let\'s get you sorted.';
+        showScreen('welcome');
     }
 
+    /* ── GOOGLE ─────────────────────────────────────────────────  */
     async function handleGoogle() {
-        if (DEMO_MODE) { showError('Google sign-in requires Firebase config.'); return; }
+        if (!FIREBASE_READY) {
+            showError('siError', 'Google sign-in will be available once Firebase is connected.');
+            return;
+        }
         try {
             const { GoogleAuthProvider, signInWithPopup } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
             const { doc, getDoc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-            const { user } = await signInWithPopup(_auth, new GoogleAuthProvider());
-            const snap = await getDoc(doc(_db, 'users', user.uid));
+            const { user } = await signInWithPopup(window._fbAuth, new GoogleAuthProvider());
+            const snap = await getDoc(doc(window._fbDb, 'users', user.uid));
             if (!snap.exists()) {
-                await setDoc(doc(_db, 'users', user.uid), {
+                await setDoc(doc(window._fbDb, 'users', user.uid), {
                     email: user.email, name: user.displayName || user.email,
-                    phone: '', role: 'client', productIds: [],
-                    createdAt: serverTimestamp()
+                    phone: '', role: 'client', productIds: [], createdAt: serverTimestamp()
                 });
             }
             closeModal();
-        } catch(e) {
-            showError(friendlyError(e.code));
-        }
+        } catch(e) { showError('siError', friendlyError(e.code)); }
     }
 
+    /* ── FORGOT ─────────────────────────────────────────────────  */
     async function handleForgot() {
-        const email = document.getElementById('samForgotEmail').value.trim();
-        const errEl = document.getElementById('samForgotError');
-        const okEl  = document.getElementById('samForgotSuccess');
+        const email = val('fpEmail');
+        if (!email) return shake('fpEmail', 'fpError', 'Enter your email address');
 
-        if (!email) {
-            errEl.textContent = 'Enter your email address.';
-            errEl.style.display = 'block'; return;
-        }
-        if (DEMO_MODE) {
-            errEl.textContent = ''; errEl.style.display = 'none';
-            okEl.style.display = 'block'; return;
-        }
-        const btn = document.getElementById('samForgotSubmit');
-        btn.disabled = true; btn.textContent = 'Sending…';
-        try {
-            const { sendPasswordResetEmail } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-            await sendPasswordResetEmail(_auth, email);
-            errEl.style.display = 'none'; okEl.style.display = 'block';
-        } catch(e) {
-            errEl.textContent = friendlyError(e.code); errEl.style.display = 'block';
-        } finally {
-            btn.disabled = false; btn.textContent = 'Send Reset Link';
-        }
-    }
-
-    async function handleSignOut() {
-        if (DEMO_MODE) {
-            _user = null;
-            sessionStorage.removeItem('sphiri_demo_user');
-            updateNavIcon();
-            _onAuthCbs.forEach(cb => cb(null));
-            if (window.location.pathname.includes('dashboard')) window.location.href = 'index.html';
+        if (FIREBASE_READY && window._fbAuth) {
+            setLoading('fpSubmit', true);
+            try {
+                const { sendPasswordResetEmail } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+                await sendPasswordResetEmail(window._fbAuth, email);
+                document.getElementById('fpError').style.display = 'none';
+                document.getElementById('fpSuccess').style.display = 'block';
+            } catch(e) { showError('fpError', friendlyError(e.code)); }
+            finally { setLoading('fpSubmit', false, 'Send Reset Link'); }
             return;
         }
-        const { signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-        await signOut(_auth);
+        // Local: just show success (no real email)
+        document.getElementById('fpError').style.display   = 'none';
+        document.getElementById('fpSuccess').style.display = 'block';
+    }
+
+    /* ── SIGN OUT ─────────────────────────────────────────────── */
+    async function handleSignOut() {
+        if (FIREBASE_READY && window._fbAuth) {
+            const { signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+            await signOut(window._fbAuth);
+        }
+        _user = null;
+        clearSession();
+        updateNavIcon();
+        _onAuthCbs.forEach(cb => cb(null));
         if (window.location.pathname.includes('dashboard')) window.location.href = 'index.html';
     }
 
-    // ── OPEN / CLOSE ─────────────────────────────────────────────
-    function openModal(reason, startMode) {
+    /* ── OPEN / CLOSE ────────────────────────────────────────── */
+    function openModal(opts) {
         const modal = document.getElementById('samModal');
         if (!modal) return;
 
-        setMode(startMode || _mode || 'signin');
-
-        // Auth wall banner
-        const banner = document.getElementById('samWallBanner');
-        const icon   = document.getElementById('samWallIcon');
-        const text   = document.getElementById('samWallText');
-        if (reason) {
-            banner.style.display = 'flex';
-            icon.textContent = reason.icon || '🔒';
-            text.textContent = reason.text || reason;
+        // Show/hide context banner
+        const ctx = document.getElementById('samContext');
+        if (opts && opts.context) {
+            ctx.style.display = 'flex';
         } else {
-            banner.style.display = 'none';
+            ctx.style.display = 'none';
         }
 
+        showScreen((opts && opts.screen) || 'choice');
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        setTimeout(() => document.getElementById('samEmail')?.focus(), 120);
     }
 
     function closeModal() {
@@ -442,224 +557,259 @@
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
-        clearError();
-        // If closed without signing in, clear pending callback
+        // Clear errors
+        ['siError','suError','fpError'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.textContent = ''; el.style.display = 'none'; }
+        });
         if (!_user) _pendingCb = null;
     }
 
-    // ── NAV ICON ─────────────────────────────────────────────────
+    /* ── NAV ICON ────────────────────────────────────────────── */
     function updateNavIcon() {
         const btn = document.getElementById('navAccountBtn');
         if (!btn) return;
-
         if (_user) {
-            const colors = { admin: '#ff9500', partner: '#30d158', client: 'var(--accent)' };
-            const col    = colors[_user.role] || 'var(--accent)';
-            btn.innerHTML = `<div class="nav-acct-avatar" style="background:${col}">${_user.name[0].toUpperCase()}</div>`;
-            btn.title     = `${_user.name} · ${_user.role}`;
+            const colors = { 
+                admin: '#ff9500', 
+                organizer: '#30d158', 
+                supplier: '#5856d6',
+                skater: 'var(--accent)',
+                client: 'var(--accent)' 
+            };
+            const labels = {
+                admin: 'Admin',
+                organizer: 'Organizer',
+                supplier: 'Supplier',
+                skater: 'Skater',
+                client: 'Client'
+            };
+            const col = colors[_user.role] || 'var(--accent)';
+            const label = labels[_user.role] || _user.role;
+            btn.innerHTML = `<div class="nav-acct-avatar" style="background:${col}" title="${escHtml(_user.name)} · ${label}">${escHtml(_user.name[0].toUpperCase())}</div>`;
         } else {
-            btn.innerHTML = `
-                <div class="nav-acct-pill">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>Sign In</span>
-                </div>`;
-            btn.title = 'Sign in to your Studio';
+            btn.innerHTML = `<div class="nav-acct-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Sign In</span></div>`;
         }
     }
     window.addEventListener('navReady', updateNavIcon);
 
-    // ── HELPERS ──────────────────────────────────────────────────
-    function showError(msg) {
-        const el = document.getElementById('samError');
+    /* ── ROLE HELPERS ─────────────────────────────────────────── */
+    function isOrganizer() { return _user && (_user.role === ROLES.ORGANIZER || _user.role === ROLES.ADMIN); }
+    function isSupplier() { return _user && (_user.role === ROLES.SUPPLIER || _user.role === ROLES.ADMIN); }
+    function isAdmin() { return _user && _user.role === ROLES.ADMIN; }
+    function isSkater() { return _user && (_user.role === ROLES.SKATER || _user.role === ROLES.CLIENT || !_user.role); }
+
+    /* ── HELPERS ─────────────────────────────────────────────── */
+    function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+    function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+    function showError(errId, msg) {
+        const el = document.getElementById(errId);
         if (!el) return;
         el.textContent = msg; el.style.display = 'block';
-        clearTimeout(el._t);
-        el._t = setTimeout(() => { el.style.display = 'none'; el.textContent = ''; }, 5000);
+        clearTimeout(el._t); el._t = setTimeout(() => { el.style.display = 'none'; }, 6000);
     }
-    function clearError() {
-        const el = document.getElementById('samError');
-        if (el) { el.textContent = ''; el.style.display = 'none'; }
+    function shake(inputId, errId, msg) {
+        showError(errId, msg);
+        const el = document.getElementById(inputId);
+        if (!el) return;
+        el.focus(); el.style.borderColor = '#ff3b30';
+        el.style.animation = 'samShake 0.35s ease';
+        setTimeout(() => { el.style.animation = ''; el.style.borderColor = ''; }, 500);
     }
-    function shakeField(id, msg) {
-        const el = document.getElementById(id);
-        if (!el) { showError(msg); return; }
-        showError(msg);
-        el.style.borderColor = '#ff3b30';
-        el.style.animation   = 'samShake 0.35s ease';
-        el.focus();
-        setTimeout(() => { el.style.animation = ''; el.style.borderColor = ''; }, 600);
-    }
-    function setLoading(on) {
-        const btn = document.getElementById('samSubmit');
+    function setLoading(btnId, on, label) {
+        const btn = document.getElementById(btnId);
         if (!btn) return;
-        btn.disabled = on;
-        btn.textContent = on ? 'Please wait…' : (_mode === 'signup' ? 'Create Account' : 'Sign In');
+        btn.disabled = on; btn.textContent = on ? 'Please wait…' : (label || btn.textContent);
     }
     function friendlyError(code) {
         return ({
-            'auth/wrong-password':          'Incorrect password.',
-            'auth/user-not-found':          'No account with that email.',
-            'auth/email-already-in-use':    'Email already registered.',
-            'auth/weak-password':           'Password must be at least 6 characters.',
-            'auth/invalid-email':           'Invalid email address.',
-            'auth/too-many-requests':       'Too many attempts — try again later.',
-            'auth/network-request-failed':  'Network error. Check your connection.',
-            'auth/popup-closed-by-user':    'Sign-in popup was closed.',
-            'auth/invalid-credential':      'Incorrect email or password.',
+            'auth/wrong-password':         'Incorrect password.',
+            'auth/invalid-credential':     'Incorrect email or password.',
+            'auth/user-not-found':         'No account found with that email.',
+            'auth/email-already-in-use':   'An account with this email already exists.',
+            'auth/weak-password':          'Password must be at least 6 characters.',
+            'auth/invalid-email':          'Please enter a valid email address.',
+            'auth/too-many-requests':      'Too many attempts — try again in a few minutes.',
+            'auth/network-request-failed': 'Network error. Check your connection.',
+            'auth/popup-closed-by-user':   'Sign-in popup was closed.',
         })[code] || 'Something went wrong. Please try again.';
     }
 
-    // ── STYLES ───────────────────────────────────────────────────
+    /* ── STYLES ─────────────────────────────────────────────── */
     function injectStyles() {
         if (document.getElementById('samStyles')) return;
         const s = document.createElement('style');
         s.id = 'samStyles';
         s.textContent = `
-/* ── AUTH MODAL OVERLAY ── */
+/* ── OVERLAY ── */
 .sam-overlay {
-    position: fixed; inset: 0;
-    z-index: 9000;
+    position: fixed; inset: 0; z-index: 9000;
     display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    background: rgba(0,0,0,0);
+    padding: 16px;
+    background: transparent;
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
     pointer-events: none;
     transition: background 0.3s, backdrop-filter 0.3s;
 }
 .sam-overlay.open {
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.52);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     pointer-events: all;
 }
 
 /* ── CARD ── */
 .sam-card {
-    width: 100%; max-width: 390px;
-    background: var(--bg, #fff);
-    border: 1px solid var(--border, rgba(0,0,0,0.08));
-    border-radius: 26px;
-    padding: 32px 30px 28px;
+    width: 100%; max-width: 400px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 30px 28px 26px;
     position: relative;
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
-    transition: opacity 0.35s cubic-bezier(0.2,0.8,0.2,1), transform 0.35s cubic-bezier(0.2,0.8,0.2,1);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+    transform: translateY(24px) scale(0.96);
+    transition: opacity 0.38s cubic-bezier(0.2,0.8,0.2,1),
+                transform 0.38s cubic-bezier(0.2,0.8,0.2,1);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.04);
+    max-height: 92vh;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
+.sam-card::-webkit-scrollbar { display: none; }
 .sam-overlay.open .sam-card { opacity: 1; transform: translateY(0) scale(1); }
 
-/* Close button */
+/* ── CLOSE ── */
 .sam-close {
     position: absolute; top: 14px; right: 14px;
     width: 28px; height: 28px; border-radius: 50%;
-    background: var(--bg2, #f5f5f7); border: none;
-    color: var(--muted, #86868b); cursor: pointer;
+    background: var(--bg2); border: none;
+    color: var(--muted); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.15s, color 0.15s;
 }
 .sam-close:hover { background: var(--border); color: var(--text); }
 
-/* Logo */
-.sam-logo {
-    display: flex; align-items: center; gap: 8px;
+/* ── BRAND ── */
+.sam-brand {
+    display: flex; align-items: center; gap: 9px;
+    margin-bottom: 22px;
+    font-size: 13px; font-weight: 700;
+    color: var(--text);
+}
+.sam-brand strong { font-weight: 900; }
+.sam-brand-mark {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: var(--accent); color: #fff;
+    font-size: 13px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ── CONTEXT BANNER ── */
+.sam-context {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(0,113,227,0.07);
+    border: 1.5px solid rgba(0,113,227,0.18);
+    border-radius: 16px; padding: 13px 15px;
     margin-bottom: 20px;
 }
-.sam-logo-mark {
-    width: 32px; height: 32px;
-    background: var(--accent, #0071e3);
-    color: #fff; border-radius: 10px;
-    font-size: 14px;
+[data-theme="dark"] .sam-context {
+    background: rgba(10,132,255,0.09);
+    border-color: rgba(10,132,255,0.22);
+}
+.sam-context-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.sam-context-body { display: flex; flex-direction: column; gap: 3px; }
+.sam-context-body strong { font-size: 13px; font-weight: 800; color: var(--text); }
+.sam-context-body span  { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── HEADINGS ── */
+.sam-heading {
+    font-size: 26px; font-weight: 900;
+    letter-spacing: -0.8px; line-height: 1.1;
+    color: var(--text); margin-bottom: 6px;
+}
+.sam-heading-dot { color: var(--accent); }
+.sam-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
+
+/* ── CHOICE SCREEN ── */
+.sam-choice-btns {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 18px; margin-top: 4px;
+}
+.sam-choice-btn {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    background: var(--bg2);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    text-align: left; font-family: inherit;
+}
+.sam-choice-btn:hover { transform: translateY(-1px); }
+.sam-choice-signin:hover { border-color: var(--accent); background: rgba(0,113,227,0.04); }
+.sam-choice-signup:hover { border-color: #34c759;      background: rgba(52,199,89,0.04); }
+[data-theme="dark"] .sam-choice-signin:hover { background: rgba(10,132,255,0.07); }
+[data-theme="dark"] .sam-choice-signup:hover { background: rgba(52,199,89,0.07); }
+
+.sam-choice-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--bg); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+    color: var(--accent);
+    transition: background 0.2s;
 }
-.sam-logo-name {
-    font-size: 13px; font-weight: 900;
-    letter-spacing: -0.3px;
-    color: var(--text, #1d1d1f);
-}
-.sam-logo-name span { color: var(--muted, #86868b); font-weight: 600; }
+.sam-choice-signup .sam-choice-icon { color: #34c759; }
 
-/* Auth wall banner */
-.sam-wall-banner {
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(0,113,227,0.07);
-    border: 1.5px solid rgba(0,113,227,0.2);
-    border-radius: 14px; padding: 12px 14px;
-    margin-bottom: 16px;
-}
-[data-theme="dark"] .sam-wall-banner {
-    background: rgba(10,132,255,0.1);
-    border-color: rgba(10,132,255,0.25);
-}
-.sam-wall-icon { font-size: 20px; flex-shrink: 0; }
-.sam-wall-text { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.sam-choice-label { display: flex; flex-direction: column; gap: 2px; }
+.sam-choice-label strong { font-size: 15px; font-weight: 800; color: var(--text); }
+.sam-choice-label span   { font-size: 12px; color: var(--muted); }
 
-/* Tabs */
-.sam-tabs {
-    display: flex; gap: 4px;
-    background: var(--bg2, #f5f5f7);
-    border-radius: 12px; padding: 4px;
-    margin-bottom: 18px;
-}
-.sam-tab {
-    flex: 1; padding: 9px;
-    border: none; border-radius: 9px;
-    background: transparent;
-    color: var(--muted); font-size: 13px; font-weight: 700;
-    font-family: inherit; cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-.sam-tab.active {
-    background: var(--bg, #fff);
-    color: var(--text);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
+.sam-browse-note { font-size: 12px; color: var(--muted); text-align: center; }
 
-/* Demo notice */
-.sam-demo {
-    display: none; align-items: center; gap: 8px;
-    background: rgba(255,149,0,0.07);
-    border: 1px solid rgba(255,149,0,0.2);
-    border-radius: 10px; padding: 8px 12px;
-    margin-bottom: 14px;
-    font-size: 11px; color: var(--muted);
+/* ── BACK BUTTON ── */
+.sam-back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    font-family: inherit; padding: 0; margin-bottom: 18px;
+    transition: color 0.15s;
 }
-.sam-demo span { color: #ff9500; font-weight: 800; }
-.sam-demo code { font-family: monospace; color: var(--text); }
+.sam-back-btn:hover { color: var(--text); }
 
-/* Form */
-.sam-form { display: flex; flex-direction: column; gap: 0; }
+/* ── FIELDS ── */
+.sam-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
-.sam-field {
-    display: flex; flex-direction: column; gap: 5px;
-    margin-bottom: 12px;
-}
+.sam-field { display: flex; flex-direction: column; gap: 5px; }
 .sam-field label {
     font-size: 10px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.8px;
+    text-transform: uppercase; letter-spacing: 0.9px;
     color: var(--muted);
+    display: flex; align-items: center; gap: 7px;
 }
-.sam-optional { text-transform: none; letter-spacing: 0; font-weight: 600; }
-
-.sam-label-row {
+.sam-field-header {
     display: flex; justify-content: space-between; align-items: center;
 }
-.sam-forgot-link {
-    background: none; border: none;
-    color: var(--accent); font-size: 11px; font-weight: 700;
-    cursor: pointer; padding: 0; font-family: inherit;
+.sam-optional-tag {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 6px;
+    font-size: 9px; font-weight: 600; color: var(--muted);
+    text-transform: none; letter-spacing: 0;
 }
-.sam-forgot-link:hover { opacity: 0.7; }
+.sam-field-hint { font-size: 11px; color: var(--muted); line-height: 1.4; margin-top: 1px; }
 
-.sam-input-wrap { position: relative; }
-
+.sam-input-wrap { position: relative; display: flex; align-items: center; }
+.sam-input-prefix {
+    position: absolute; left: 13px;
+    font-size: 16px; pointer-events: none; z-index: 1;
+}
 .sam-input {
-    width: 100%;
-    padding: 12px 14px;
+    width: 100%; padding: 12px 14px;
     border-radius: 12px;
-    border: 1.5px solid var(--border, rgba(0,0,0,0.1));
-    background: var(--bg2, #f5f5f7);
-    color: var(--text, #1d1d1f);
+    border: 1.5px solid var(--border);
+    background: var(--bg2); color: var(--text);
     font-size: 15px; font-family: inherit;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -670,114 +820,131 @@
     box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
 }
 [data-theme="dark"] .sam-input:focus { box-shadow: 0 0 0 3px rgba(10,132,255,0.13); }
-.sam-input::placeholder { color: var(--muted); opacity: 0.6; }
-.sam-input-wrap .sam-input { padding-right: 42px; }
+.sam-input::placeholder { color: var(--muted); opacity: 0.55; }
+.sam-input-prefixed { padding-left: 38px; }
+.sam-input-wrap .sam-input:not(.sam-input-prefixed) { padding-right: 42px; }
 
 .sam-eye {
-    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; cursor: pointer; color: var(--muted);
-    display: flex; align-items: center; padding: 4px;
-    transition: color 0.2s;
+    position: absolute; right: 12px;
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); display: flex; align-items: center; padding: 4px;
+    transition: color 0.15s;
 }
-.sam-eye.active, .sam-eye:hover { color: var(--accent); }
+.sam-eye:hover, .sam-eye.active { color: var(--accent); }
 
 /* Terms */
 .sam-terms {
     display: flex; align-items: flex-start; gap: 9px;
     font-size: 12px; color: var(--muted);
-    cursor: pointer; margin-bottom: 12px;
-    line-height: 1.5;
+    cursor: pointer; line-height: 1.5;
 }
 .sam-terms input { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
-.sam-terms a { color: var(--accent); }
+.sam-terms a { color: var(--accent); text-decoration: none; }
 
-/* Error */
+/* ── ERRORS / SUCCESS ── */
 .sam-error {
     display: none;
     font-size: 12px; color: #ff3b30;
     background: rgba(255,59,48,0.07);
-    border: 1px solid rgba(255,59,48,0.15);
-    border-radius: 9px; padding: 9px 12px;
-    margin-bottom: 10px;
-    line-height: 1.4;
+    border: 1px solid rgba(255,59,48,0.14);
+    border-radius: 10px; padding: 9px 13px;
+    margin-bottom: 8px; line-height: 1.5;
 }
-
-/* Success */
 .sam-success {
     font-size: 12px; color: #34c759;
     background: rgba(52,199,89,0.07);
-    border: 1px solid rgba(52,199,89,0.2);
-    border-radius: 9px; padding: 9px 12px;
-    margin-bottom: 10px;
+    border: 1px solid rgba(52,199,89,0.18);
+    border-radius: 10px; padding: 9px 13px;
+    margin-bottom: 8px;
 }
 
-/* Primary btn */
-.sam-btn-primary {
+/* ── BUTTONS ── */
+.sam-primary-btn {
     width: 100%; padding: 14px;
-    background: var(--accent, #0071e3); color: #fff;
-    border: none; border-radius: 12px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 13px;
     font-size: 15px; font-weight: 800;
     font-family: inherit; cursor: pointer;
     transition: opacity 0.2s, transform 0.15s;
     margin-bottom: 10px;
 }
-.sam-btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-.sam-btn-primary:active { transform: translateY(0); }
-.sam-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.sam-primary-btn:hover  { opacity: 0.88; transform: translateY(-1px); }
+.sam-primary-btn:active { transform: translateY(0); }
+.sam-primary-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-/* Divider */
 .sam-divider {
     display: flex; align-items: center; gap: 10px;
-    color: var(--muted); font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.6px;
-    margin-bottom: 10px;
+    color: var(--muted); font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin: 2px 0 10px;
 }
-.sam-divider::before, .sam-divider::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-}
+.sam-divider::before, .sam-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* Google btn */
-.sam-btn-google {
+.sam-google-btn {
     width: 100%; padding: 12px;
     background: var(--bg2); color: var(--text);
     border: 1.5px solid var(--border);
-    border-radius: 12px;
+    border-radius: 13px;
     font-size: 14px; font-weight: 700;
     font-family: inherit; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 9px;
     transition: border-color 0.2s, box-shadow 0.2s;
-    margin-bottom: 0;
+    margin-bottom: 14px;
 }
-.sam-btn-google:hover { border-color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.sam-google-btn:hover { border-color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
 
-/* Forgot form */
+.sam-link-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--accent); font-size: inherit;
+    font-family: inherit; font-weight: 700; padding: 0;
+    transition: opacity 0.15s;
+}
+.sam-link-btn:hover { opacity: 0.7; }
+
+.sam-switch-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+/* ── FORGOT ── */
 .sam-forgot-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
-.sam-back-link {
-    width: 100%; background: none; border: none;
-    color: var(--accent); font-size: 13px; font-weight: 700;
-    cursor: pointer; padding: 10px; font-family: inherit;
-    text-align: center;
+
+/* ── WELCOME SCREEN ── */
+.sam-screen-center {
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    padding: 20px 0 10px;
+}
+.sam-welcome-icon {
+    font-size: 44px; color: var(--accent);
+    margin-bottom: 16px;
+    animation: samPop 0.5s cubic-bezier(0.2,1,0.2,1);
+}
+@keyframes samPop {
+    0%   { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+    70%  { transform: scale(1.15) rotate(3deg); }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
 }
 
-/* Nav account button */
+/* ── NAV ── */
 .nav-acct-avatar {
     width: 28px; height: 28px; border-radius: 50%;
     color: #fff; font-size: 12px; font-weight: 900;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px rgba(0,0,0,0.12);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px rgba(0,0,0,0.1);
 }
 .nav-acct-pill {
     display: flex; align-items: center; gap: 5px;
-    padding: 6px 11px; border-radius: 980px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    font-size: 12px; font-weight: 700;
-    color: var(--text);
-    transition: border-color 0.2s;
+    padding: 5px 12px; border-radius: 980px;
+    background: var(--bg2); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 700; color: var(--text);
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
 }
 .nav-acct-pill:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Shake keyframes */
+/* ── ANIMATIONS ── */
+@keyframes samSlideIn {
+    from { opacity: 0; transform: translateX(12px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
 @keyframes samShake {
     0%,100% { transform: translateX(0); }
     20%     { transform: translateX(-5px); }
@@ -786,35 +953,47 @@
     80%     { transform: translateX(3px); }
 }
 
+/* ── SCREEN TRANSITION ── */
+.sam-screen { animation: samSlideIn 0.28s cubic-bezier(0.2,0.8,0.2,1); }
+
 /* Responsive */
 @media (max-width: 440px) {
     .sam-card { padding: 24px 20px 22px; border-radius: 22px; }
+    .sam-heading { font-size: 22px; }
+    .sam-choice-btn { padding: 13px 14px; gap: 12px; }
+}
+
+/* ── LOADING SPINNER ── */
+.sam-spinner {
+    width: 24px; height: 24px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: samSpin 0.8s linear infinite;
+    margin: 0 auto 12px;
+}
+@keyframes samSpin {
+    to { transform: rotate(360deg); }
 }
         `;
         document.head.appendChild(s);
     }
 
-    // ── PUBLIC API ───────────────────────────────────────────────
+    /* ── PUBLIC API ─────────────────────────────────────────── */
     window.studioAuth = {
-        get user()      { return _user; },
-        get isSignedIn(){ return !!_user; },
-        get role()      { return _user?.role || 'guest'; },
+        get user()       { return _user; },
+        get isSignedIn() { return !!_user; },
+        get role()       { return _user ? _user.role : 'guest'; },
 
-        openSignIn(reason, mode) { openModal(reason, mode || 'signin'); },
-        openSignUp(reason)       { openModal(reason, 'signup'); },
+        openSignIn() { openModal({ screen: 'signin' }); },
+        openSignUp() { openModal({ screen: 'signup' }); },
+        open()       { openModal(); },
         signOut: handleSignOut,
 
-        // Gate: if not signed in, open modal; call cb once auth resolves
         requireAuth(reason, callback) {
             if (_user) { callback(_user); return; }
-            _pendingCb     = callback;
-            _pendingReason = reason;
-            openModal(reason, 'signin');
-            // Watch for sign-in
-            const check = () => {
-                if (_user) { closeModal(); callback(_user); }
-            };
-            _onAuthCbs.push(check);
+            _pendingCb = callback;
+            openModal({ context: true, screen: 'choice' });
         },
 
         onChange(cb) {
@@ -824,7 +1003,6 @@
         },
     };
 
-    // Auto-init
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

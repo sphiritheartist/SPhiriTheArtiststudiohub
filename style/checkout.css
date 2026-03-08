@@ -501,6 +501,88 @@
 }
 .co-order-total-preview span:last-child { color: var(--accent); }
 
+/* ── BUYER PROTECTION ────────────────────────────────────────── */
+.co-buyer-protection {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.co-buyer-protection.protected-paypal {
+    background: rgba(0, 113, 227, 0.06);
+    border-color: rgba(0, 113, 227, 0.25);
+}
+[data-theme="dark"] .co-buyer-protection.protected-paypal {
+    background: rgba(10, 132, 255, 0.08);
+    border-color: rgba(10, 132, 255, 0.25);
+}
+
+.co-buyer-protection.protected-secure {
+    background: rgba(52, 199, 89, 0.06);
+    border-color: rgba(52, 199, 89, 0.25);
+}
+[data-theme="dark"] .co-buyer-protection.protected-secure {
+    background: rgba(52, 199, 89, 0.08);
+    border-color: rgba(52, 199, 89, 0.25);
+}
+
+.co-buyer-protection.protected-cash {
+    background: rgba(255, 149, 0, 0.06);
+    border-color: rgba(255, 149, 0, 0.25);
+}
+[data-theme="dark"] .co-buyer-protection.protected-cash {
+    background: rgba(255, 149, 0, 0.08);
+    border-color: rgba(255, 149, 0, 0.25);
+}
+
+.co-buyer-protection.protected-eft {
+    background: rgba(175, 184, 193, 0.1);
+    border-color: rgba(175, 184, 193, 0.3);
+}
+
+.co-bp-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.co-bp-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.co-bp-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.co-bp-text span {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: block;
+}
+
+.co-bp-text a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.co-bp-text a:hover {
+    text-decoration: underline;
+}
+
 /* ── STEP 4: CONFIRM ─────────────────────────────────────────── */
 .co-step-confirm {
     text-align: center;

@@ -3,27 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeSorted | Skate Hub</title>
+    <title>WeSorted</title>
     <link rel="stylesheet" href="style/main.css">
     <link rel="stylesheet" href="style/menu-system.css">
     <link rel="stylesheet" href="style/skate.css">
+    <link rel="stylesheet" href="style/skate-events.css">
     <link rel="stylesheet" href="style/checkout.css">
 </head>
 <body>
 <div id="nav-placeholder"></div>
 <main>
 
-  <!-- Hero -->
+  <!-- Hero with Typing Effect -->
   <section style="text-align:center;padding:80px 40px 0;">
-      <span class="hero-tagline">SPhiri × WeSorted</span>
-      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">SKATE<br>HUB</h1>
+      <span class="hero-tagline">WESORTED × Sphiri</span>
+      <h1 class="reveal" style="font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:16px;">
+        <span class="typing-static">SKATE</span> <span class="typing-dynamic" id="typingText"></span><span class="typing-cursor">|</span>
+      </h1>
       <p class="reveal" style="font-size:16px;color:var(--muted);max-width:440px;margin:0 auto;">Decks, completes, trucks, footwear and apparel. Built for the street.</p>
   </section>
 
-  <!-- Events -->
+  <!-- Events Section with Dynamic Filtering -->
   <section id="events" class="section">
       <span class="hero-tagline">Next Up</span>
-      <div class="skate-event-card">
+      
+      <!-- Events Filter Bar -->
+      <div class="events-filter-bar" id="eventsFilterBar">
+          <div class="filter-group">
+              <label>Province</label>
+              <select id="filterProvince" onchange="handleProvinceChange()">
+                  <option value="">All Provinces</option>
+              </select>
+          </div>
+          <div class="filter-group">
+              <label>City</label>
+              <select id="filterCity" onchange="handleCityChange()">
+                  <option value="">All Cities</option>
+              </select>
+          </div>
+          <div class="filter-group">
+              <label>Type</label>
+              <select id="filterType" onchange="handleTypeChange()">
+                  <option value="">All Types</option>
+                  <option value="session">🛹 Sessions</option>
+                  <option value="competition">🏆 Competitions</option>
+                  <option value="workshop">📚 Workshops</option>
+                  <option value="jam">🎵 Jams</option>
+              </select>
+          </div>
+          <div class="filter-actions">
+              <button class="filter-clear-btn" onclick="clearFilters()">Clear Filters</button>
+          </div>
+      </div>
+
+      <!-- Events Tabs -->
+      <div class="events-tabs" id="eventsTabs">
+          <button class="events-tab active" data-tab="all" onclick="switchEventsTab('all')">All Events</button>
+          <button class="events-tab" data-tab="session" onclick="switchEventsTab('session')">Sessions</button>
+          <button class="events-tab" data-tab="competition" onclick="switchEventsTab('competition')">Competitions</button>
+          <button class="events-tab" data-tab="workshop" onclick="switchEventsTab('workshop')">Workshops</button>
+      </div>
+
+      <!-- Dynamic Events Grid -->
+      <div class="events-grid" id="eventsGrid">
+          <!-- Events loaded dynamically from SkateEvents system -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="events-empty" id="eventsEmpty" style="display:none">
+          <div class="icon">🛹</div>
+          <h3>No events found</h3>
+          <p>Try adjusting your filters or check back later for upcoming events.</p>
+          <button class="btn-outline" onclick="clearFilters()">Clear Filters</button>
+      </div>
+
+      <!-- Featured Event Card (Studio Session) -->
+      <div class="skate-event-card" id="featuredEventCard">
           <div class="skate-event-info">
               <div class="skate-event-date">
                   <span class="skate-event-day">24</span>
@@ -628,8 +683,241 @@
 <script src="script/global.js"></script>
 <script src="script/menu-system.js"></script>
 <script src="script/skate.js"></script>
-    <script src="script/auth.js"></script>
-    <script src="script/cart.js"></script>
-    <script src="script/checkout.js"></script>
+<script src="script/auth.js"></script>
+<script src="script/cart.js"></script>
+<script src="script/checkout.js"></script>
+<script src="script/skate-events.js"></script>
+
+<!-- Dynamic Events System -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initEventsFilter();
+    initTypingEffect();
+});
+
+/* ================================================================
+   TYPING EFFECT
+   ================================================================ */
+function initTypingEffect() {
+    const words = ['Sessions', 'Workshops', 'Competitions', 'Shop', 'Community'];
+    const typingElement = document.getElementById('typingText');
+    if (!typingElement) return;
+    
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+    
+    function type() {
+        const currentWord = words[wordIndex];
+        
+        if (isDeleting) {
+            typingElement.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50;
+        } else {
+            typingElement.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 100;
+        }
+        
+        if (!isDeleting && charIndex === currentWord.length) {
+            // Wait before deleting
+            typingSpeed = 2000;
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typingSpeed = 500;
+        }
+        
+        setTimeout(type, typingSpeed);
+    }
+    
+    // Start typing effect
+    type();
+}
+
+let currentFilters = {
+    province: '',
+    city: '',
+    type: ''
+};
+let currentTab = 'all';
+
+function initEventsFilter() {
+    // Populate province dropdown
+    const provinceSelect = document.getElementById('filterProvince');
+    if (provinceSelect && window.SkateEvents) {
+        const provinces = SkateEvents.PROVINCES;
+        provinces.forEach(function(prov) {
+            var opt = document.createElement('option');
+            opt.value = prov;
+            opt.textContent = prov;
+            provinceSelect.appendChild(opt);
+        });
+    }
+    // Load initial events
+    renderEvents();
+}
+
+function handleProvinceChange() {
+    const provinceSelect = document.getElementById('filterProvince');
+    const citySelect = document.getElementById('filterCity');
+    currentFilters.province = provinceSelect.value;
+    
+    // Reset city dropdown
+    citySelect.innerHTML = '<option value="">All Cities</option>';
+    
+    if (currentFilters.province && window.SkateEvents) {
+        const cities = SkateEvents.getCitiesForProvince(currentFilters.province);
+        cities.forEach(function(city) {
+            var opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+        });
+    }
+    
+    currentFilters.city = '';
+    renderEvents();
+}
+
+function handleCityChange() {
+    const citySelect = document.getElementById('filterCity');
+    currentFilters.city = citySelect.value;
+    renderEvents();
+}
+
+function handleTypeChange() {
+    const typeSelect = document.getElementById('filterType');
+    currentFilters.type = typeSelect.value;
+    renderEvents();
+}
+
+function clearFilters() {
+    currentFilters = { province: '', city: '', type: '' };
+    currentTab = 'all';
+    
+    document.getElementById('filterProvince').value = '';
+    document.getElementById('filterCity').innerHTML = '<option value="">All Cities</option>';
+    document.getElementById('filterType').value = '';
+    
+    // Reset tabs
+    document.querySelectorAll('.events-tab').forEach(function(tab) {
+        tab.classList.toggle('active', tab.dataset.tab === 'all');
+    });
+    
+    renderEvents();
+}
+
+function switchEventsTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.events-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    renderEvents();
+}
+
+function renderEvents() {
+    const grid = document.getElementById('eventsGrid');
+    const empty = document.getElementById('eventsEmpty');
+    if (!grid || !window.SkateEvents) return;
+    
+    // Get filtered events
+    let events = SkateEvents.filterEvents({
+        province: currentFilters.province,
+        city: currentFilters.city,
+        type: currentFilters.type,
+        status: 'active'
+    });
+    
+    // Filter by tab
+    if (currentTab !== 'all') {
+        events = events.filter(function(e) {
+            return e.type === currentTab;
+        });
+    }
+    
+    // Sort by date
+    events.sort(function(a, b) {
+        return new Date(a.date) - new Date(b.date);
+    });
+    
+    // Show/hide empty state
+    if (events.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+    
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+    
+    // Render event cards
+    grid.innerHTML = events.map(function(event) {
+        return renderEventCard(event);
+    }).join('');
+}
+
+function renderEventCard(event) {
+    const date = new Date(event.date);
+    const day = date.getDate();
+    const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+    
+    const typeIcons = {
+        session: '🛹',
+        competition: '🏆',
+        workshop: '📚',
+        jam: '🎵'
+    };
+    
+    const typeLabels = {
+        session: 'Session',
+        competition: 'Competition',
+        workshop: 'Workshop',
+        jam: 'Jam'
+    };
+    
+    const isCompetition = event.type === 'competition';
+    const rsvpCount = event.rsvps ? event.rsvps.length : 0;
+    const maxAttendees = event.maxAttendees || '∞';
+    
+    return '<div class="event-card' + (isCompetition ? ' competition-card' : '') + '">' +
+        '<div class="event-card-image"' + (event.image ? ' style="background-image: url(' + event.image + ')"' : '') + '>' +
+            '<span class="event-card-type ' + event.type + '">' + (typeIcons[event.type] || '🛹') + ' ' + (typeLabels[event.type] || event.type) + '</span>' +
+            (isCompetition ? '<span class="competition-badge">🏆 COMPETITION</span>' : '') +
+        '</div>' +
+        '<div class="event-card-body">' +
+            '<div class="event-card-date">' +
+                '<span class="event-card-day">' + day + '</span>' +
+                '<span class="event-card-month">' + month + '</span>' +
+            '</div>' +
+            '<h3>' + escapeHtml(event.title) + '</h3>' +
+            '<div class="event-card-location">📍 ' + escapeHtml(event.city) + (event.town ? ', ' + escapeHtml(event.town) : '') + '</div>' +
+            '<p class="event-card-desc">' + escapeHtml(event.description) + '</p>' +
+            '<div class="event-card-footer">' +
+                '<span class="event-card-rsvp"><strong>' + rsvpCount + '</strong> / ' + maxAttendees + ' attending</span>' +
+                '<button class="event-card-btn primary" onclick="openEventRSVP(\'' + event.id + '\')">RSVP</button>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '<')
+        .replace(/>/g, '>')
+        .replace(/"/g, '"');
+}
+
+function openEventRSVP(eventId) {
+    // For now, use the existing RSVP modal
+    var openBtn = document.getElementById('rsvpOpenBtn');
+    if (openBtn) openBtn.click();
+}
+</script>
 </body>
 </html>

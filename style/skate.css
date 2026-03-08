@@ -15,6 +15,42 @@
     --glass:   rgba(0,0,0,0.82);
 }
 
+/* ================================================================
+   TYPING EFFECT HERO
+   ================================================================ */
+.typing-static {
+    color: var(--text);
+}
+
+.typing-dynamic {
+    color: var(--accent);
+    display: inline-block;
+}
+
+.typing-cursor {
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+    font-weight: 300;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Skate Nav Brand Styles */
+.nav-brand-divider {
+    color: var(--border);
+    margin: 0 2px;
+    font-weight: 300;
+}
+
+.wesorted-brand {
+    color: var(--accent) !important;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
 /* Cat rail — dark bg */
 .cat-rail { background: rgba(0,0,0,0.92); }
 
